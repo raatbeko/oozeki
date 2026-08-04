@@ -15,7 +15,12 @@ export type SpinnerHandle = {
 };
 
 /** Колоданын абалы: калган темалар жана акыркы чыккан тема. */
-type BagState = { bag: string[]; last: string | null };
+/**
+ * Колоданын абалы: калган темалар, акыркы чыккан тема жана аралаштыруу
+ * учурундагы толук пул (all) — жаңы кошулган темаларды таанып, учурдагы
+ * колодага дароо аралаштыруу үчүн.
+ */
+type BagState = { bag: string[]; last: string | null; all: string[] };
 
 function shuffle<T>(items: T[]): T[] {
   const arr = [...items];
@@ -32,7 +37,14 @@ function loadBag(storageKey: string): BagState | null {
     if (!raw) return null;
     const p = JSON.parse(raw) as Partial<BagState>;
     if (!Array.isArray(p.bag) || !p.bag.every((k) => typeof k === 'string')) return null;
-    return { bag: p.bag, last: typeof p.last === 'string' ? p.last : null };
+    const all =
+      Array.isArray(p.all) && p.all.every((k) => typeof k === 'string') ? p.all : null;
+    return {
+      bag: p.bag,
+      last: typeof p.last === 'string' ? p.last : null,
+      // эски форматта all жок — учурдагы пул деп эсептейбиз (кайра киргизбөө үчүн)
+      all: all ?? [],
+    };
   } catch {
     return null;
   }
@@ -76,7 +88,8 @@ export function useTopicSpinner(
     setTopic(null);
   }, [clearTimers]);
 
-  const storageKey = `oozeki:bag:v1:${bagKey}`;
+  // v2: колодада пулдун снапшоту (all) сакталат — эски v1 колодалар жарабайт
+  const storageKey = `oozeki:bag:v2:${bagKey}`;
 
   /** Колодадан кийинки теманы алат; колода түгөнсө кайра аралаштырат. */
   const drawNext = useCallback((): Topic => {
@@ -84,8 +97,23 @@ export function useTopicSpinner(
     const stored = loadBag(storageKey);
     // темалар жаңыланган болсо, эскилерин колододон чыгарып салабыз
     let bag = stored ? stored.bag.filter((k) => keys.includes(k)) : [];
+    let all = stored
+      ? (stored.all.length > 0 ? stored.all : keys).filter((k) => keys.includes(k))
+      : [];
+
+    // жаңы кошулган темалар кезекти күтпөй эле учурдагы колодага аралашат
+    const fresh = keys.filter((k) => !all.includes(k) && !bag.includes(k));
+    if (bag.length > 0 && fresh.length > 0) {
+      for (const key of fresh) {
+        const pos = Math.floor(Math.random() * (bag.length + 1));
+        bag.splice(pos, 0, key);
+      }
+      all = [...all, ...fresh];
+    }
+
     if (bag.length === 0) {
       bag = shuffle(keys);
+      all = keys;
       // жаңы колоданын биринчиси мурунку акыркы тема болбосун
       if (bag.length > 1 && bag[0] === stored?.last) {
         const j = 1 + Math.floor(Math.random() * (bag.length - 1));
@@ -93,7 +121,7 @@ export function useTopicSpinner(
       }
     }
     const [nextKey, ...rest] = bag;
-    saveBag(storageKey, { bag: rest, last: nextKey });
+    saveBag(storageKey, { bag: rest, last: nextKey, all });
     return topics.find((item) => topicKg(item) === nextKey) ?? topics[0];
   }, [topics, storageKey]);
 
