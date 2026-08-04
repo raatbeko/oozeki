@@ -1,11 +1,15 @@
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 import { Tunduk } from './Tunduk';
 
 type HeaderProps = {
   onOpenAbout: () => void;
 };
 
+const chip =
+  'border-line text-ink-muted hover:text-accent hover:border-accent/40 inline-flex items-center gap-1.5 rounded-full border bg-white/50 px-2.5 py-1 font-medium transition-colors hover:bg-white/80';
+
 export function Header({ onOpenAbout }: HeaderProps) {
+  const t = useT();
   return (
     <header className="flex flex-col items-center gap-1.5 px-6 pt-8 text-center sm:pt-12">
       <div className="flex items-center gap-3">
@@ -21,7 +25,7 @@ export function Header({ onOpenAbout }: HeaderProps) {
           href="https://www.instagram.com/theratbeko/"
           target="_blank"
           rel="noopener noreferrer"
-          className="border-line text-ink-muted hover:text-accent hover:border-accent/40 inline-flex items-center gap-1.5 rounded-full border bg-white/50 px-2.5 py-1 font-medium transition-colors hover:bg-white/80"
+          className={chip}
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="currentColor" strokeWidth="2" />
@@ -30,11 +34,7 @@ export function Header({ onOpenAbout }: HeaderProps) {
           </svg>
           @theratbeko
         </a>
-        <button
-          type="button"
-          onClick={onOpenAbout}
-          className="border-line text-ink-muted hover:text-accent hover:border-accent/40 inline-flex items-center gap-1.5 rounded-full border bg-white/50 px-2.5 py-1 font-medium transition-colors hover:bg-white/80"
-        >
+        <button type="button" onClick={onOpenAbout} className={chip}>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <circle cx="12" cy="12" r="9.5" stroke="currentColor" strokeWidth="2" />
             <path d="M12 11v5.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

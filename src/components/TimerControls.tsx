@@ -1,4 +1,4 @@
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 import type { Mode } from '../hooks/useSettings';
 import type { Status } from './TopicDisplay';
 import { Tunduk } from './Tunduk';
@@ -37,6 +37,7 @@ export function TimerControls({
   onStop,
   onOpenSettings,
 }: TimerControlsProps) {
+  const t = useT();
   const timerRunning = status === 'prep' || status === 'speaking';
 
   return (

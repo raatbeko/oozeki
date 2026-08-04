@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef } from 'react';
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 import { Tunduk } from './Tunduk';
 
 type AboutModalProps = {
@@ -15,6 +15,7 @@ const ornamentDivider = {
 } as const;
 
 export function AboutModal({ open, onClose }: AboutModalProps) {
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 

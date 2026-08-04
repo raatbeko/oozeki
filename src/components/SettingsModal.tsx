@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef } from 'react';
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 import type { Settings } from '../hooks/useSettings';
 
 type SettingsModalProps = {
@@ -18,6 +18,7 @@ const ornamentDivider = {
 } as const;
 
 export function SettingsModal({ open, settings, onUpdate, onClose }: SettingsModalProps) {
+  const t = useT();
   const panelRef = useRef<HTMLDivElement>(null);
   const previouslyFocused = useRef<HTMLElement | null>(null);
 
@@ -96,7 +97,7 @@ export function SettingsModal({ open, settings, onUpdate, onClose }: SettingsMod
                     {t.settings.speech}
                   </span>
                   <span className="text-accent text-sm font-semibold tabular-nums">
-                    {settings.speechMin} мүн
+                    {settings.speechMin} {t.settings.minutesShort}
                   </span>
                 </span>
                 <input
@@ -116,7 +117,7 @@ export function SettingsModal({ open, settings, onUpdate, onClose }: SettingsMod
                     {t.settings.prep}
                   </span>
                   <span className="text-blue text-sm font-semibold tabular-nums">
-                    {settings.prepMin} мүн
+                    {settings.prepMin} {t.settings.minutesShort}
                   </span>
                 </span>
                 <input

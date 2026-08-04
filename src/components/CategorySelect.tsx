@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Category } from '../data/categories';
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 
 type CategorySelectProps = {
   categories: Category[];
@@ -10,6 +10,7 @@ type CategorySelectProps = {
 };
 
 export function CategorySelect({ categories, value, onChange }: CategorySelectProps) {
+  const t = useT();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);

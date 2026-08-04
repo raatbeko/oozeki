@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AboutModal } from './components/AboutModal';
 import { CategorySelect } from './components/CategorySelect';
 import { Header } from './components/Header';
+import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
 import { OrnamentBackground } from './components/OrnamentBackground';
 import { ProgressLine } from './components/ProgressLine';
@@ -9,7 +10,8 @@ import { SettingsModal } from './components/SettingsModal';
 import { TimerControls } from './components/TimerControls';
 import { TopicDisplay, type Status } from './components/TopicDisplay';
 import { categoriesFor, topicsFor } from './data/categories';
-import { t } from './data/ui-strings';
+import { strings } from './data/ui-strings';
+import { LocaleContext } from './i18n';
 import { useSettings, type Mode } from './hooks/useSettings';
 import { useTimer } from './hooks/useTimer';
 import { useTopicSpinner } from './hooks/useTopicSpinner';
@@ -24,6 +26,12 @@ export default function App() {
   const [phase, setPhase] = useState<Phase>('idle');
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+
+  const t = strings[settings.locale];
+
+  useEffect(() => {
+    document.documentElement.lang = settings.locale;
+  }, [settings.locale]);
 
   const visibleCategories = useMemo(() => categoriesFor(settings.mode), [settings.mode]);
 
@@ -149,10 +157,12 @@ export default function App() {
   const warning = phase === 'speaking' && timer.leftMs <= 10_000;
 
   return (
-    <div className="flex min-h-dvh flex-col">
-      <OrnamentBackground />
+    <LocaleContext.Provider value={t}>
+      <div className="flex min-h-dvh flex-col">
+        <OrnamentBackground />
+        <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
 
-      <Header onOpenAbout={() => setAboutOpen(true)} />
+        <Header onOpenAbout={() => setAboutOpen(true)} />
 
       <div className="mt-6 flex flex-col items-center gap-4 sm:mt-8">
         <ModeSwitch mode={settings.mode} onChange={changeMode} />
@@ -203,6 +213,7 @@ export default function App() {
         onClose={() => setSettingsOpen(false)}
       />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
-    </div>
+      </div>
+    </LocaleContext.Provider>
   );
 }

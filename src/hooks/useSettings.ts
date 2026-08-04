@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import type { Locale } from '../data/ui-strings';
 
 export type Mode = 'quick' | 'research';
 
@@ -8,6 +9,7 @@ export type Settings = {
   muted: boolean;
   mode: Mode;
   categoryId: string;
+  locale: Locale;
 };
 
 const STORAGE_KEY = 'oozeki:settings:v1';
@@ -18,6 +20,7 @@ const defaults: Settings = {
   muted: false,
   mode: 'quick',
   categoryId: 'general',
+  locale: 'ky',
 };
 
 function clampInt(value: unknown, min: number, max: number, fallback: number): number {
@@ -36,6 +39,7 @@ function load(): Settings {
       muted: typeof p.muted === 'boolean' ? p.muted : defaults.muted,
       mode: p.mode === 'research' ? 'research' : 'quick',
       categoryId: typeof p.categoryId === 'string' ? p.categoryId : defaults.categoryId,
+      locale: p.locale === 'ru' ? 'ru' : 'ky',
     };
   } catch {
     return defaults;

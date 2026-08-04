@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { topicKg, topicTerm, type Topic } from '../data/categories';
-import { t } from '../data/ui-strings';
+import { useT } from '../i18n';
 
 export type Status = 'ready' | 'spinning' | 'prep' | 'prepDone' | 'speaking' | 'done';
 
@@ -14,15 +14,6 @@ type TopicDisplayProps = {
   researchMode: boolean;
   /** Тема астына чегилүүчү элементтер (прогресс-сызык). */
   children?: ReactNode;
-};
-
-const statusLabel: Record<Status, string> = {
-  ready: t.status.ready,
-  spinning: t.status.spinning,
-  prep: t.status.prep,
-  prepDone: t.status.prepDone,
-  speaking: t.status.speaking,
-  done: t.status.done,
 };
 
 /** Теманын узундугуна жараша адаптивдүү өлчөм. */
@@ -50,6 +41,15 @@ export function TopicDisplay({
   researchMode,
   children,
 }: TopicDisplayProps) {
+  const t = useT();
+  const statusLabel: Record<Status, string> = {
+    ready: t.status.ready,
+    spinning: t.status.spinning,
+    prep: t.status.prep,
+    prepDone: t.status.prepDone,
+    speaking: t.status.speaking,
+    done: t.status.done,
+  };
   const kg = topic ? topicKg(topic) : null;
   const term = topic ? topicTerm(topic) : undefined;
 
@@ -67,7 +67,7 @@ export function TopicDisplay({
       <div className="flex flex-1 flex-col items-center justify-center gap-5 pb-10 sm:pb-44">
         {kg === null ? (
           <p className="text-ink-muted font-serif text-xl italic sm:text-2xl">
-            «Тарт» баскычын басып теманы ал
+            {t.topic.placeholder}
           </p>
         ) : spinning ? (
           <h2
