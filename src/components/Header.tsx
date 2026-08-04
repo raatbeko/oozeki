@@ -11,15 +11,16 @@ const chip =
 export function Header({ onOpenAbout }: HeaderProps) {
   const t = useT();
   return (
-    <header className="flex flex-col items-center gap-1.5 px-6 pt-8 text-center sm:pt-12">
+    <header className="flex flex-col items-center gap-1.5 px-6 pt-8 text-center sm:pt-12 lg:gap-2.5 lg:pt-16">
       <div className="flex items-center gap-3">
-        <Tunduk size={30} className="text-accent" />
-        <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl">
+        <Tunduk size={30} className="text-accent lg:hidden" />
+        <Tunduk size={40} className="text-accent hidden lg:block" />
+        <h1 className="font-serif text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
           {t.app.title}
         </h1>
       </div>
-      <p className="text-ink-muted text-xs sm:text-sm">{t.app.tagline}</p>
-      <p className="text-ink-muted/70 mt-1 flex flex-wrap items-center justify-center gap-2 text-[11px]">
+      <p className="text-ink-muted text-xs sm:text-sm lg:text-base">{t.app.tagline}</p>
+      <p className="text-ink-muted/70 mt-1 flex flex-wrap items-center justify-center gap-2 text-[11px] lg:text-xs">
         {t.app.madeBy}
         <a
           href="https://www.instagram.com/theratbeko/"

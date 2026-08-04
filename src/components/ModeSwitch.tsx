@@ -29,7 +29,7 @@ export function ModeSwitch({ mode, onChange }: ModeSwitchProps) {
             role="radio"
             aria-checked={active}
             onClick={() => onChange(item.id)}
-            className={`relative rounded-full px-5 py-2 text-sm font-semibold whitespace-nowrap transition-colors sm:px-6 ${
+            className={`relative rounded-full px-5 py-2 text-sm font-semibold whitespace-nowrap transition-colors sm:px-6 lg:px-8 lg:py-2.5 lg:text-base ${
               active ? 'text-ink' : 'text-ink-muted hover:text-ink'
             }`}
           >

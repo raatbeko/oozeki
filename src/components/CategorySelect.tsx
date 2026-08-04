@@ -69,7 +69,7 @@ export function CategorySelect({ categories, value, onChange }: CategorySelectPr
         aria-expanded={open}
         aria-label={t.category.label}
         onClick={() => setOpen((v) => !v)}
-        className="border-line text-ink hover:bg-bg-soft flex h-11 items-center gap-2 rounded-full border bg-white/40 px-5 text-sm font-medium transition-colors"
+        className="border-line text-ink hover:bg-bg-soft flex h-11 items-center gap-2 rounded-full border bg-white/40 px-5 text-sm font-medium transition-colors lg:h-12 lg:px-6 lg:text-base"
       >
         <span aria-hidden="true">{selected.emoji}</span>
         <span>{selected.label}</span>
@@ -93,7 +93,7 @@ export function CategorySelect({ categories, value, onChange }: CategorySelectPr
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.18, ease: 'easeOut' }}
-            className="border-line bg-bg-soft absolute left-1/2 z-40 mt-2 max-h-72 w-64 -translate-x-1/2 overflow-y-auto rounded-2xl border p-1.5 shadow-[0_12px_32px_rgb(35_32_27/0.14)]"
+            className="border-line bg-bg-soft absolute left-1/2 z-40 mt-2 max-h-72 w-64 -translate-x-1/2 overflow-y-auto rounded-2xl border p-1.5 shadow-[0_12px_32px_rgb(35_32_27/0.14)] lg:max-h-80 lg:w-72"
           >
             {categories.map((cat, i) => {
               const isSelected = cat.id === value;
@@ -110,7 +110,7 @@ export function CategorySelect({ categories, value, onChange }: CategorySelectPr
                       onChange(cat.id);
                       close(true);
                     }}
-                    className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition-colors ${
+                    className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition-colors lg:text-[15px] ${
                       isSelected
                         ? 'text-ink bg-white font-semibold shadow-[0_1px_6px_rgb(35_32_27/0.08)]'
                         : 'text-ink hover:bg-white/60'

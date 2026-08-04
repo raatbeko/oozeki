@@ -27,7 +27,7 @@ export function TimerCircle({ leftMs, totalMs, color, ariaLabel }: TimerCirclePr
   const elapsed = Math.min(1, Math.max(0, 1 - leftMs / Math.max(totalMs, 1)));
 
   return (
-    <div className="relative flex h-52 w-52 items-center justify-center sm:h-64 sm:w-64">
+    <div className="relative flex h-52 w-52 items-center justify-center sm:h-64 sm:w-64 lg:h-80 lg:w-80">
       <svg viewBox="0 0 200 200" className="absolute inset-0 h-full w-full -rotate-90">
         <circle
           cx="100"
@@ -52,7 +52,7 @@ export function TimerCircle({ leftMs, totalMs, color, ariaLabel }: TimerCirclePr
       </svg>
       <p
         aria-label={ariaLabel}
-        className="text-ink font-serif text-6xl font-bold tabular-nums sm:text-7xl"
+        className="text-ink font-serif text-6xl font-bold tabular-nums sm:text-7xl lg:text-8xl"
       >
         {formatLeft(leftMs)}
       </p>

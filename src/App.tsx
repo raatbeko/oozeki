@@ -162,7 +162,7 @@ export default function App() {
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
 
-      <div className="mt-6 flex flex-col items-center gap-4 sm:mt-8">
+      <div className="mt-6 flex flex-col items-center gap-4 sm:mt-8 lg:mt-10 lg:gap-5">
         <ModeSwitch mode={settings.mode} onChange={changeMode} />
         <CategorySelect
           categories={visibleCategories}
@@ -184,8 +184,8 @@ export default function App() {
         />
       </main>
 
-      <div className="pb-8 sm:pb-12">
-        <p className="text-ink-muted mx-auto mb-4 max-w-sm px-6 text-center text-xs leading-relaxed text-balance">
+      <div className="pb-8 sm:pb-12 lg:pb-16">
+        <p className="text-ink-muted mx-auto mb-4 max-w-sm px-6 text-center text-xs leading-relaxed text-balance lg:mb-5 lg:max-w-md lg:text-sm">
           {settings.mode === 'quick' ? t.modes.quickHint : t.modes.researchHint}
         </p>
         <TimerControls

@@ -20,10 +20,10 @@ type TopicDisplayProps = {
 /** Теманын узундугуна жараша адаптивдүү өлчөм. */
 function sizeClass(text: string): string {
   const len = text.length;
-  if (len <= 12) return 'text-[clamp(3rem,13vw,6rem)]';
-  if (len <= 24) return 'text-[clamp(2.4rem,9.5vw,4.8rem)]';
-  if (len <= 42) return 'text-[clamp(1.9rem,7vw,3.6rem)]';
-  return 'text-[clamp(1.5rem,5.5vw,2.7rem)]';
+  if (len <= 12) return 'text-[clamp(3rem,13vw,7rem)]';
+  if (len <= 24) return 'text-[clamp(2.4rem,9.5vw,5.6rem)]';
+  if (len <= 42) return 'text-[clamp(1.9rem,7vw,4.2rem)]';
+  return 'text-[clamp(1.5rem,5.5vw,3.1rem)]';
 }
 
 export function TopicDisplay({
@@ -53,7 +53,7 @@ export function TopicDisplay({
     <div className="flex w-full max-w-4xl flex-1 flex-col items-center text-center">
       <p
         aria-live="polite"
-        className={`mt-2 text-[11px] font-semibold tracking-[0.24em] uppercase sm:text-xs ${
+        className={`mt-2 text-[11px] font-semibold tracking-[0.24em] uppercase sm:text-xs lg:mt-4 lg:text-sm ${
           researchMode ? 'text-blue' : 'text-accent'
         }`}
       >
@@ -62,7 +62,7 @@ export function TopicDisplay({
 
       <div className="flex flex-1 flex-col items-center justify-center gap-5 pb-10 sm:pb-44">
         {kg === null ? (
-          <p className="text-ink-muted font-serif text-xl italic sm:text-2xl">
+          <p className="text-ink-muted font-serif text-xl italic sm:text-2xl lg:text-3xl">
             {t.topic.placeholder}
           </p>
         ) : timerVisible ? (
@@ -74,7 +74,7 @@ export function TopicDisplay({
           >
             <h2
               aria-label={t.a11y.topic}
-              className="font-serif text-xl leading-snug font-bold tracking-tight text-balance sm:text-2xl"
+              className="font-serif text-xl leading-snug font-bold tracking-tight text-balance sm:text-2xl lg:text-3xl"
             >
               {kg}
             </h2>
@@ -108,7 +108,7 @@ export function TopicDisplay({
               >
                 {kg}
               </h2>
-              {term && <p className="text-ink-muted text-sm sm:text-base">{term}</p>}
+              {term && <p className="text-ink-muted text-sm sm:text-base lg:text-lg">{term}</p>}
             </motion.div>
           </AnimatePresence>
         )}
