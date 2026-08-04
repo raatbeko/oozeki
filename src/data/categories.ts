@@ -13,6 +13,7 @@ export type CategoryMode = 'quick' | 'research' | 'both';
 export type Category = {
   id: string;
   label: string;
+  labelRu: string;
   emoji: string;
   mode: CategoryMode;
   topics: Topic[];
@@ -27,6 +28,7 @@ export const categories: Category[] = [
   {
     id: 'general',
     label: 'Жалпы',
+    labelRu: 'Общее',
     emoji: '✦',
     mode: 'quick',
     topics: [
@@ -143,6 +145,7 @@ export const categories: Category[] = [
   {
     id: 'history',
     label: 'Тарых',
+    labelRu: 'История',
     emoji: '📜',
     mode: 'both',
     topics: [
@@ -213,6 +216,7 @@ export const categories: Category[] = [
   {
     id: 'traditions',
     label: 'Каада-салт',
+    labelRu: 'Традиции',
     emoji: '🪕',
     mode: 'both',
     topics: [
@@ -284,6 +288,7 @@ export const categories: Category[] = [
   {
     id: 'nature',
     label: 'Табият жана саякат',
+    labelRu: 'Природа и путешествия',
     emoji: '⛰️',
     mode: 'both',
     topics: [
@@ -355,6 +360,7 @@ export const categories: Category[] = [
   {
     id: 'cuisine',
     label: 'Улуттук ашкана',
+    labelRu: 'Национальная кухня',
     emoji: '🍲',
     mode: 'both',
     topics: [
@@ -423,6 +429,7 @@ export const categories: Category[] = [
   {
     id: 'games',
     label: 'Улуттук оюндар жана спорт',
+    labelRu: 'Игры и спорт',
     emoji: '🐎',
     mode: 'both',
     topics: [
@@ -486,6 +493,7 @@ export const categories: Category[] = [
   {
     id: 'literature',
     label: 'Тил жана адабият',
+    labelRu: 'Язык и литература',
     emoji: '📚',
     mode: 'both',
     topics: [
@@ -557,6 +565,7 @@ export const categories: Category[] = [
   {
     id: 'economy',
     label: 'Экономика жана бизнес',
+    labelRu: 'Экономика и бизнес',
     emoji: '💰',
     mode: 'both',
     topics: [
@@ -621,6 +630,7 @@ export const categories: Category[] = [
   {
     id: 'modern',
     label: 'Азыркы Кыргызстан',
+    labelRu: 'Современный Кыргызстан',
     emoji: '🏙️',
     mode: 'both',
     topics: [
@@ -685,6 +695,7 @@ export const categories: Category[] = [
   {
     id: 'science',
     label: 'Илим жана техника',
+    labelRu: 'Наука и техника',
     emoji: '🔬',
     mode: 'both',
     topics: [
@@ -753,6 +764,7 @@ export const categories: Category[] = [
   {
     id: 'health',
     label: 'Ден соолук',
+    labelRu: 'Здоровье',
     emoji: '🫀',
     mode: 'both',
     topics: [
@@ -818,6 +830,7 @@ export const categories: Category[] = [
   {
     id: 'world',
     label: 'Дүйнө таануу',
+    labelRu: 'Мир вокруг',
     emoji: '🌍',
     mode: 'both',
     topics: [
@@ -881,6 +894,7 @@ export const categories: Category[] = [
   {
     id: 'deep-research',
     label: 'Терең изилдөө',
+    labelRu: 'Глубокое исследование',
     emoji: '🔎',
     mode: 'research',
     topics: [
@@ -923,6 +937,11 @@ export const categories: Category[] = [
     ],
   }
 ];
+
+/** Интерфейстин тилине жараша категориянын аталышы. */
+export function categoryLabel(category: Category, locale: 'ky' | 'ru'): string {
+  return locale === 'ru' ? category.labelRu : category.label;
+}
 
 /**
  * Режимге жараша категориянын темаларын кайтарат.

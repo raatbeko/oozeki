@@ -1,15 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { Category } from '../data/categories';
+import { categoryLabel, type Category } from '../data/categories';
+import type { Locale } from '../data/ui-strings';
 import { useT } from '../i18n';
 
 type CategorySelectProps = {
   categories: Category[];
   value: string;
+  locale: Locale;
   onChange: (id: string) => void;
 };
 
-export function CategorySelect({ categories, value, onChange }: CategorySelectProps) {
+export function CategorySelect({ categories, value, locale, onChange }: CategorySelectProps) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -72,7 +74,7 @@ export function CategorySelect({ categories, value, onChange }: CategorySelectPr
         className="border-line text-ink hover:bg-bg-soft flex h-11 items-center gap-2 rounded-full border bg-white/40 px-5 text-sm font-medium transition-colors lg:h-12 lg:px-6 lg:text-base"
       >
         <span aria-hidden="true">{selected.emoji}</span>
-        <span>{selected.label}</span>
+        <span>{categoryLabel(selected, locale)}</span>
         <svg
           width="12"
           height="12"
@@ -119,7 +121,7 @@ export function CategorySelect({ categories, value, onChange }: CategorySelectPr
                     <span aria-hidden="true" className="w-6 text-center">
                       {cat.emoji}
                     </span>
-                    <span className="flex-1">{cat.label}</span>
+                    <span className="flex-1">{categoryLabel(cat, locale)}</span>
                     {isSelected && (
                       <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" className="text-accent">
                         <path d="M2.5 7.5l3 3 6-7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />

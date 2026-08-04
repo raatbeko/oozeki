@@ -167,6 +167,7 @@ export default function App() {
         <CategorySelect
           categories={visibleCategories}
           value={category.id}
+          locale={settings.locale}
           onChange={changeCategory}
         />
       </div>
