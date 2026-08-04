@@ -19,7 +19,7 @@ type TimerControlsProps = {
 };
 
 const pill =
-  'inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold transition-colors select-none disabled:cursor-not-allowed disabled:opacity-45';
+  'inline-flex h-11 items-center justify-center gap-2 rounded-full px-4 text-[13px] font-semibold whitespace-nowrap transition-colors select-none disabled:cursor-not-allowed disabled:opacity-45 sm:h-12 sm:px-6 sm:text-sm';
 const primary = `${pill} bg-accent text-white shadow-[0_6px_18px_rgb(194_69_47/0.32)] hover:bg-[#ad3e2a]`;
 const secondary = `${pill} border border-line bg-white/40 text-ink hover:bg-white/70`;
 
@@ -40,7 +40,7 @@ export function TimerControls({
   const timerRunning = status === 'prep' || status === 'speaking';
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3 px-6">
+    <div className="flex flex-nowrap items-center justify-center gap-2 px-3 sm:gap-3 sm:px-6">
       {status === 'prep' ? (
         <>
           <button type="button" className={primary} onClick={onReady} aria-label={t.controls.imReady}>
@@ -95,7 +95,7 @@ export function TimerControls({
           type="button"
           onClick={onOpenSettings}
           aria-label={t.a11y.openSettings}
-          className="border-line text-ink-muted hover:text-ink flex h-12 w-12 items-center justify-center rounded-full border bg-white/40 transition-colors hover:bg-white/70"
+          className="border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-white/40 transition-colors hover:bg-white/70 sm:h-12 sm:w-12"
         >
           <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path
