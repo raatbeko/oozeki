@@ -58,7 +58,7 @@ export function TopicDisplay({
   const ringColor = warning ? 'accent' : status === 'prep' ? 'blue' : 'gold';
 
   return (
-    <div className="flex w-full max-w-4xl flex-1 flex-col items-center text-center">
+    <div className="flex w-full max-w-4xl min-h-0 flex-1 flex-col items-center text-center">
       <p
         aria-live="polite"
         className={`mt-2 text-[11px] font-semibold tracking-[0.24em] uppercase sm:text-xs lg:mt-4 lg:text-sm ${
@@ -68,7 +68,7 @@ export function TopicDisplay({
         {statusLabel[status]}
       </p>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-5 pb-10 sm:pb-44">
+      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5">
         {kg === null ? (
           <p className="text-ink-muted font-serif text-xl italic sm:text-2xl lg:text-3xl">
             {t.topic.placeholder}
@@ -78,7 +78,7 @@ export function TopicDisplay({
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="flex flex-col items-center gap-7"
+            className="flex flex-col items-center gap-4 sm:gap-6"
           >
             <h2
               aria-label={t.a11y.topic}

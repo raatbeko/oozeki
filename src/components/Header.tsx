@@ -11,7 +11,7 @@ const chip =
 export function Header({ onOpenAbout }: HeaderProps) {
   const t = useT();
   return (
-    <header className="flex flex-col items-center gap-1.5 px-6 pt-8 text-center sm:pt-12 lg:gap-2.5 lg:pt-16">
+    <header className="flex flex-col items-center gap-1.5 px-6 pt-6 text-center sm:pt-8 lg:gap-2.5 lg:pt-10">
       <div className="flex items-center gap-3">
         <Tunduk size={30} className="text-accent lg:hidden" />
         <Tunduk size={40} className="text-accent hidden lg:block" />

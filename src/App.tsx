@@ -187,13 +187,13 @@ export default function App() {
 
   return (
     <LocaleContext.Provider value={t}>
-      <div className="flex min-h-dvh flex-col">
+      <div className="flex h-dvh flex-col overflow-hidden">
         <OrnamentBackground />
         <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
 
-      <div className="mt-6 flex flex-col items-center gap-4 sm:mt-8 lg:mt-10 lg:gap-5">
+      <div className="mt-4 flex flex-col items-center gap-3 sm:mt-6 sm:gap-4 lg:mt-6 lg:gap-5">
         <ModeSwitch mode={settings.mode} onChange={changeMode} />
         <CategorySelect
           categories={visibleCategories}
@@ -203,7 +203,7 @@ export default function App() {
         />
       </div>
 
-      <main className="flex flex-1 flex-col items-center px-5 py-6">
+      <main className="flex min-h-0 flex-1 flex-col items-center px-5 py-4">
         <TopicDisplay
           topic={topic}
           status={status}
