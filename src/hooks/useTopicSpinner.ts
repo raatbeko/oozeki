@@ -2,7 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { topicKg, type Topic } from '../data/categories';
 import { playChord, playTick } from '../lib/sounds';
 
-const STEP_MS = 70;
+/** Барабандын жалпы узактыгы (~3 сек) жана басаңдоо параметрлери. */
+const SPIN_MS = 3000;
+const FIRST_STEP_MS = 65;
+const SLOWDOWN = 1.12;
 
 export type SpinnerHandle = {
   topic: Topic | null;
@@ -63,7 +66,7 @@ export function useTopicSpinner(
   mutedRef.current = muted;
 
   const clearTimers = useCallback(() => {
-    timersRef.current.forEach((id) => window.clearInterval(id));
+    timersRef.current.forEach((id) => window.clearTimeout(id));
     timersRef.current = [];
   }, []);
 
@@ -105,22 +108,29 @@ export function useTopicSpinner(
     }
 
     setSpinning(true);
-    const durationMs = 600 + Math.random() * 300;
-    const steps = Math.max(4, Math.floor(durationMs / STEP_MS));
-    let step = 0;
+    // Слот-машина сыяктуу: адегенде тез, аягына жакын барган сайын жайыраак
+    const durationMs = SPIN_MS + Math.random() * 400;
+    let elapsedMs = 0;
+    let delayMs = FIRST_STEP_MS;
 
-    const interval = window.setInterval(() => {
-      step += 1;
+    const step = (): void => {
       setTopic(topics[Math.floor(Math.random() * topics.length)]);
       playTick(mutedRef.current);
-      if (step >= steps) {
-        window.clearInterval(interval);
-        setTopic(drawNext());
-        setSpinning(false);
-        playChord(mutedRef.current);
+      elapsedMs += delayMs;
+      delayMs *= SLOWDOWN;
+      if (elapsedMs + delayMs < durationMs) {
+        timersRef.current.push(window.setTimeout(step, delayMs));
+      } else {
+        timersRef.current.push(
+          window.setTimeout(() => {
+            setTopic(drawNext());
+            setSpinning(false);
+            playChord(mutedRef.current);
+          }, delayMs),
+        );
       }
-    }, STEP_MS);
-    timersRef.current.push(interval);
+    };
+    step();
   }, [spinning, topics, drawNext]);
 
   useEffect(() => clearTimers, [clearTimers]);
