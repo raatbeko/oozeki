@@ -27,10 +27,10 @@ const ky = {
     done: 'Бүттү',
   },
   topic: {
-    placeholder: '«Тарт» баскычын басып теманы ал',
+    placeholder: '«Тартуу» баскычын басып теманы ал',
   },
   controls: {
-    spin: 'Тарт',
+    spin: 'Тартуу',
     spinning: 'Тартылууда…',
     startSpeech: (min: number) => `${min} мүнөт`,
     startSpeechAria: (min: number) => `${min} мүнөттүк сүйлөө таймерин баштоо`,
