@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import type { ReactNode } from 'react';
 import { topicKg, topicTerm, type Topic } from '../data/categories';
 import { useT } from '../i18n';
+import { TimerCircle } from './TimerCircle';
 
 export type Status = 'ready' | 'spinning' | 'prep' | 'prepDone' | 'speaking' | 'done';
 
@@ -10,10 +10,11 @@ type TopicDisplayProps = {
   status: Status;
   spinning: boolean;
   leftMs: number;
+  totalMs: number;
   timerVisible: boolean;
+  /** Акыркы 10 секунд — шакек кызылга өтөт. */
+  warning: boolean;
   researchMode: boolean;
-  /** Тема астына чегилүүчү элементтер (прогресс-сызык). */
-  children?: ReactNode;
 };
 
 /** Теманын узундугуна жараша адаптивдүү өлчөм. */
@@ -25,21 +26,15 @@ function sizeClass(text: string): string {
   return 'text-[clamp(1.5rem,5.5vw,2.7rem)]';
 }
 
-function formatLeft(leftMs: number): string {
-  const totalS = Math.ceil(leftMs / 1000);
-  const mm = Math.floor(totalS / 60);
-  const ss = totalS % 60;
-  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
-}
-
 export function TopicDisplay({
   topic,
   status,
   spinning,
   leftMs,
+  totalMs,
   timerVisible,
+  warning,
   researchMode,
-  children,
 }: TopicDisplayProps) {
   const t = useT();
   const statusLabel: Record<Status, string> = {
@@ -52,6 +47,7 @@ export function TopicDisplay({
   };
   const kg = topic ? topicKg(topic) : null;
   const term = topic ? topicTerm(topic) : undefined;
+  const ringColor = warning ? 'accent' : status === 'prep' ? 'blue' : 'gold';
 
   return (
     <div className="flex w-full max-w-4xl flex-1 flex-col items-center text-center">
@@ -69,6 +65,26 @@ export function TopicDisplay({
           <p className="text-ink-muted font-serif text-xl italic sm:text-2xl">
             {t.topic.placeholder}
           </p>
+        ) : timerVisible ? (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="flex flex-col items-center gap-7"
+          >
+            <h2
+              aria-label={t.a11y.topic}
+              className="font-serif text-xl leading-snug font-bold tracking-tight text-balance sm:text-2xl"
+            >
+              {kg}
+            </h2>
+            <TimerCircle
+              leftMs={leftMs}
+              totalMs={totalMs}
+              color={ringColor}
+              ariaLabel={t.a11y.timeLeft}
+            />
+          </motion.div>
         ) : spinning ? (
           <h2
             aria-label={t.a11y.topic}
@@ -96,17 +112,6 @@ export function TopicDisplay({
             </motion.div>
           </AnimatePresence>
         )}
-
-        {timerVisible && (
-          <p
-            aria-label={t.a11y.timeLeft}
-            className="text-ink-muted text-3xl font-medium tabular-nums sm:text-4xl"
-          >
-            {formatLeft(leftMs)}
-          </p>
-        )}
-
-        {children}
       </div>
     </div>
   );

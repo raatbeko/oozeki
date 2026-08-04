@@ -5,7 +5,6 @@ import { Header } from './components/Header';
 import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
 import { OrnamentBackground } from './components/OrnamentBackground';
-import { ProgressLine } from './components/ProgressLine';
 import { SettingsModal } from './components/SettingsModal';
 import { TimerControls } from './components/TimerControls';
 import { TopicDisplay, type Status } from './components/TopicDisplay';
@@ -153,7 +152,6 @@ export default function App() {
   useWakeLock(timerRunning);
 
   const status: Status = spinning ? 'spinning' : phase === 'idle' ? 'ready' : phase;
-  const progressFraction = timer.totalMs > 0 ? timer.leftMs / timer.totalMs : 0;
   const warning = phase === 'speaking' && timer.leftMs <= 10_000;
 
   return (
@@ -179,11 +177,11 @@ export default function App() {
           status={status}
           spinning={spinning}
           leftMs={timer.leftMs}
+          totalMs={timer.totalMs}
           timerVisible={timerRunning}
+          warning={warning}
           researchMode={settings.mode === 'research'}
-        >
-          <ProgressLine fraction={progressFraction} warning={warning} visible={timerRunning} />
-        </TopicDisplay>
+        />
       </main>
 
       <div className="pb-8 sm:pb-12">
