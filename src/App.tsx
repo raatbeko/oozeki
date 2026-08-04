@@ -23,6 +23,7 @@ type Phase = 'idle' | 'prep' | 'prepDone' | 'speaking' | 'done';
 export default function App() {
   const { settings, update } = useSettings();
   const [phase, setPhase] = useState<Phase>('idle');
+  const [paused, setPaused] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
@@ -63,13 +64,20 @@ export default function App() {
 
   const spinner = useTopicSpinner(topics, settings.muted, `${category.id}:${settings.mode}`);
 
-  const { start: startTimer, stop: stopTimer, running: timerRunning } = timer;
+  const {
+    start: startTimer,
+    stop: stopTimer,
+    pause: pauseTimer,
+    resume: resumeTimer,
+    running: timerRunning,
+  } = timer;
   const { topic, spinning, spin: spinTopic, reset: resetSpinner } = spinner;
 
   // Режим/категория алмашканда — баарын нөлдөн баштайбыз
   const resetAll = useCallback(() => {
     stopTimer();
     resetSpinner();
+    setPaused(false);
     setPhase('idle');
   }, [stopTimer, resetSpinner]);
 
@@ -94,8 +102,10 @@ export default function App() {
     [settings.categoryId, resetAll, update],
   );
 
+  // Жаңы тема тартканда — эстелген убакыт да, тыныгуу да таштап салынат
   const spin = useCallback(() => {
     stopTimer();
+    setPaused(false);
     setPhase('idle');
     spinTopic();
   }, [stopTimer, spinTopic]);
@@ -103,36 +113,48 @@ export default function App() {
   const startSpeech = useCallback(() => {
     if (!topic) return;
     startTimer(settings.speechMin * 60_000);
+    setPaused(false);
     setPhase('speaking');
   }, [topic, startTimer, settings.speechMin]);
 
   const startPrep = useCallback(() => {
     if (!topic) return;
     startTimer(settings.prepMin * 60_000);
+    setPaused(false);
     setPhase('prep');
   }, [topic, startTimer, settings.prepMin]);
 
   const finishPrepEarly = useCallback(() => {
     stopTimer();
+    setPaused(false);
     playPrepDone(settings.muted);
     setPhase('prepDone');
   }, [stopTimer, settings.muted]);
 
-  const stopAll = useCallback(() => {
-    stopTimer();
-    setPhase('idle');
-  }, [stopTimer]);
+  // Тыныгуу: таймер токтойт, бирок калган убакыт эстелип калат
+  const pauseAll = useCallback(() => {
+    pauseTimer();
+    setPaused(true);
+  }, [pauseTimer]);
 
-  // Enter: таймерди баштоо/токтотуу (учурдагы фазага жараша)
+  // Эстелген убакыттан улантуу
+  const resumeAll = useCallback(() => {
+    resumeTimer();
+    setPaused(false);
+  }, [resumeTimer]);
+
+  // Enter: таймерди коё/тыныктыр/уланткыла (учурдагы фазага жараша)
   const toggleTimer = useCallback(() => {
     if (timerRunning) {
-      stopAll();
+      pauseAll();
+    } else if (paused) {
+      resumeAll();
     } else if (settings.mode === 'quick' || phase === 'prepDone' || phase === 'done') {
       startSpeech();
     } else {
       startPrep();
     }
-  }, [timerRunning, settings.mode, phase, stopAll, startSpeech, startPrep]);
+  }, [timerRunning, paused, settings.mode, phase, pauseAll, resumeAll, startSpeech, startPrep]);
 
   // Ыкчам баскычтар: Space — тартуу, Enter — таймер. Модалка ачыкта иштебейт.
   useEffect(() => {
@@ -154,8 +176,14 @@ export default function App() {
 
   useWakeLock(timerRunning);
 
-  const status: Status = spinning ? 'spinning' : phase === 'idle' ? 'ready' : phase;
-  const warning = phase === 'speaking' && timer.leftMs <= 10_000;
+  const status: Status = spinning
+    ? 'spinning'
+    : paused
+      ? 'paused'
+      : phase === 'idle'
+        ? 'ready'
+        : phase;
+  const warning = phase === 'speaking' && !paused && timer.leftMs <= 10_000;
 
   return (
     <LocaleContext.Provider value={t}>
@@ -182,7 +210,7 @@ export default function App() {
           spinning={spinning}
           leftMs={timer.leftMs}
           totalMs={timer.totalMs}
-          timerVisible={timerRunning}
+          timerVisible={timerRunning || paused}
           warning={warning}
           researchMode={settings.mode === 'research'}
         />
@@ -203,7 +231,8 @@ export default function App() {
           onStartSpeech={startSpeech}
           onStartPrep={startPrep}
           onReady={finishPrepEarly}
-          onStop={stopAll}
+          onPause={pauseAll}
+          onResume={resumeAll}
           onOpenSettings={() => setSettingsOpen(true)}
         />
       </div>

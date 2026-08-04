@@ -3,7 +3,14 @@ import { topicKg, topicTerm, type Topic } from '../data/categories';
 import { useT } from '../i18n';
 import { TimerCircle } from './TimerCircle';
 
-export type Status = 'ready' | 'spinning' | 'prep' | 'prepDone' | 'speaking' | 'done';
+export type Status =
+  | 'ready'
+  | 'spinning'
+  | 'prep'
+  | 'prepDone'
+  | 'speaking'
+  | 'done'
+  | 'paused';
 
 type TopicDisplayProps = {
   topic: Topic | null;
@@ -44,6 +51,7 @@ export function TopicDisplay({
     prepDone: t.status.prepDone,
     speaking: t.status.speaking,
     done: t.status.done,
+    paused: t.status.paused,
   };
   const kg = topic ? topicKg(topic) : null;
   const term = topic ? topicTerm(topic) : undefined;

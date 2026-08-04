@@ -25,6 +25,7 @@ const ky = {
     prepDone: 'Сүйлөөгө даяр',
     speaking: 'Сүйлө',
     done: 'Бүттү',
+    paused: 'Тыныгуу',
   },
   topic: {
     placeholder: '«Тартуу» баскычын басып теманы ал',
@@ -38,6 +39,8 @@ const ky = {
     startPrepAria: (min: number) => `${min} мүнөттүк изилдөө таймерин баштоо`,
     imReady: 'Даярмын',
     stop: 'Токтотуу',
+    pause: 'Тыныгуу',
+    resume: 'Улантуу',
     settings: 'Жөндөөлөр',
   },
   settings: {
@@ -97,6 +100,7 @@ const ru: UiStrings = {
     prepDone: 'Можно говорить',
     speaking: 'Говори',
     done: 'Финиш',
+    paused: 'Пауза',
   },
   topic: {
     placeholder: 'Нажми «Крутить» — получи тему',
@@ -110,6 +114,8 @@ const ru: UiStrings = {
     startPrepAria: (min: number) => `Запустить таймер подготовки на ${min} мин`,
     imReady: 'Я готов',
     stop: 'Стоп',
+    pause: 'Пауза',
+    resume: 'Продолжить',
     settings: 'Настройки',
   },
   settings: {

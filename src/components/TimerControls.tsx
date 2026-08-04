@@ -14,7 +14,8 @@ type TimerControlsProps = {
   onStartSpeech: () => void;
   onStartPrep: () => void;
   onReady: () => void;
-  onStop: () => void;
+  onPause: () => void;
+  onResume: () => void;
   onOpenSettings: () => void;
 };
 
@@ -55,7 +56,8 @@ export function TimerControls({
   onStartSpeech,
   onStartPrep,
   onReady,
-  onStop,
+  onPause,
+  onResume,
   onOpenSettings,
 }: TimerControlsProps) {
   const t = useT();
@@ -68,14 +70,23 @@ export function TimerControls({
           <button type="button" className={primary} onClick={onReady} aria-label={t.controls.imReady}>
             {t.controls.imReady}
           </button>
-          <button type="button" className={secondary} onClick={onStop} aria-label={t.controls.stop}>
-            {t.controls.stop}
+          <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
+            {t.controls.pause}
           </button>
         </>
       ) : status === 'speaking' ? (
-        <button type="button" className={secondary} onClick={onStop} aria-label={t.controls.stop}>
-          {t.controls.stop}
+        <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
+          {t.controls.pause}
         </button>
+      ) : status === 'paused' ? (
+        <>
+          <button type="button" className={primary} onClick={onResume} aria-label={t.controls.resume}>
+            {t.controls.resume}
+          </button>
+          <button type="button" className={secondary} onClick={onSpin} disabled={spinning} aria-label={t.controls.spin}>
+            {t.controls.spin}
+          </button>
+        </>
       ) : (
         <>
           <button
