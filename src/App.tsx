@@ -76,10 +76,13 @@ export default function App() {
   const changeMode = useCallback(
     (mode: Mode) => {
       if (mode === settings.mode) return;
-      resetAll();
+      // Режим алмашканда тема сакталат: «Даярдыксыз» режиминде тартылган
+      // теманы билбесең, «Терең изилдөө»гө өтүп даярдануу таймерин коё аласың.
+      stopTimer();
+      setPhase('idle');
       update({ mode });
     },
-    [settings.mode, resetAll, update],
+    [settings.mode, stopTimer, update],
   );
 
   const changeCategory = useCallback(
