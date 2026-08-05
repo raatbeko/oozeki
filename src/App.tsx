@@ -6,6 +6,7 @@ import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
 import { OrnamentBackground } from './components/OrnamentBackground';
 import { SettingsModal } from './components/SettingsModal';
+import { ThemeSwitch } from './components/ThemeSwitch';
 import { TimerControls } from './components/TimerControls';
 import { TopicDisplay, type Status } from './components/TopicDisplay';
 import { categoriesFor, topicsFor } from './data/categories';
@@ -32,6 +33,12 @@ export default function App() {
   useEffect(() => {
     document.documentElement.lang = settings.locale;
   }, [settings.locale]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', settings.theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    meta?.setAttribute('content', settings.theme === 'dark' ? '#171410' : '#faf8f3');
+  }, [settings.theme]);
 
   const visibleCategories = useMemo(() => categoriesFor(settings.mode), [settings.mode]);
 
@@ -189,6 +196,7 @@ export default function App() {
     <LocaleContext.Provider value={t}>
       <div className="flex h-dvh flex-col overflow-hidden">
         <OrnamentBackground />
+        <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
         <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
 
         <Header onOpenAbout={() => setAboutOpen(true)} />

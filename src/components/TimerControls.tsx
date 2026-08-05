@@ -25,7 +25,7 @@ const primary = `${pill} bg-accent text-white shadow-[0_6px_18px_rgb(194_69_47/0
 /* «Тарт» — башкы баскыч, башкалардан чоңураак */
 const primaryBig =
   'inline-flex h-13 items-center justify-center gap-2 rounded-full px-9 text-base font-bold whitespace-nowrap transition-colors select-none disabled:cursor-not-allowed disabled:opacity-45 sm:h-14 sm:px-11 sm:text-lg lg:h-16 lg:px-14 lg:text-xl bg-accent text-white shadow-[0_8px_22px_rgb(194_69_47/0.38)] hover:bg-[#ad3e2a]';
-const secondary = `${pill} border border-line bg-white/40 text-ink hover:bg-white/70`;
+const secondary = `${pill} border border-line bg-surface/40 text-ink hover:bg-surface/70`;
 
 function StopwatchIcon() {
   return (
@@ -130,7 +130,7 @@ export function TimerControls({
           type="button"
           onClick={onOpenSettings}
           aria-label={t.a11y.openSettings}
-          className="border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-white/40 transition-colors hover:bg-white/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13"
+          className="border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13"
         >
           <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path

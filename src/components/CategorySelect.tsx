@@ -71,7 +71,7 @@ export function CategorySelect({ categories, value, locale, onChange }: Category
         aria-expanded={open}
         aria-label={t.category.label}
         onClick={() => setOpen((v) => !v)}
-        className="border-line text-ink hover:bg-bg-soft flex h-11 items-center gap-2 rounded-full border bg-white/40 px-5 text-sm font-medium transition-colors lg:h-12 lg:px-6 lg:text-base"
+        className="border-line text-ink hover:bg-bg-soft flex h-11 items-center gap-2 rounded-full border bg-surface/40 px-5 text-sm font-medium transition-colors lg:h-12 lg:px-6 lg:text-base"
       >
         <span aria-hidden="true">{selected.emoji}</span>
         <span>{categoryLabel(selected, locale)}</span>
@@ -114,8 +114,8 @@ export function CategorySelect({ categories, value, locale, onChange }: Category
                     }}
                     className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left text-sm transition-colors lg:text-[15px] ${
                       isSelected
-                        ? 'text-ink bg-white font-semibold shadow-[0_1px_6px_rgb(35_32_27/0.08)]'
-                        : 'text-ink hover:bg-white/60'
+                        ? 'text-ink bg-surface font-semibold shadow-[0_1px_6px_rgb(35_32_27/0.08)]'
+                        : 'text-ink hover:bg-surface/60'
                     }`}
                   >
                     <span aria-hidden="true" className="w-6 text-center">

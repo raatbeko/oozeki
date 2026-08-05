@@ -36,7 +36,7 @@ export function ModeSwitch({ mode, onChange }: ModeSwitchProps) {
             {active && (
               <motion.span
                 layoutId="mode-pill"
-                className="absolute inset-0 rounded-full bg-white shadow-[0_2px_10px_rgb(35_32_27/0.1)]"
+                className="absolute inset-0 rounded-full bg-surface shadow-[0_2px_10px_rgb(35_32_27/0.1)]"
                 transition={{ type: 'spring', bounce: 0.2, duration: 0.45 }}
               />
             )}

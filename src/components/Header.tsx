@@ -6,7 +6,7 @@ type HeaderProps = {
 };
 
 const chip =
-  'border-line text-ink-muted hover:text-accent hover:border-accent/40 inline-flex items-center gap-1.5 rounded-full border bg-white/50 px-2.5 py-1 font-medium transition-colors hover:bg-white/80';
+  'border-line text-ink-muted hover:text-accent hover:border-accent/40 inline-flex items-center gap-1.5 rounded-full border bg-surface/50 px-2.5 py-1 font-medium transition-colors hover:bg-surface/80';
 
 export function Header({ onOpenAbout }: HeaderProps) {
   const t = useT();

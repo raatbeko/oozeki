@@ -12,9 +12,27 @@
   --color-blue: #3f6e80;
   --color-gold: #d6a441;
   --color-green: #7c8c5e;
+  /* «Приподнятая» поверхность (пилюли, активные вкладки): белая в свете */
+  --color-surface: #ffffff;
 
   --font-serif: 'PT Serif', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+/* «Түнкү кийиз» — тёплая тёмная тема. Токендерди кайра аныктайбыз, калганы автомат. */
+[data-theme='dark'] {
+  --color-bg: #171410;
+  --color-bg-soft: #221e17;
+  --color-ink: #efe9dd;
+  --color-ink-muted: #9c9384;
+  --color-line: #38322a;
+  --color-accent: #d75a41;
+  --color-accent-soft: #3a231c;
+  --color-blue: #6fa1b4;
+  --color-gold: #e0b45a;
+  --color-green: #97a877;
+  --color-surface: #322c23;
+  color-scheme: dark;
 }
 
 html {
@@ -29,6 +47,11 @@ body {
   background: linear-gradient(180deg, #faf8f3 0%, #f7f2e8 70%, #f4eddf 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
+}
+
+/* тёмный градиент фона */
+[data-theme='dark'] body {
+  background: linear-gradient(180deg, #171410 0%, #141109 70%, #100d08 100%);
 }
 
 /* зернистость «бумага/войлок» поверх всего фона */

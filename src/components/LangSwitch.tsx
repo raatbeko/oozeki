@@ -31,7 +31,7 @@ export function LangSwitch({ locale, onChange }: LangSwitchProps) {
             onClick={() => onChange(item.id)}
             className={`rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide transition-colors lg:px-3 lg:py-1.5 lg:text-xs ${
               active
-                ? 'text-ink bg-white shadow-[0_1px_6px_rgb(35_32_27/0.12)]'
+                ? 'text-ink bg-surface shadow-[0_1px_6px_rgb(35_32_27/0.12)]'
                 : 'text-ink-muted hover:text-ink'
             }`}
           >

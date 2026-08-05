@@ -75,6 +75,7 @@ const ky = {
     closeSettings: 'Жөндөөлөрдү жабуу',
     timeLeft: 'Калган убакыт',
     topic: 'Тема',
+    toggleTheme: 'Караңгы/жарык режимди алмаштыруу',
   },
 };
 
@@ -150,6 +151,7 @@ const ru: UiStrings = {
     closeSettings: 'Закрыть настройки',
     timeLeft: 'Оставшееся время',
     topic: 'Тема',
+    toggleTheme: 'Переключить тёмный/светлый режим',
   },
 };
 
