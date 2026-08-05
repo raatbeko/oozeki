@@ -167,6 +167,14 @@ export default function App() {
     setPhase('done');
   }, [stopTimer]);
 
+  // Таймерди кайра баштоо (факап болсо): учурдагы фазанын толук убактысынан
+  const restartTimer = useCallback(() => {
+    if (phase === 'prep') startTimer(settings.prepMin * 60_000);
+    else if (phase === 'speaking') startTimer(settings.speechMin * 60_000);
+    else return;
+    setPaused(false);
+  }, [phase, startTimer, settings.prepMin, settings.speechMin]);
+
   // Enter: таймерди коё/тыныктыр/уланткыла (учурдагы фазага жараша)
   const toggleTimer = useCallback(() => {
     if (timerRunning) {
@@ -261,6 +269,7 @@ export default function App() {
           onPause={pauseAll}
           onResume={resumeAll}
           onFinish={finishSpeech}
+          onRestart={restartTimer}
           onFullscreen={() => setFullscreen(true)}
           onOpenSettings={() => setSettingsOpen(true)}
         />
@@ -277,13 +286,14 @@ export default function App() {
 
       {fullscreen && (
         <FullscreenTimer
-          topic={topic}
           status={status}
           leftMs={timer.leftMs}
           totalMs={timer.totalMs}
           warning={warning}
           running={timerRunning}
+          canRestart={phase === 'prep' || phase === 'speaking'}
           onTogglePause={togglePauseFs}
+          onRestart={restartTimer}
           onExit={() => setFullscreen(false)}
         />
       )}

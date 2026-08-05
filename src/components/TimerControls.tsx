@@ -19,6 +19,7 @@ type TimerControlsProps = {
   onPause: () => void;
   onResume: () => void;
   onFinish: () => void;
+  onRestart: () => void;
   onFullscreen: () => void;
   onOpenSettings: () => void;
 };
@@ -64,6 +65,7 @@ export function TimerControls({
   onPause,
   onResume,
   onFinish,
+  onRestart,
   onFullscreen,
   onOpenSettings,
 }: TimerControlsProps) {
@@ -75,6 +77,30 @@ export function TimerControls({
   const iconButton =
     'border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13';
 
+  const RestartButton = () => (
+    <button
+      type="button"
+      onClick={onRestart}
+      aria-label={t.controls.restart}
+      className={iconButton}
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M3 3v5h5" />
+        <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
+      </svg>
+    </button>
+  );
+
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 px-3 sm:gap-3 sm:px-6">
       {status === 'prep' ? (
@@ -85,6 +111,7 @@ export function TimerControls({
           <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
             {t.controls.pause}
           </button>
+          <RestartButton />
         </>
       ) : status === 'speaking' ? (
         <>
@@ -94,6 +121,7 @@ export function TimerControls({
           <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
             {t.controls.pause}
           </button>
+          <RestartButton />
         </>
       ) : status === 'paused' ? (
         <>

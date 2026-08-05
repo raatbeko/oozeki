@@ -1,16 +1,17 @@
 import { useEffect, useState, type CSSProperties } from 'react';
-import { topicKg, type Topic } from '../data/categories';
 import { useT } from '../i18n';
 import type { Status } from './TopicDisplay';
 
 type FullscreenTimerProps = {
-  topic: Topic | null;
   status: Status;
   leftMs: number;
   totalMs: number;
   warning: boolean;
   running: boolean;
+  /** Учурдагы таймер сүйлөө/изилдөө таймериби — «кайра баштоо» баскычы үчүн. */
+  canRestart: boolean;
   onTogglePause: () => void;
+  onRestart: () => void;
   onExit: () => void;
 };
 
@@ -27,13 +28,14 @@ function formatLeft(leftMs: number): string {
  * Браузердин Fullscreen API'си да чакырылат (адрес сабы жашырылат).
  */
 export function FullscreenTimer({
-  topic,
   status,
   leftMs,
   totalMs,
   warning,
   running,
+  canRestart,
   onTogglePause,
+  onRestart,
   onExit,
 }: FullscreenTimerProps) {
   const t = useT();
@@ -79,7 +81,6 @@ export function FullscreenTimer({
       ? 'var(--color-blue)'
       : 'var(--color-gold)';
   const remaining = Math.max(0, Math.min(1, leftMs / Math.max(totalMs, 1)));
-  const kg = topic ? topicKg(topic) : null;
 
   const boxStyle: CSSProperties = portrait
     ? { width: '100vh', height: '100vw', transform: 'rotate(90deg)' }
@@ -107,13 +108,28 @@ export function FullscreenTimer({
           </svg>
         </button>
 
-        {kg && (
-          <p
-            className="text-ink-muted max-w-[86cqw] px-[4cqw] text-center leading-tight font-medium text-balance"
-            style={{ fontSize: 'min(4.5cqw, 7cqh)' }}
+        {canRestart && (
+          <button
+            type="button"
+            onClick={onRestart}
+            aria-label={t.controls.restart}
+            className="border-line text-ink-muted hover:text-ink absolute top-[4cqh] left-[4cqh] z-10 flex h-[7cqh] max-h-12 min-h-9 w-[7cqh] max-w-12 min-w-9 items-center justify-center rounded-full border bg-transparent transition-colors"
           >
-            {kg}
-          </p>
+            <svg
+              width="52%"
+              height="52%"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M3 3v5h5" />
+              <path d="M3.05 13A9 9 0 1 0 6 5.3L3 8" />
+            </svg>
+          </button>
         )}
 
         <button
