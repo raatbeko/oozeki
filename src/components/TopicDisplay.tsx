@@ -25,13 +25,17 @@ type TopicDisplayProps = {
   onShowAnswer: () => void;
 };
 
-/** Теманын узундугуна жараша адаптивдүү өлчөм. */
+/**
+ * Теманын узундугуна жараша адаптивдүү өлчөм. min(...,vh) — экрандын
+ * бийиктигине да көз каранды: жапыз (бирок кең) ноутбук экрандарында тема
+ * ашып, статуска же баскычтарга кирип кетпеши үчүн.
+ */
 function sizeClass(text: string): string {
   const len = text.length;
-  if (len <= 12) return 'text-[clamp(3rem,13vw,7rem)]';
-  if (len <= 24) return 'text-[clamp(2.4rem,9.5vw,5.6rem)]';
-  if (len <= 42) return 'text-[clamp(1.9rem,7vw,4.2rem)]';
-  return 'text-[clamp(1.5rem,5.5vw,3.1rem)]';
+  if (len <= 12) return 'text-[min(clamp(2.6rem,13vw,7rem),13vh)]';
+  if (len <= 24) return 'text-[min(clamp(2.2rem,9.5vw,5.6rem),9.5vh)]';
+  if (len <= 42) return 'text-[min(clamp(1.8rem,7vw,4.2rem),8vh)]';
+  return 'text-[min(clamp(1.4rem,5.5vw,3.1rem),7vh)]';
 }
 
 export function TopicDisplay({
@@ -71,7 +75,8 @@ export function TopicDisplay({
         {statusLabel[status]}
       </p>
 
-      <div className="flex min-h-0 flex-1 flex-col items-center justify-center gap-5">
+      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto py-2">
+        <div className="my-auto flex w-full flex-col items-center gap-5">
         {kg === null ? (
           <p className="text-ink-muted font-serif text-xl italic sm:text-2xl lg:text-3xl">
             {t.topic.placeholder}
@@ -137,6 +142,7 @@ export function TopicDisplay({
             </motion.div>
           </AnimatePresence>
         )}
+        </div>
       </div>
     </div>
   );
