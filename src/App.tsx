@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AboutModal } from './components/AboutModal';
 import { CategorySelect } from './components/CategorySelect';
+import { FullscreenTimer } from './components/FullscreenTimer';
 import { Header } from './components/Header';
 import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
@@ -25,6 +26,7 @@ export default function App() {
   const { settings, update } = useSettings();
   const [phase, setPhase] = useState<Phase>('idle');
   const [paused, setPaused] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
 
@@ -150,6 +152,12 @@ export default function App() {
     setPaused(false);
   }, [resumeTimer]);
 
+  // Толук экранда таймерди басканда — тыныгуу/улантуу
+  const togglePauseFs = useCallback(() => {
+    if (timerRunning) pauseAll();
+    else if (paused) resumeAll();
+  }, [timerRunning, paused, pauseAll, resumeAll]);
+
   // Enter: таймерди коё/тыныктыр/уланткыла (учурдагы фазага жараша)
   const toggleTimer = useCallback(() => {
     if (timerRunning) {
@@ -166,7 +174,7 @@ export default function App() {
   // Ыкчам баскычтар: Space — тартуу, Enter — таймер. Модалка ачыкта иштебейт.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (settingsOpen || aboutOpen) return;
+      if (settingsOpen || aboutOpen || fullscreen) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest('button, input, select, textarea, a, [role="listbox"]')) return;
       if (e.code === 'Space') {
@@ -179,7 +187,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [settingsOpen, aboutOpen, timerRunning, spin, toggleTimer]);
+  }, [settingsOpen, aboutOpen, fullscreen, timerRunning, spin, toggleTimer]);
 
   useWakeLock(timerRunning);
 
@@ -241,6 +249,7 @@ export default function App() {
           onReady={finishPrepEarly}
           onPause={pauseAll}
           onResume={resumeAll}
+          onFullscreen={() => setFullscreen(true)}
           onOpenSettings={() => setSettingsOpen(true)}
         />
       </div>
@@ -252,6 +261,19 @@ export default function App() {
         onClose={() => setSettingsOpen(false)}
       />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
+
+      {fullscreen && (
+        <FullscreenTimer
+          topic={topic}
+          status={status}
+          leftMs={timer.leftMs}
+          totalMs={timer.totalMs}
+          warning={warning}
+          running={timerRunning}
+          onTogglePause={togglePauseFs}
+          onExit={() => setFullscreen(false)}
+        />
+      )}
       </div>
     </LocaleContext.Provider>
   );

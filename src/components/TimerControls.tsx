@@ -16,6 +16,7 @@ type TimerControlsProps = {
   onReady: () => void;
   onPause: () => void;
   onResume: () => void;
+  onFullscreen: () => void;
   onOpenSettings: () => void;
 };
 
@@ -58,10 +59,16 @@ export function TimerControls({
   onReady,
   onPause,
   onResume,
+  onFullscreen,
   onOpenSettings,
 }: TimerControlsProps) {
   const t = useT();
   const timerRunning = status === 'prep' || status === 'speaking';
+  // таймер иштеп жатат же тыныгууда — толук экран баскычы көрүнөт
+  const timerActive = timerRunning || status === 'paused';
+
+  const iconButton =
+    'border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13';
 
   return (
     <div className="flex flex-nowrap items-center justify-center gap-2 px-3 sm:gap-3 sm:px-6">
@@ -125,12 +132,31 @@ export function TimerControls({
         </>
       )}
 
-      {!timerRunning && (
+      {timerActive && (
+        <button
+          type="button"
+          onClick={onFullscreen}
+          aria-label={t.controls.fullscreen}
+          className={iconButton}
+        >
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
+      {!timerActive && (
         <button
           type="button"
           onClick={onOpenSettings}
           aria-label={t.a11y.openSettings}
-          className="border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13"
+          className={iconButton}
         >
           <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <path

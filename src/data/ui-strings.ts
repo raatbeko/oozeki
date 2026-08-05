@@ -42,6 +42,10 @@ const ky = {
     pause: 'Тыныгуу',
     resume: 'Улантуу',
     settings: 'Жөндөөлөр',
+    fullscreen: 'Толук экран',
+    exitFullscreen: 'Толук экрандан чыгуу',
+    tapToPause: 'Тийип — тыныгуу',
+    tapToResume: 'Тийип — улантуу',
   },
   settings: {
     title: 'Жөндөөлөр',
@@ -118,6 +122,10 @@ const ru: UiStrings = {
     pause: 'Пауза',
     resume: 'Продолжить',
     settings: 'Настройки',
+    fullscreen: 'Полный экран',
+    exitFullscreen: 'Выйти из полного экрана',
+    tapToPause: 'Тап — пауза',
+    tapToResume: 'Тап — продолжить',
   },
   settings: {
     title: 'Настройки',
