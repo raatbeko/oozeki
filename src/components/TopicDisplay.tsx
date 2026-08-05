@@ -1,7 +1,62 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { topicKg, topicTerm, type Topic } from '../data/categories';
+import { useState } from 'react';
+import {
+  topicExplainKg,
+  topicExplainRu,
+  topicKg,
+  topicTerm,
+  type Topic,
+} from '../data/categories';
 import { useT } from '../i18n';
 import { TimerCircle } from './TimerCircle';
+
+/** «Түшүндүрмө» — теманын мааниси. Демейде жашырылган, басканда ачылат. */
+function TopicAnswer({ explainKg, explainRu }: { explainKg?: string; explainRu?: string }) {
+  const t = useT();
+  const [open, setOpen] = useState(false);
+  if (!explainKg) return null;
+  return (
+    <div className="mt-3 flex flex-col items-center gap-2 lg:mt-4">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="border-line text-ink-muted hover:text-ink bg-surface/40 hover:bg-surface/70 inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors lg:text-sm"
+      >
+        {open ? t.topic.hideAnswer : t.topic.showAnswer}
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          className={`transition-transform ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        >
+          <path
+            d="M6 9l6 6 6-6"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+          className="border-line bg-surface/50 max-w-md rounded-2xl border px-4 py-3 text-left"
+        >
+          <p className="text-ink text-sm leading-relaxed lg:text-base">{explainKg}</p>
+          {explainRu && (
+            <p className="text-ink-muted mt-1.5 text-xs leading-relaxed lg:text-sm">{explainRu}</p>
+          )}
+        </motion.div>
+      )}
+    </div>
+  );
+}
 
 export type Status =
   | 'ready'
@@ -55,6 +110,8 @@ export function TopicDisplay({
   };
   const kg = topic ? topicKg(topic) : null;
   const term = topic ? topicTerm(topic) : undefined;
+  const explainKg = topic ? topicExplainKg(topic) : undefined;
+  const explainRu = topic ? topicExplainRu(topic) : undefined;
   const ringColor = warning ? 'accent' : status === 'prep' ? 'blue' : 'gold';
 
   return (
@@ -117,6 +174,7 @@ export function TopicDisplay({
                 {kg}
               </h2>
               {term && <p className="text-ink-muted text-sm sm:text-base lg:text-lg">{term}</p>}
+              <TopicAnswer explainKg={explainKg} explainRu={explainRu} />
             </motion.div>
           </AnimatePresence>
         )}

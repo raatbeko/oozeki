@@ -29,6 +29,8 @@ const ky = {
   },
   topic: {
     placeholder: '«Тартуу» баскычын басып теманы ал',
+    showAnswer: 'Түшүндүрмө',
+    hideAnswer: 'Жашыруу',
   },
   controls: {
     spin: 'Тартуу',
@@ -109,6 +111,8 @@ const ru: UiStrings = {
   },
   topic: {
     placeholder: 'Нажми «Крутить» — получи тему',
+    showAnswer: 'Пояснение',
+    hideAnswer: 'Скрыть',
   },
   controls: {
     spin: 'Крутить',
