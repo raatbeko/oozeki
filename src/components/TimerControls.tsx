@@ -77,7 +77,9 @@ export function TimerControls({
   const iconButton =
     'border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13';
 
-  const RestartButton = () => (
+  // JSX-элемент, атайын компонент ЭМЕС — таймер иштеп жатканда ар 200мс
+  // сайын кайра куралып, DOM'дон өчүп-жанбаш үчүн (болбосо клик «жоголот»)
+  const restartButton = (
     <button
       type="button"
       onClick={onRestart}
@@ -111,7 +113,7 @@ export function TimerControls({
           <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
             {t.controls.pause}
           </button>
-          <RestartButton />
+          {restartButton}
         </>
       ) : status === 'speaking' ? (
         <>
@@ -121,7 +123,7 @@ export function TimerControls({
           <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
             {t.controls.pause}
           </button>
-          <RestartButton />
+          {restartButton}
         </>
       ) : status === 'paused' ? (
         <>
