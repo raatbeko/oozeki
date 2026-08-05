@@ -160,6 +160,13 @@ export default function App() {
     else if (paused) resumeAll();
   }, [timerRunning, paused, pauseAll, resumeAll]);
 
+  // Сүйлөөнү мөөнөтүнөн мурда бүтүрүү: таймер токтойт, тема + жооп көрүнөт
+  const finishSpeech = useCallback(() => {
+    stopTimer();
+    setPaused(false);
+    setPhase('done');
+  }, [stopTimer]);
+
   // Enter: таймерди коё/тыныктыр/уланткыла (учурдагы фазага жараша)
   const toggleTimer = useCallback(() => {
     if (timerRunning) {
@@ -243,6 +250,7 @@ export default function App() {
           mode={settings.mode}
           status={status}
           spinning={spinning}
+          speaking={phase === 'speaking'}
           hasTopic={topic !== null}
           speechMin={settings.speechMin}
           prepMin={settings.prepMin}
@@ -252,6 +260,7 @@ export default function App() {
           onReady={finishPrepEarly}
           onPause={pauseAll}
           onResume={resumeAll}
+          onFinish={finishSpeech}
           onFullscreen={() => setFullscreen(true)}
           onOpenSettings={() => setSettingsOpen(true)}
         />

@@ -8,6 +8,8 @@ type TimerControlsProps = {
   status: Status;
   spinning: boolean;
   hasTopic: boolean;
+  /** Учурдагы (тыныгууда да) таймер сүйлөө таймериби — «Бүттүм» баскычы үчүн. */
+  speaking: boolean;
   speechMin: number;
   prepMin: number;
   onSpin: () => void;
@@ -16,6 +18,7 @@ type TimerControlsProps = {
   onReady: () => void;
   onPause: () => void;
   onResume: () => void;
+  onFinish: () => void;
   onFullscreen: () => void;
   onOpenSettings: () => void;
 };
@@ -51,6 +54,7 @@ export function TimerControls({
   status,
   spinning,
   hasTopic,
+  speaking,
   speechMin,
   prepMin,
   onSpin,
@@ -59,6 +63,7 @@ export function TimerControls({
   onReady,
   onPause,
   onResume,
+  onFinish,
   onFullscreen,
   onOpenSettings,
 }: TimerControlsProps) {
@@ -71,7 +76,7 @@ export function TimerControls({
     'border-line text-ink-muted hover:text-ink flex h-11 w-11 shrink-0 items-center justify-center rounded-full border bg-surface/40 transition-colors hover:bg-surface/70 sm:h-12 sm:w-12 lg:h-13 lg:w-13';
 
   return (
-    <div className="flex flex-nowrap items-center justify-center gap-2 px-3 sm:gap-3 sm:px-6">
+    <div className="flex flex-wrap items-center justify-center gap-2 px-3 sm:gap-3 sm:px-6">
       {status === 'prep' ? (
         <>
           <button type="button" className={primary} onClick={onReady} aria-label={t.controls.imReady}>
@@ -82,14 +87,24 @@ export function TimerControls({
           </button>
         </>
       ) : status === 'speaking' ? (
-        <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
-          {t.controls.pause}
-        </button>
+        <>
+          <button type="button" className={primary} onClick={onFinish} aria-label={t.controls.finish}>
+            {t.controls.finish}
+          </button>
+          <button type="button" className={secondary} onClick={onPause} aria-label={t.controls.pause}>
+            {t.controls.pause}
+          </button>
+        </>
       ) : status === 'paused' ? (
         <>
           <button type="button" className={primary} onClick={onResume} aria-label={t.controls.resume}>
             {t.controls.resume}
           </button>
+          {speaking && (
+            <button type="button" className={secondary} onClick={onFinish} aria-label={t.controls.finish}>
+              {t.controls.finish}
+            </button>
+          )}
           <button type="button" className={secondary} onClick={onSpin} disabled={spinning} aria-label={t.controls.spin}>
             {t.controls.spin}
           </button>
