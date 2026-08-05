@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AboutModal } from './components/AboutModal';
+import { AnswerModal } from './components/AnswerModal';
 import { CategorySelect } from './components/CategorySelect';
 import { FullscreenTimer } from './components/FullscreenTimer';
 import { Header } from './components/Header';
@@ -29,6 +30,7 @@ export default function App() {
   const [fullscreen, setFullscreen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [answerOpen, setAnswerOpen] = useState(false);
 
   const t = strings[settings.locale];
 
@@ -174,7 +176,7 @@ export default function App() {
   // Ыкчам баскычтар: Space — тартуу, Enter — таймер. Модалка ачыкта иштебейт.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (settingsOpen || aboutOpen || fullscreen) return;
+      if (settingsOpen || aboutOpen || answerOpen || fullscreen) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest('button, input, select, textarea, a, [role="listbox"]')) return;
       if (e.code === 'Space') {
@@ -187,7 +189,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [settingsOpen, aboutOpen, fullscreen, timerRunning, spin, toggleTimer]);
+  }, [settingsOpen, aboutOpen, answerOpen, fullscreen, timerRunning, spin, toggleTimer]);
 
   useWakeLock(timerRunning);
 
@@ -229,6 +231,7 @@ export default function App() {
           timerVisible={timerRunning || paused}
           warning={warning}
           researchMode={settings.mode === 'research'}
+          onShowAnswer={() => setAnswerOpen(true)}
         />
       </main>
 
@@ -261,6 +264,7 @@ export default function App() {
         onClose={() => setSettingsOpen(false)}
       />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
+      <AnswerModal open={answerOpen} topic={topic} onClose={() => setAnswerOpen(false)} />
 
       {fullscreen && (
         <FullscreenTimer
