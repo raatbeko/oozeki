@@ -8,6 +8,7 @@ export type Settings = {
   speechMin: number;
   prepMin: number;
   muted: boolean;
+  recordEnabled: boolean;
   mode: Mode;
   categoryId: string;
   locale: Locale;
@@ -27,6 +28,7 @@ const defaults: Settings = {
   speechMin: 1,
   prepMin: 10,
   muted: false,
+  recordEnabled: false,
   mode: 'quick',
   categoryId: 'general',
   locale: 'ky',
@@ -47,6 +49,8 @@ function load(): Settings {
       speechMin: clampInt(p.speechMin, 1, 10, defaults.speechMin),
       prepMin: clampInt(p.prepMin, 1, 60, defaults.prepMin),
       muted: typeof p.muted === 'boolean' ? p.muted : defaults.muted,
+      recordEnabled:
+        typeof p.recordEnabled === 'boolean' ? p.recordEnabled : defaults.recordEnabled,
       mode: p.mode === 'research' ? 'research' : 'quick',
       categoryId: typeof p.categoryId === 'string' ? p.categoryId : defaults.categoryId,
       locale: p.locale === 'ru' ? 'ru' : 'ky',

@@ -22,6 +22,7 @@ type TopicDisplayProps = {
   /** Акыркы 10 секунд — шакек кызылга өтөт. */
   warning: boolean;
   researchMode: boolean;
+  recording: boolean;
   onShowAnswer: () => void;
 };
 
@@ -47,6 +48,7 @@ export function TopicDisplay({
   timerVisible,
   warning,
   researchMode,
+  recording,
   onShowAnswer,
 }: TopicDisplayProps) {
   const t = useT();
@@ -75,7 +77,19 @@ export function TopicDisplay({
         {statusLabel[status]}
       </p>
 
-      <div className="flex min-h-0 flex-1 flex-col items-center overflow-y-auto py-2">
+      {recording && (
+        <span className="text-accent mt-1.5 inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.1em] uppercase">
+          <span className="oz-eq" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+          </span>
+          {t.record.recording}
+        </span>
+      )}
+
+      <div className="flex w-full min-h-0 flex-1 flex-col items-center overflow-y-auto py-2 [container-type:size] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="my-auto flex w-full flex-col items-center gap-5">
         {kg === null ? (
           <p className="text-ink-muted font-serif text-xl italic sm:text-2xl lg:text-3xl">
@@ -120,7 +134,11 @@ export function TopicDisplay({
             >
               <h2
                 aria-label={t.a11y.topic}
-                className={`font-serif leading-[1.05] font-bold tracking-tight text-balance ${sizeClass(kg)}`}
+                className={`font-serif leading-[1.1] font-bold tracking-tight text-balance ${
+                  status === 'done'
+                    ? 'text-[clamp(1.5rem,5vw,2.6rem)]'
+                    : sizeClass(kg)
+                }`}
               >
                 {kg}
               </h2>

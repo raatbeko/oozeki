@@ -141,6 +141,19 @@ export function SettingsModal({ open, settings, onUpdate, onClose }: SettingsMod
                 />
                 <span className="text-sm font-medium">{t.settings.muteSounds}</span>
               </label>
+
+              <label className="flex cursor-pointer items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={settings.recordEnabled}
+                  onChange={(e) => onUpdate({ recordEnabled: e.target.checked })}
+                  className="accent-accent mt-0.5 h-4.5 w-4.5"
+                />
+                <span className="flex flex-col">
+                  <span className="text-sm font-medium">{t.settings.record}</span>
+                  <span className="text-ink-muted text-xs">{t.settings.recordNote}</span>
+                </span>
+              </label>
             </div>
 
             <div aria-hidden="true" className="my-5 h-2 w-full" style={ornamentDivider} />
