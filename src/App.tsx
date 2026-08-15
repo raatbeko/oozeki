@@ -7,13 +7,16 @@ import { Header } from './components/Header';
 import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
 import { OrnamentBackground } from './components/OrnamentBackground';
+import { ProgressButton } from './components/ProgressButton';
+import { ProgressScreen } from './components/ProgressScreen';
 import { SettingsModal } from './components/SettingsModal';
 import { ThemeSwitch } from './components/ThemeSwitch';
 import { TimerControls } from './components/TimerControls';
 import { TopicDisplay, type Status } from './components/TopicDisplay';
-import { categoriesFor, topicsFor } from './data/categories';
+import { categoriesFor, topicKg, topicsFor } from './data/categories';
 import { strings } from './data/ui-strings';
 import { LocaleContext } from './i18n';
+import { useProgress } from './hooks/useProgress';
 import { useSettings, type Mode } from './hooks/useSettings';
 import { useTimer } from './hooks/useTimer';
 import { useTopicSpinner } from './hooks/useTopicSpinner';
@@ -31,6 +34,7 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [answerOpen, setAnswerOpen] = useState(false);
+  const [progressOpen, setProgressOpen] = useState(false);
 
   const t = strings[settings.locale];
 
@@ -57,23 +61,33 @@ export default function App() {
     [category, settings.mode],
   );
 
+  const spinner = useTopicSpinner(topics, settings.muted, `${category.id}:${settings.mode}`);
+  const { topic, spinning, spin: spinTopic, reset: resetSpinner } = spinner;
+
+  const { sessions, logSession } = useProgress();
+
   const timer = useTimer(
     () => {
-      setPhase((p) => {
-        if (p === 'prep') {
-          playPrepDone(settings.muted);
-          return 'prepDone';
-        }
-        playFinal(settings.muted);
-        return 'done';
-      });
+      if (phase === 'prep') {
+        playPrepDone(settings.muted);
+        setPhase('prepDone');
+        return;
+      }
+      playFinal(settings.muted);
+      if (topic) {
+        logSession({
+          topic: topicKg(topic),
+          categoryId: category.id,
+          mode: settings.mode,
+          seconds: settings.speechMin * 60,
+        });
+      }
+      setPhase('done');
     },
     () => {
       if (phase === 'speaking') playWarn(settings.muted);
     },
   );
-
-  const spinner = useTopicSpinner(topics, settings.muted, `${category.id}:${settings.mode}`);
 
   const {
     start: startTimer,
@@ -82,7 +96,6 @@ export default function App() {
     resume: resumeTimer,
     running: timerRunning,
   } = timer;
-  const { topic, spinning, spin: spinTopic, reset: resetSpinner } = spinner;
 
   // Режим/категория алмашканда — баарын нөлдөн баштайбыз
   const resetAll = useCallback(() => {
@@ -162,10 +175,20 @@ export default function App() {
 
   // Сүйлөөнү мөөнөтүнөн мурда бүтүрүү: таймер токтойт, тема + жооп көрүнөт
   const finishSpeech = useCallback(() => {
+    // Чын эле сүйлөгөн убакытты журналга жазабыз (толук эмес сессия)
+    const spoken = Math.max(0, Math.round((timer.totalMs - timer.leftMs) / 1000));
+    if (topic && spoken >= 3) {
+      logSession({
+        topic: topicKg(topic),
+        categoryId: category.id,
+        mode: settings.mode,
+        seconds: spoken,
+      });
+    }
     stopTimer();
     setPaused(false);
     setPhase('done');
-  }, [stopTimer]);
+  }, [topic, category.id, settings.mode, timer.totalMs, timer.leftMs, logSession, stopTimer]);
 
   // Таймерди кайра баштоо (факап болсо): учурдагы фазанын толук убактысынан
   const restartTimer = useCallback(() => {
@@ -191,7 +214,7 @@ export default function App() {
   // Ыкчам баскычтар: Space — тартуу, Enter — таймер. Модалка ачыкта иштебейт.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (settingsOpen || aboutOpen || answerOpen || fullscreen) return;
+      if (settingsOpen || aboutOpen || answerOpen || progressOpen || fullscreen) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest('button, input, select, textarea, a, [role="listbox"]')) return;
       if (e.code === 'Space') {
@@ -204,7 +227,7 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [settingsOpen, aboutOpen, answerOpen, fullscreen, timerRunning, spin, toggleTimer]);
+  }, [settingsOpen, aboutOpen, answerOpen, progressOpen, fullscreen, timerRunning, spin, toggleTimer]);
 
   useWakeLock(timerRunning);
 
@@ -222,6 +245,7 @@ export default function App() {
       <div className="flex h-dvh flex-col overflow-hidden">
         <OrnamentBackground />
         <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
+        <ProgressButton onClick={() => setProgressOpen(true)} />
         <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
@@ -283,6 +307,12 @@ export default function App() {
       />
       <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
       <AnswerModal open={answerOpen} topic={topic} onClose={() => setAnswerOpen(false)} />
+      <ProgressScreen
+        open={progressOpen}
+        sessions={sessions}
+        locale={settings.locale}
+        onClose={() => setProgressOpen(false)}
+      />
 
       {fullscreen && (
         <FullscreenTimer
