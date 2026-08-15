@@ -1,6 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AboutModal } from './components/AboutModal';
+import { AccountButton } from './components/AccountButton';
 import { AnswerModal } from './components/AnswerModal';
+import { AuthModal, type SyncState } from './components/AuthModal';
 import { CategorySelect } from './components/CategorySelect';
 import { FullscreenTimer } from './components/FullscreenTimer';
 import { Header } from './components/Header';
@@ -16,6 +18,9 @@ import { TopicDisplay, type Status } from './components/TopicDisplay';
 import { categoriesFor, topicKg, topicsFor } from './data/categories';
 import { strings } from './data/ui-strings';
 import { LocaleContext } from './i18n';
+import { isSupabaseConfigured } from './lib/supabase';
+import { syncSessions } from './lib/sessionsRemote';
+import { useAuth } from './hooks/useAuth';
 import { useProgress } from './hooks/useProgress';
 import { useSettings, type Mode } from './hooks/useSettings';
 import { useTimer } from './hooks/useTimer';
@@ -35,6 +40,8 @@ export default function App() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [answerOpen, setAnswerOpen] = useState(false);
   const [progressOpen, setProgressOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [syncState, setSyncState] = useState<SyncState>('idle');
 
   const t = strings[settings.locale];
 
@@ -64,7 +71,11 @@ export default function App() {
   const spinner = useTopicSpinner(topics, settings.muted, `${category.id}:${settings.mode}`);
   const { topic, spinning, spin: spinTopic, reset: resetSpinner } = spinner;
 
-  const { sessions, logSession } = useProgress();
+  const { sessions, logSession, mergeSessions } = useProgress();
+  const { user } = useAuth();
+  const sessionsRef = useRef(sessions);
+  sessionsRef.current = sessions;
+  const syncingRef = useRef(false);
 
   const timer = useTimer(
     () => {
@@ -214,7 +225,7 @@ export default function App() {
   // Ыкчам баскычтар: Space — тартуу, Enter — таймер. Модалка ачыкта иштебейт.
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (settingsOpen || aboutOpen || answerOpen || progressOpen || fullscreen) return;
+      if (settingsOpen || aboutOpen || answerOpen || progressOpen || accountOpen || fullscreen) return;
       const target = e.target as HTMLElement | null;
       if (target?.closest('button, input, select, textarea, a, [role="listbox"]')) return;
       if (e.code === 'Space') {
@@ -227,9 +238,35 @@ export default function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [settingsOpen, aboutOpen, answerOpen, progressOpen, fullscreen, timerRunning, spin, toggleTimer]);
+  }, [settingsOpen, aboutOpen, answerOpen, progressOpen, accountOpen, fullscreen, timerRunning, spin, toggleTimer]);
 
   useWakeLock(timerRunning);
+
+  // Кирген соң жана жаңы сессия жазылганда — журналды синхрондоштуруу
+  useEffect(() => {
+    if (!user || !isSupabaseConfigured) return;
+    let cancelled = false;
+    const run = async () => {
+      if (syncingRef.current) return;
+      syncingRef.current = true;
+      setSyncState('syncing');
+      try {
+        const remote = await syncSessions(user.id, sessionsRef.current);
+        if (!cancelled) {
+          mergeSessions(remote);
+          setSyncState('synced');
+        }
+      } catch {
+        if (!cancelled) setSyncState('error');
+      } finally {
+        syncingRef.current = false;
+      }
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, sessions.length, mergeSessions]);
 
   const status: Status = spinning
     ? 'spinning'
@@ -246,6 +283,9 @@ export default function App() {
         <OrnamentBackground />
         <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
         <ProgressButton onClick={() => setProgressOpen(true)} />
+        {isSupabaseConfigured && (
+          <AccountButton email={user?.email ?? null} onClick={() => setAccountOpen(true)} />
+        )}
         <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
@@ -312,6 +352,13 @@ export default function App() {
         sessions={sessions}
         locale={settings.locale}
         onClose={() => setProgressOpen(false)}
+      />
+      <AuthModal
+        open={accountOpen}
+        user={user}
+        syncState={syncState}
+        sessionCount={sessions.length}
+        onClose={() => setAccountOpen(false)}
       />
 
       {fullscreen && (

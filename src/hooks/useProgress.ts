@@ -47,6 +47,8 @@ export type NewSession = Omit<Session, 'id' | 'at'>;
 export function useProgress(): {
   sessions: Session[];
   logSession: (s: NewSession) => void;
+  /** Серверден келген сессияларды id боюнча бириктирет (синхрондоштуруу). */
+  mergeSessions: (incoming: Session[]) => void;
   clear: () => void;
 } {
   const [sessions, setSessions] = useState<Session[]>(load);
@@ -59,10 +61,21 @@ export function useProgress(): {
     });
   }, []);
 
+  const mergeSessions = useCallback((incoming: Session[]) => {
+    setSessions((prev) => {
+      const byId = new Map(prev.map((s) => [s.id, s]));
+      for (const s of incoming) if (!byId.has(s.id)) byId.set(s.id, s);
+      if (byId.size === prev.length) return prev; // жаңы жазуу жок
+      const next = [...byId.values()].sort((a, b) => a.at - b.at);
+      save(next);
+      return next;
+    });
+  }, []);
+
   const clear = useCallback(() => {
     save([]);
     setSessions([]);
   }, []);
 
-  return { sessions, logSession, clear };
+  return { sessions, logSession, mergeSessions, clear };
 }
