@@ -14,7 +14,7 @@ export function AccountButton({ email, onClick }: AccountButtonProps) {
       type="button"
       aria-label={t.a11y.openAccount}
       onClick={onClick}
-      className="border-line bg-bg-soft text-ink-muted hover:text-ink absolute top-3 right-14 z-10 flex h-8 w-8 items-center justify-center rounded-full border transition-colors sm:top-5 sm:right-16 lg:h-9 lg:w-9"
+      className="border-line bg-bg-soft text-ink-muted hover:text-ink flex h-8 w-8 items-center justify-center rounded-full border transition-colors lg:h-9 lg:w-9"
     >
       {initial ? (
         <span className="text-accent text-[13px] font-bold">{initial}</span>

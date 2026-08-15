@@ -16,7 +16,7 @@ export function ThemeSwitch({ theme, onChange }: ThemeSwitchProps) {
       aria-label={t.a11y.toggleTheme}
       aria-pressed={dark}
       onClick={() => onChange(dark ? 'light' : 'dark')}
-      className="border-line bg-bg-soft text-ink-muted hover:text-ink absolute top-3 left-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border transition-colors sm:top-5 sm:left-5 lg:h-9 lg:w-9"
+      className="border-line bg-bg-soft text-ink-muted hover:text-ink flex h-8 w-8 items-center justify-center rounded-full border transition-colors lg:h-9 lg:w-9"
     >
       {dark ? (
         // күн — жарыкка өтүү

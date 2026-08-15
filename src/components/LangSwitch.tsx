@@ -18,7 +18,7 @@ export function LangSwitch({ locale, onChange }: LangSwitchProps) {
     <div
       role="radiogroup"
       aria-label={t.a11y.langSwitch}
-      className="border-line bg-bg-soft absolute top-3 right-3 z-10 flex rounded-full border p-0.5 sm:top-5 sm:right-5"
+      className="border-line bg-bg-soft flex rounded-full border p-0.5"
     >
       {items.map((item) => {
         const active = item.id === locale;

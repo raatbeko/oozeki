@@ -281,12 +281,19 @@ export default function App() {
     <LocaleContext.Provider value={t}>
       <div className="flex h-dvh flex-col overflow-hidden">
         <OrnamentBackground />
-        <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
-        <ProgressButton onClick={() => setProgressOpen(true)} />
-        {isSupabaseConfigured && (
-          <AccountButton email={user?.email ?? null} onClick={() => setAccountOpen(true)} />
-        )}
-        <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
+
+        <div className="pointer-events-none fixed inset-x-0 top-3 z-10 flex items-start justify-between px-3 sm:top-5 sm:px-5">
+          <div className="pointer-events-auto flex items-center gap-2">
+            <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
+            <ProgressButton onClick={() => setProgressOpen(true)} />
+          </div>
+          <div className="pointer-events-auto flex items-center gap-2">
+            {isSupabaseConfigured && (
+              <AccountButton email={user?.email ?? null} onClick={() => setAccountOpen(true)} />
+            )}
+            <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
+          </div>
+        </div>
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
 
