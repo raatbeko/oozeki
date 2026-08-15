@@ -21,9 +21,8 @@ const field =
 
 export function AuthModal({ open, user, syncState, sessionCount, onClose }: AuthModalProps) {
   const t = useT();
-  const [step, setStep] = useState<'menu' | 'code'>('menu');
+  const [step, setStep] = useState<'menu' | 'sent'>('menu');
   const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -31,7 +30,6 @@ export function AuthModal({ open, user, syncState, sessionCount, onClose }: Auth
   useEffect(() => {
     if (open) {
       setStep('menu');
-      setCode('');
       setError(null);
       setBusy(false);
     }
@@ -64,31 +62,17 @@ export function AuthModal({ open, user, syncState, sessionCount, onClose }: Auth
     // ийгиликтүү болсо — Google'га багытталат
   };
 
-  const sendCode = async () => {
+  const sendLink = async () => {
     if (!supabase || !email.trim()) return;
     setError(null);
     setBusy(true);
     const { error: err } = await supabase.auth.signInWithOtp({
       email: email.trim(),
-      options: { shouldCreateUser: true },
+      options: { emailRedirectTo: window.location.origin, shouldCreateUser: true },
     });
     setBusy(false);
     if (err) setError(err.message);
-    else setStep('code');
-  };
-
-  const verifyCode = async () => {
-    if (!supabase || !code.trim()) return;
-    setError(null);
-    setBusy(true);
-    const { error: err } = await supabase.auth.verifyOtp({
-      email: email.trim(),
-      token: code.trim(),
-      type: 'email',
-    });
-    setBusy(false);
-    if (err) setError(err.message);
-    else onClose();
+    else setStep('sent');
   };
 
   const signOut = async () => {
@@ -150,79 +134,61 @@ export function AuthModal({ open, user, syncState, sessionCount, onClose }: Auth
                   {t.auth.signOut}
                 </button>
               </>
-            ) : (
+            ) : step === 'menu' ? (
               <>
                 <h2 className="font-serif text-2xl font-bold">{t.auth.title}</h2>
                 <p className="text-ink-muted mt-2 text-sm">{t.auth.intro}</p>
-
-                {step === 'menu' ? (
-                  <div className="mt-5 flex flex-col gap-3">
-                    <button
-                      type="button"
-                      onClick={signInGoogle}
-                      disabled={busy}
-                      className="border-line bg-surface text-ink flex w-full items-center justify-center gap-2.5 rounded-full border py-3 text-sm font-semibold transition-colors hover:bg-surface/70 disabled:opacity-50"
-                    >
-                      <GoogleIcon />
-                      {t.auth.google}
-                    </button>
-
-                    <div className="text-ink-muted my-1 flex items-center gap-3 text-xs">
-                      <span className="bg-line h-px flex-1" />
-                      {t.auth.or}
-                      <span className="bg-line h-px flex-1" />
-                    </div>
-
-                    <input
-                      type="email"
-                      inputMode="email"
-                      autoComplete="email"
-                      placeholder={t.auth.emailPlaceholder}
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className={field}
-                    />
-                    <button
-                      type="button"
-                      onClick={sendCode}
-                      disabled={busy || !email.trim()}
-                      className={primaryBtn}
-                    >
-                      {busy ? t.auth.working : t.auth.sendCode}
-                    </button>
+                <div className="mt-5 flex flex-col gap-3">
+                  <button
+                    type="button"
+                    onClick={signInGoogle}
+                    disabled={busy}
+                    className="border-line bg-surface text-ink hover:bg-surface/70 flex w-full items-center justify-center gap-2.5 rounded-full border py-3 text-sm font-semibold transition-colors disabled:opacity-50"
+                  >
+                    <GoogleIcon />
+                    {t.auth.google}
+                  </button>
+                  <div className="text-ink-muted my-1 flex items-center gap-3 text-xs">
+                    <span className="bg-line h-px flex-1" />
+                    {t.auth.or}
+                    <span className="bg-line h-px flex-1" />
                   </div>
-                ) : (
-                  <div className="mt-5 flex flex-col gap-3">
-                    <p className="text-ink-muted text-sm">{t.auth.codeSent}</p>
-                    <input
-                      type="text"
-                      inputMode="numeric"
-                      autoComplete="one-time-code"
-                      placeholder={t.auth.codePlaceholder}
-                      value={code}
-                      onChange={(e) => setCode(e.target.value)}
-                      className={`${field} text-center text-lg tracking-[0.3em]`}
-                    />
-                    <button
-                      type="button"
-                      onClick={verifyCode}
-                      disabled={busy || !code.trim()}
-                      className={primaryBtn}
-                    >
-                      {busy ? t.auth.working : t.auth.verify}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setStep('menu');
-                        setError(null);
-                      }}
-                      className="text-ink-muted hover:text-ink text-xs"
-                    >
-                      {t.auth.back}
-                    </button>
-                  </div>
-                )}
+                  <input
+                    type="email"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder={t.auth.emailPlaceholder}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && sendLink()}
+                    className={field}
+                  />
+                  <button
+                    type="button"
+                    onClick={sendLink}
+                    disabled={busy || !email.trim()}
+                    className={primaryBtn}
+                  >
+                    {busy ? t.auth.working : t.auth.sendLink}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="font-serif text-2xl font-bold">{t.auth.title}</h2>
+                <p className="text-ink-muted mt-4 text-sm">{t.auth.linkSent}</p>
+                <p className="text-ink mt-1 font-medium break-all">{email.trim()}</p>
+                <p className="text-ink-muted/80 mt-3 text-xs">{t.auth.linkHint}</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep('menu');
+                    setError(null);
+                  }}
+                  className="text-ink-muted hover:text-ink mt-5 text-xs"
+                >
+                  {t.auth.back}
+                </button>
               </>
             )}
 
