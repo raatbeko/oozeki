@@ -107,6 +107,10 @@ const ky = {
     syncNote: 'Прогресс бардык түзмөктөрдө автоматтык сакталат.',
     working: 'Күтө туруңуз…',
   },
+  menu: {
+    theme: 'Көрүнүш',
+    language: 'Тил',
+  },
   category: {
     label: 'Категория',
     listLabel: 'Категориялар',
@@ -119,6 +123,7 @@ const ky = {
     openProgress: 'Илгерилөөнү ачуу',
     closeProgress: 'Жабуу',
     openAccount: 'Аккаунт',
+    openMenu: 'Меню',
     timeLeft: 'Калган убакыт',
     topic: 'Тема',
     toggleTheme: 'Караңгы/жарык режимди алмаштыруу',
@@ -229,6 +234,10 @@ const ru: UiStrings = {
     syncNote: 'Прогресс автоматически сохраняется на всех устройствах.',
     working: 'Подождите…',
   },
+  menu: {
+    theme: 'Тема',
+    language: 'Язык',
+  },
   category: {
     label: 'Категория',
     listLabel: 'Категории',
@@ -241,6 +250,7 @@ const ru: UiStrings = {
     openProgress: 'Открыть прогресс',
     closeProgress: 'Закрыть',
     openAccount: 'Аккаунт',
+    openMenu: 'Меню',
     timeLeft: 'Оставшееся время',
     topic: 'Тема',
     toggleTheme: 'Переключить тёмный/светлый режим',

@@ -6,14 +6,12 @@ import { AuthModal, type SyncState } from './components/AuthModal';
 import { CategorySelect } from './components/CategorySelect';
 import { FullscreenTimer } from './components/FullscreenTimer';
 import { Header } from './components/Header';
-import { LangSwitch } from './components/LangSwitch';
 import { ModeSwitch } from './components/ModeSwitch';
 import { OrnamentBackground } from './components/OrnamentBackground';
-import { ProgressButton } from './components/ProgressButton';
 import { ProgressScreen } from './components/ProgressScreen';
 import { SettingsModal } from './components/SettingsModal';
-import { ThemeSwitch } from './components/ThemeSwitch';
 import { TimerControls } from './components/TimerControls';
+import { TopMenu } from './components/TopMenu';
 import { TopicDisplay, type Status } from './components/TopicDisplay';
 import { categoriesFor, topicKg, topicsFor } from './data/categories';
 import { strings } from './data/ui-strings';
@@ -283,16 +281,20 @@ export default function App() {
         <OrnamentBackground />
 
         <div className="pointer-events-none fixed inset-x-0 top-3 z-10 flex items-start justify-between px-3 sm:top-5 sm:px-5">
-          <div className="pointer-events-auto flex items-center gap-2">
-            <ThemeSwitch theme={settings.theme} onChange={(theme) => update({ theme })} />
-            <ProgressButton onClick={() => setProgressOpen(true)} />
+          <div className="pointer-events-auto">
+            <TopMenu
+              theme={settings.theme}
+              locale={settings.locale}
+              onThemeChange={(theme) => update({ theme })}
+              onLocaleChange={(locale) => update({ locale })}
+              onOpenProgress={() => setProgressOpen(true)}
+            />
           </div>
-          <div className="pointer-events-auto flex items-center gap-2">
-            {isSupabaseConfigured && (
+          {isSupabaseConfigured && (
+            <div className="pointer-events-auto">
               <AccountButton email={user?.email ?? null} onClick={() => setAccountOpen(true)} />
-            )}
-            <LangSwitch locale={settings.locale} onChange={(locale) => update({ locale })} />
-          </div>
+            </div>
+          )}
         </div>
 
         <Header onOpenAbout={() => setAboutOpen(true)} />
