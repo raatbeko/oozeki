@@ -122,7 +122,7 @@ export async function POST(request: Request): Promise<Response> {
         // Кыска код (кайсы ката экенин түшүнүү үчүн), деталдар жок
         const code =
           err instanceof Anthropic.APIError
-            ? `${err.status ?? 'net'}${(err.error as { error?: { type?: string } } | undefined)?.error?.type ? ` ${(err.error as { error: { type: string } }).error.type}` : ''}`
+            ? `${err.status ?? 'net'} ${String((err.error as { error?: { message?: string } } | undefined)?.error?.message ?? err.message).slice(0, 160)}`
             : 'x'
         controller.enqueue(
           encoder.encode(
