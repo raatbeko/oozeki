@@ -6,16 +6,19 @@ export const soonRu: SoonItem[] = [
     title: 'Codex или Claude Code?',
     text: 'Оба сами работают на компьютере. Сравню и покажу, какой удобнее для кода и монтажа.',
     topic: 'vs',
+    cover: '/covers/soon-1.webp',
   },
   {
     title: 'Мультик со своим персонажем',
     text: 'Даже если не умеешь рисовать. Без генерации, кодом — персонаж каждый раз выходит одинаковым.',
     topic: 'montaj',
+    cover: '/covers/soon-2.webp',
   },
   {
     title: 'Длинное видео с Claude',
     text: 'Видео на 10–20 минут для YouTube: от сценария до монтажа.',
     topic: 'montaj',
+    cover: '/covers/soon-3.webp',
   },
   {
     title: 'Скиллы и коннекторы',

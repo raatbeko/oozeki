@@ -48,9 +48,9 @@ export function Prompts() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((p) => (
-          <PromptCard key={p.id} prompt={p} showGuide />
+          <PromptCard key={p.id} prompt={p} showGuide popup />
         ))}
       </div>
     </main>

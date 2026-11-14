@@ -34,7 +34,7 @@ function LangSwitch() {
   )
   return (
     <div className="flex items-center rounded-full border border-line bg-bg-soft p-0.5" role="group" aria-label="Тил / Язык">
-      {btn('ky', 'КЫ')}
+      {btn('ky', 'КР')}
       {btn('ru', 'РУ')}
     </div>
   )

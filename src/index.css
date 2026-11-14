@@ -20,6 +20,22 @@
 
   --font-serif: 'PT Serif', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
+
+  /* Жылмакай анимация: тез башталат, акырын токтойт. Tailwind'дин бардык transition'дору ушуну колдонот */
+  --default-transition-duration: 350ms;
+  --default-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  --oz-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --oz-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --oz-orn-op: 0.5;
+}
+/* Телефондо оюу — жөн гана фон, өтө өчүңкү */
+@media (max-width: 899px) {
+  :root {
+    --oz-orn-op: 0.2;
+  }
 }
 
 /* «Түнкү кийиз» — жылуу караңгы тема */
@@ -140,5 +156,273 @@ body::before {
   }
   50% {
     transform: scaleY(1);
+  }
+}
+
+/* ───────────── Фондогу оюулар: контурун ар 5 секундда кайра тартат ───────────── */
+.oz-orns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  z-index: -1; /* #root ичинде, контенттин артында */
+  pointer-events: none;
+}
+.oz-orn {
+  position: absolute;
+  overflow: visible;
+}
+.oz-orn path {
+  fill: none;
+  stroke: rgb(150 146 140);
+  stroke-width: 1.3px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  opacity: var(--oz-orn-op);
+  stroke-dasharray: 1 1;
+  animation: oz-draw 5s var(--oz-ease-io) infinite;
+}
+:root:not([data-theme='dark']) .oz-orn path {
+  stroke: rgb(120 114 106);
+}
+@keyframes oz-draw {
+  0% { stroke-dashoffset: 1; opacity: var(--oz-orn-op); }
+  45% { stroke-dashoffset: 0; }
+  88% { stroke-dashoffset: 0; opacity: var(--oz-orn-op); }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+/* ───────────── Гайддын карточкасы ───────────── */
+/* Теманын белгиси — мукабанын сол жогорку бурчунда */
+.oz-guide-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgb(20 17 12 / 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgb(239 233 221 / 0.14);
+  -webkit-text-fill-color: #f2ece0; /* текст ачык, currentColor — теманын түсү (чекит үчүн) */
+}
+.oz-guide-tag::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* Мукабанын бийиктиги бөлчөк (16:10) — астыңкы пикселдер фон менен аралашып тилке берет. Карточканын түсү менен жабабыз */
+.oz-guide-cover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--color-surface);
+  z-index: 3;
+  pointer-events: none;
+}
+/* Чычкан келгенде мукабанын үстүнө чыгуучу панель */
+.oz-guide-hover {
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 56px 20px 20px;
+  background: linear-gradient(to top, rgb(14 11 8 / 0.94) 0%, rgb(14 11 8 / 0.82) 55%, rgb(14 11 8 / 0) 100%);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s var(--oz-ease), transform 0.6s var(--oz-ease);
+  pointer-events: none;
+}
+[data-theme='dark'] .oz-guide-hover {
+  background: linear-gradient(to top, var(--color-surface) 0%, color-mix(in srgb, var(--color-surface) 92%, transparent) 30%, rgb(14 11 8 / 0.8) 60%, rgb(14 11 8 / 0) 100%);
+}
+.oz-guide-hover-desc {
+  color: #efe9dd;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.oz-guide-hover-meta {
+  color: #b3a996;
+  font-size: 13px;
+  font-weight: 500;
+}
+.oz-guide:hover .oz-guide-hover,
+.oz-guide:focus-visible .oz-guide-hover {
+  opacity: 1;
+  transform: none;
+}
+/* «Окуу →» — плашка: карточка басылаарын көрсөтөт */
+.oz-guide-read {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.4s var(--oz-ease), color 0.4s var(--oz-ease), border-color 0.4s var(--oz-ease), transform 0.5s var(--oz-ease);
+}
+.oz-guide:hover .oz-guide-read,
+.oz-guide:focus-visible .oz-guide-read {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  transform: translateX(2px);
+}
+.oz-guide-touch {
+  display: none;
+}
+@media (hover: none) {
+  .oz-guide-hover {
+    display: none;
+  }
+  .oz-guide-touch {
+    display: block;
+  }
+}
+
+/* ───────────── «Жакында» — жаңылыктар тасмасы ───────────── */
+.oz-soon {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  column-gap: 16px;
+  align-content: start;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-line);
+}
+.oz-soon-thumb {
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  border-radius: 12px;
+  border: 1px solid var(--color-line);
+  background: radial-gradient(circle at 30% 30%, rgb(215 90 65 / 0.22), transparent 60%), var(--color-bg-soft);
+}
+.oz-soon-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.85);
+  transition: filter 0.6s var(--oz-ease);
+}
+.oz-soon:hover .oz-soon-thumb img {
+  filter: none;
+}
+@media (max-width: 640px) {
+  .oz-soon {
+    grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+}
+
+/* ───────────── Промпт-попап ───────────── */
+.oz-pop-copy {
+  box-shadow: 0 8px 20px -10px rgb(194 69 47 / 0.6);
+}
+.oz-pop[data-open] {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: auto;
+  z-index: 30;
+  transform: scale(1.02);
+  transform-origin: top center;
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-line));
+  animation: oz-pop 0.5s var(--oz-ease) both;
+}
+.oz-pop[data-closing] {
+  animation: oz-unpop 0.42s var(--oz-ease-io) both;
+}
+.oz-pop[data-open] .oz-pop-chev {
+  transform: rotate(180deg);
+  color: var(--color-accent);
+}
+.oz-pop-chev {
+  transition: transform 0.5s var(--oz-ease), color 0.35s var(--oz-ease), border-color 0.35s var(--oz-ease);
+}
+.oz-pop-body {
+  animation: oz-reveal 0.5s var(--oz-ease) 0.08s both;
+}
+.oz-pop[data-closing] .oz-pop-body {
+  animation: oz-hide 0.25s var(--oz-ease-io) both;
+}
+@keyframes oz-pop {
+  from { transform: scale(1); box-shadow: 0 10px 30px -20px rgb(0 0 0 / 0.35); }
+  to { transform: scale(1.02); box-shadow: 0 34px 80px -24px rgb(0 0 0 / 0.8); }
+}
+@keyframes oz-unpop {
+  from { transform: scale(1.02); box-shadow: 0 34px 80px -24px rgb(0 0 0 / 0.8); }
+  to { transform: scale(1); box-shadow: 0 10px 30px -20px rgb(0 0 0 / 0.35); }
+}
+@keyframes oz-reveal {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes oz-hide {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+/* ───────────── «Автор»: кагаз Раатбек плашканын четинде отурат ───────────── */
+/* Отургучу сүрөттүн 60% бийиктигинде: үстү — денеси, асты — салаңдаган буттары */
+.oz-author-section {
+  padding-top: 150px;
+}
+.oz-author-img {
+  position: absolute;
+  right: 12px;
+  top: -84px; /* -0.6 × 140 */
+  height: 140px;
+  width: auto;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 14px 18px rgb(0 0 0 / 0.45));
+}
+@media (max-width: 767px) {
+  .oz-author-card {
+    padding-top: 64px; /* буттар (140 × 0.4 = 56px) аты-жөнгө тийбесин */
+  }
+}
+@media (min-width: 768px) {
+  .oz-author-section {
+    padding-top: 200px;
+  }
+  .oz-author-links {
+    align-self: end; /* сол жакта текст өйдөдө, баскычтар ылдыйда — буттар бош жерге салаңдайт */
+  }
+  .oz-author-img {
+    right: 64px;
+    top: -156px; /* -0.6 × 260 */
+    height: 260px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oz-orn path {
+    animation: none !important;
+    opacity: var(--oz-orn-op);
   }
 }

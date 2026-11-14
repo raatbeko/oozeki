@@ -37,9 +37,8 @@ export function Home() {
       <section className="relative mx-auto max-w-4xl px-4 pt-14 pb-10 text-center sm:px-6 md:pt-24">
         <HoloTunduk className="absolute top-[-15px] left-1/2 -z-10 h-[80vw] w-[88vw] -translate-x-1/2 md:top-[-120px] md:h-[min(820px,105vw)] md:w-[min(1100px,140vw)]" />
         <Tunduk size={56} className="mx-auto text-accent" />
-        <p className="mt-6 text-[13px] font-semibold tracking-[0.2em] text-ink-muted uppercase">{tr('кыргызча, жөнөкөй сөз менен', 'просто и понятно')}</p>
-        <h1 className="mt-3 font-serif text-[clamp(2.6rem,8vw,5rem)] leading-[1.02] font-bold tracking-tight text-balance">
-          {tr('Жасалма интеллект', 'Искусственный интеллект')} — <span className="text-accent italic">{tr('кыргызча', 'простыми словами')}</span>
+        <h1 className="mt-6 font-serif text-[clamp(1.75rem,4.6vw,3.4rem)] leading-[1.14] font-bold tracking-[0.035em] text-balance uppercase">
+          {tr('Жасалма интеллект', 'Искусственный интеллект')} — <span className="text-accent">{tr('кыргызча', 'простыми словами')}</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-[18px] leading-relaxed text-ink-muted">
           {tr(
@@ -96,17 +95,17 @@ export function Home() {
 
         <section className="pt-20 md:pt-28" aria-label={tr('Промпттор', 'Промпты')}>
           <SectionHead kicker={tr('Көчүр да, кой', 'Скопируй и вставь')} title={tr('Даяр промпттор', 'Готовые промпты')} href="/prompts" more={tr('Бардык промпттор', 'Все промпты')} />
-          <div className="mt-8 grid items-start gap-5 lg:grid-cols-2">
-            <div className="grid gap-5">
-              <PromptCard prompt={featured[0]} showGuide />
-              <PromptCard prompt={featured[1]} showGuide />
-            </div>
-            <PromptCard prompt={featured[2]} showGuide />
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {featured.map((p) => (
+              <PromptCard key={p.id} prompt={p} showGuide popup />
+            ))}
           </div>
         </section>
 
-        <section className="pt-20 md:pt-28" aria-label="Автор">
-          <div className="grid gap-6 rounded-3xl border border-line bg-surface p-6 sm:p-10 md:grid-cols-[1fr_auto] md:items-center">
+        <section className="oz-author-section pt-20 md:pt-28" aria-label="Автор">
+          <div className="oz-author-card relative grid gap-6 rounded-3xl border border-line bg-surface p-6 sm:p-10 md:grid-cols-[1fr_auto] md:items-center">
+            {/* Бумажный Раатбек отурат плашканын четинде: буту ылдый салаңдайт */}
+            <img src="/author-wave.webp" alt="" aria-hidden="true" decoding="async" className="oz-author-img" />
             <div>
               <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Автор</p>
               <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight">{tr('Салам, мен Раатбек', 'Привет, я Раатбек')}</h2>
@@ -117,7 +116,7 @@ export function Home() {
                 )}
               </p>
             </div>
-            <div className="grid gap-3">
+            <div className="oz-author-links grid gap-3">
               <SocialButtons />
               <Link href="/konsultaciya" className="inline-flex min-h-11 items-center text-[15px] font-semibold text-accent hover:underline">
                 {tr('Жеке консультация', 'Личная консультация')} →
