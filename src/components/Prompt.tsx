@@ -226,22 +226,25 @@ export function PromptCard({ prompt, showGuide = false, popup = false }: { promp
           }}
           className="oz-pop flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_10px_30px_-20px_rgba(35,32,27,.35)]"
         >
-          <header className={`flex flex-wrap items-center gap-x-2.5 gap-y-[18px] p-5 ${pop ? 'border-b border-line' : ''}`}>
-            <div className="min-h-[72px] min-w-0 basis-full">
+          {/* Аталыш өйдөдө, баскычтар дайыма карточканын түбүндө — бардык карточкаларда бир сызыкта */}
+          <header className={`flex flex-1 flex-col gap-[18px] p-5 ${pop ? 'border-b border-line' : ''}`}>
+            <div className="min-w-0">
               <h3 className="font-serif text-[19px] leading-snug font-bold">{prompt.title}</h3>
               {where}
             </div>
-            <CopyButton text={prompt.text} className="oz-pop-copy flex-1 justify-center" />
-            <button
-              type="button"
-              aria-expanded={pop}
-              aria-controls={`${prompt.id}-body`}
-              aria-label={pop ? tr('Жабуу', 'Свернуть') : tr('Промптту ачуу', 'Открыть промпт')}
-              onClick={() => (pop ? closePop() : openPop())}
-              className="oz-pop-chev grid size-11 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition hover:border-accent/60 hover:text-accent"
-            >
-              <Chevron />
-            </button>
+            <div className="mt-auto flex items-center gap-2.5">
+              <CopyButton text={prompt.text} className="oz-pop-copy flex-1 justify-center" />
+              <button
+                type="button"
+                aria-expanded={pop}
+                aria-controls={`${prompt.id}-body`}
+                aria-label={pop ? tr('Жабуу', 'Свернуть') : tr('Промптту ачуу', 'Открыть промпт')}
+                onClick={() => (pop ? closePop() : openPop())}
+                className="oz-pop-chev grid size-11 shrink-0 place-items-center rounded-full border border-line text-ink-muted transition hover:border-accent/60 hover:text-accent"
+              >
+                <Chevron />
+              </button>
+            </div>
           </header>
           {pop && (
             <div id={`${prompt.id}-body`} className="oz-pop-body">
