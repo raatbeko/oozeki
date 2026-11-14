@@ -37,8 +37,8 @@ export function Home() {
       <section className="relative mx-auto max-w-4xl px-4 pt-14 pb-10 text-center sm:px-6 md:pt-24">
         <HoloTunduk className="absolute top-[-15px] left-1/2 -z-10 h-[80vw] w-[88vw] -translate-x-1/2 md:top-[-120px] md:h-[min(820px,105vw)] md:w-[min(1100px,140vw)]" />
         <Tunduk size={56} className="mx-auto text-accent" />
-        <h1 className="mt-6 font-serif text-[clamp(1.75rem,4.6vw,3.4rem)] leading-[1.14] font-bold tracking-[0.035em] text-balance uppercase">
-          {tr('Жасалма интеллект', 'Искусственный интеллект')} — <span className="text-accent">{tr('кыргызча', 'простыми словами')}</span>
+        <h1 className="mt-6 font-serif text-[clamp(2.6rem,8vw,5rem)] leading-[1.02] font-bold tracking-tight text-balance">
+          {tr('Жасалма интеллект', 'Искусственный интеллект')} — <span className="text-accent italic">{tr('кыргызча', 'простыми словами')}</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-[18px] leading-relaxed text-ink-muted">
           {tr(
