@@ -11,6 +11,7 @@ import { useEffect } from 'react'
 import { useContent } from './content/useContent'
 import { useTr } from './i18n'
 import { OrnamentBackground } from './components/OrnamentBackground'
+import { ChatWidget } from './components/ChatWidget'
 
 function NotFound() {
   const tr = useTr()
@@ -62,6 +63,7 @@ export default function App() {
         <Route path={path} />
       </div>
       <Footer />
+      <ChatWidget />
     </>
   )
 }

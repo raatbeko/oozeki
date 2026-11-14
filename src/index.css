@@ -616,3 +616,16 @@ html[data-nav-dir='back']::view-transition-new(page) {
   font-size: 13px;
   font-weight: 700;
 }
+
+/* Чат: «жазып жатат» чекиттери */
+@keyframes oz-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}

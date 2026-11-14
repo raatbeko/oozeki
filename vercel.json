@@ -1,3 +1,4 @@
 {
-  "rewrites": [{ "source": "/((?!shots/|assets/|favicon|robots|sitemap).*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/((?!api/|shots/|covers/|music/|assets/|favicon|robots|sitemap).*)", "destination": "/index.html" }],
+  "functions": { "api/chat.ts": { "maxDuration": 60 } }
 }
