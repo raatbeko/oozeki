@@ -426,3 +426,68 @@ body::before {
     opacity: var(--oz-orn-op);
   }
 }
+
+/* ───────────── Беттер арасындагы өтүү (View Transitions) ───────────── */
+/* Шапка ордунда турат, контент гана алмашат. Багытты роутер html[data-nav-dir] аркылуу берет */
+#content {
+  view-transition-name: page;
+}
+header.sticky {
+  view-transition-name: site-header;
+}
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-group(page) {
+  animation: none;
+}
+/* Эски/жаңы беттин сүрөтү созулбасын — жогору жагы менен тура калсын */
+::view-transition-old(page),
+::view-transition-new(page) {
+  width: 100%;
+  height: 100%;
+  object-fit: none;
+  object-position: top center;
+}
+::view-transition-old(page) {
+  animation: oz-vt-fade-out 0.18s var(--oz-ease-io) both;
+}
+::view-transition-new(page) {
+  animation: oz-vt-rise-in 0.32s var(--oz-ease) both;
+}
+html[data-nav-dir='forward']::view-transition-old(page) {
+  animation-name: oz-vt-out-left;
+}
+html[data-nav-dir='forward']::view-transition-new(page) {
+  animation-name: oz-vt-in-right;
+}
+html[data-nav-dir='back']::view-transition-old(page) {
+  animation-name: oz-vt-out-right;
+}
+html[data-nav-dir='back']::view-transition-new(page) {
+  animation-name: oz-vt-in-left;
+}
+@keyframes oz-vt-fade-out {
+  to { opacity: 0; }
+}
+@keyframes oz-vt-rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+}
+@keyframes oz-vt-out-left {
+  to { opacity: 0; transform: translateX(-12px); }
+}
+@keyframes oz-vt-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+}
+@keyframes oz-vt-out-right {
+  to { opacity: 0; transform: translateX(12px); }
+}
+@keyframes oz-vt-in-left {
+  from { opacity: 0; transform: translateX(-16px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

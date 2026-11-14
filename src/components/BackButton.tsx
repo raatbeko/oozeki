@@ -1,4 +1,4 @@
-import { navigate } from '../router'
+import { goBack } from '../router'
 import { useTr } from '../i18n'
 
 /**
@@ -7,10 +7,7 @@ import { useTr } from '../i18n'
  */
 export function BackButton({ fallback = '/', label }: { fallback?: string; label?: string }) {
   const tr = useTr()
-  const onClick = () => {
-    if ((history.state as { oz?: number } | null)?.oz) history.back()
-    else navigate(fallback)
-  }
+  const onClick = () => goBack(fallback)
   return (
     <div className="mb-6 md:mb-8">
       <button
