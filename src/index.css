@@ -491,3 +491,128 @@ html[data-nav-dir='back']::view-transition-new(page) {
     animation: none !important;
   }
 }
+
+/* ───────────── /ji: мүмкүнчүлүктүн карточкасы жана попабы ───────────── */
+.oz-ability {
+  cursor: pointer;
+  transition: transform 0.5s var(--oz-ease), border-color 0.35s var(--oz-ease), box-shadow 0.5s var(--oz-ease);
+}
+.oz-ability:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-line));
+}
+.oz-ability-more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.4s var(--oz-ease), color 0.4s var(--oz-ease), border-color 0.4s var(--oz-ease), transform 0.5s var(--oz-ease);
+}
+.oz-ability:hover .oz-ability-more,
+.oz-ability:focus-visible .oz-ability-more {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+.oz-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(10 8 6 / 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: oz-fade-in 0.3s var(--oz-ease) both;
+}
+.oz-modal-panel {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: min(86vh, 900px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 28px;
+  border-radius: 24px;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  box-shadow: 0 40px 100px -30px rgb(0 0 0 / 0.75);
+  animation: oz-modal-in 0.45s var(--oz-ease) both;
+}
+.oz-modal-grip {
+  display: none;
+}
+.oz-modal[data-closing] {
+  animation: oz-fade-out 0.26s var(--oz-ease-io) both;
+}
+.oz-modal[data-closing] .oz-modal-panel {
+  animation: oz-modal-out 0.26s var(--oz-ease-io) both;
+}
+@keyframes oz-fade-in { from { opacity: 0; } }
+@keyframes oz-fade-out { to { opacity: 0; } }
+@keyframes oz-modal-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+@keyframes oz-modal-out { to { opacity: 0; transform: translateY(10px) scale(0.98); } }
+
+/* Телефон: ылдыйдан чыгуучу «шторка» */
+@media (max-width: 640px) {
+  .oz-modal {
+    place-items: end stretch;
+    padding: 0;
+  }
+  .oz-modal-panel {
+    max-width: none;
+    max-height: 88vh;
+    padding: 14px 18px 28px;
+    border-radius: 22px 22px 0 0;
+    border-bottom: 0;
+    animation-name: oz-sheet-in;
+  }
+  .oz-modal[data-closing] .oz-modal-panel {
+    animation-name: oz-sheet-out;
+  }
+  .oz-modal-grip {
+    display: block;
+    width: 40px;
+    height: 4px;
+    margin: 0 auto 16px;
+    border-radius: 99px;
+    background: var(--color-line);
+  }
+}
+@keyframes oz-sheet-in { from { transform: translateY(100%); } }
+@keyframes oz-sheet-out { to { transform: translateY(100%); } }
+
+/* Кадамдар: номерленген тизме */
+.oz-steps {
+  display: grid;
+  gap: 12px;
+  counter-reset: none;
+}
+.oz-steps li {
+  display: flex;
+  gap: 12px;
+  font-size: 15.5px;
+  line-height: 1.5;
+  animation: oz-reveal 0.45s var(--oz-ease) both;
+}
+.oz-step-num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
