@@ -81,6 +81,7 @@ export function ChatWidget() {
   const tr = useTr()
   const { lang } = useLang()
   const [open, setOpen] = useState(false)
+  const unlockRef = useRef<((restore: boolean) => void) | null>(null)
   const [msgs, setMsgs] = useState<Msg[]>(loadHistory)
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
@@ -104,6 +105,28 @@ export function ChatWidget() {
     return () => {
       window.clearTimeout(t)
       window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  // Телефондо чат ачык турганда арткы бет сыдырылбасын (iOS'ко да иштейт)
+  useEffect(() => {
+    if (!open || !window.matchMedia('(max-width: 639px)').matches) return
+    const y = window.scrollY
+    const b = document.body.style
+    const prev = { position: b.position, top: b.top, left: b.left, right: b.right, width: b.width }
+    Object.assign(b, { position: 'fixed', top: `-${y}px`, left: '0', right: '0', width: '100%' })
+    let locked = true
+    // restore=false — шилтеме басылганда: бетти бошотобуз, бирок эски жерге кайтарбайбыз
+    const unlock = (restore: boolean) => {
+      if (!locked) return
+      locked = false
+      Object.assign(b, prev)
+      if (restore) window.scrollTo({ top: y, behavior: 'instant' })
+    }
+    unlockRef.current = unlock
+    return () => {
+      unlockRef.current = null
+      unlock(true)
     }
   }, [open])
 
@@ -154,7 +177,10 @@ export function ChatWidget() {
   }
 
   // Шилтеме басылганда чат жыйналат — керектүү бөлүм көрүнүп калсын (жазышуу сакталат)
-  const closeOnNavigate = () => setOpen(false)
+  const closeOnNavigate = () => {
+    unlockRef.current?.(false)
+    setOpen(false)
+  }
 
   return (
     <>
@@ -176,6 +202,14 @@ export function ChatWidget() {
           </svg>
           {tr('Суроо бер', 'Спросить')}
         </button>
+      )}
+
+      {open && (
+        <div
+          aria-hidden="true"
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-[59] touch-none bg-black/40 sm:hidden"
+        />
       )}
 
       {open && (
@@ -214,7 +248,7 @@ export function ChatWidget() {
             </button>
           </header>
 
-          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite">
+          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4" aria-live="polite">
             {msgs.length === 0 && (
               <div>
                 <div className="rounded-2xl rounded-tl-md bg-bg-soft px-4 py-3 text-[15px] leading-relaxed">
