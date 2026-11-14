@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { Shot } from '../content/guides'
+import { useTr } from '../i18n'
 
 export function ShotFigure({ shot, priority = false }: { shot: Shot; priority?: boolean }) {
   const [open, setOpen] = useState(false)
+  const tr = useTr()
 
   useEffect(() => {
     if (!open) return
@@ -21,7 +23,7 @@ export function ShotFigure({ shot, priority = false }: { shot: Shot; priority?: 
         type="button"
         onClick={() => setOpen(true)}
         className="block w-full cursor-zoom-in overflow-hidden rounded-lg"
-        aria-label={`Чоңойтуу: ${shot.caption}`}
+        aria-label={`${tr('Чоңойтуу', 'Увеличить')}: ${shot.caption}`}
       >
         <img
           src={shot.src}
@@ -46,7 +48,7 @@ export function ShotFigure({ shot, priority = false }: { shot: Shot; priority?: 
           <button
             type="button"
             className="absolute top-3 right-3 grid size-11 place-items-center rounded-full bg-surface text-xl font-bold text-ink"
-            aria-label="Жабуу"
+            aria-label={tr('Жабуу', 'Закрыть')}
           >
             ×
           </button>

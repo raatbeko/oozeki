@@ -1,8 +1,11 @@
 import type { Guide } from '../content/guides'
-import { topics } from '../content/guides'
+import { useContent } from '../content/useContent'
+import { useTr } from '../i18n'
 import { Link } from '../router'
 
 export function GuideCard({ guide }: { guide: Guide }) {
+  const { topics } = useContent()
+  const tr = useTr()
   const t = topics[guide.topic]
   return (
     <Link
@@ -26,9 +29,9 @@ export function GuideCard({ guide }: { guide: Guide }) {
         <p className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-muted">{guide.short}</p>
         <p className="mt-4 flex items-center justify-between text-[13px] font-medium">
           <span className="text-ink-muted">
-            {guide.steps.length} шаг · {guide.time}
+            {guide.steps.length} {tr('шаг', 'шагов')} · {guide.time}
           </span>
-          <span className="text-accent group-hover:underline">Окуу →</span>
+          <span className="text-accent group-hover:underline">{tr('Окуу', 'Читать')} →</span>
         </p>
       </div>
     </Link>

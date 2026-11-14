@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import type { Prompt } from '../content/prompts'
 import { Link } from '../router'
-import { guideBySlug } from '../content/guides'
+import { useContent } from '../content/useContent'
+import { useTr } from '../i18n'
 
 async function copyText(text: string) {
   try {
@@ -22,6 +23,7 @@ async function copyText(text: string) {
 }
 
 export function CopyButton({ text, className = '' }: { text: string; className?: string }) {
+  const tr = useTr()
   const [done, setDone] = useState(false)
   const onClick = async () => {
     if (await copyText(text)) {
@@ -43,7 +45,7 @@ export function CopyButton({ text, className = '' }: { text: string; className?:
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          Көчүрүлдү
+          {tr('Көчүрүлдү', 'Скопировано')}
         </>
       ) : (
         <>
@@ -51,7 +53,7 @@ export function CopyButton({ text, className = '' }: { text: string; className?:
             <rect x="8" y="8" width="12" height="12" rx="2.5" stroke="currentColor" strokeWidth="2" />
             <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" strokeWidth="2" />
           </svg>
-          Көчүрүү
+          {tr('Көчүрүү', 'Копировать')}
         </>
       )}
     </button>
@@ -59,6 +61,8 @@ export function CopyButton({ text, className = '' }: { text: string; className?:
 }
 
 export function PromptCard({ prompt, showGuide = false }: { prompt: Prompt; showGuide?: boolean }) {
+  const { guideBySlug, lang } = useContent()
+  const tr = useTr()
   const guide = prompt.guide ? guideBySlug(prompt.guide) : undefined
   const long = prompt.text.length > 700
   const [open, setOpen] = useState(!long)
@@ -74,7 +78,7 @@ export function PromptCard({ prompt, showGuide = false }: { prompt: Prompt; show
               </svg>
               {prompt.where}
             </span>
-            {prompt.lang === 'ru' && <span className="rounded bg-accent-soft px-1.5 py-0.5 text-ink">орусча</span>}
+            {prompt.lang === 'ru' && lang === 'ky' && <span className="rounded bg-accent-soft px-1.5 py-0.5 text-ink">орусча</span>}
           </p>
         </div>
         <CopyButton text={prompt.text} />
@@ -100,14 +104,14 @@ export function PromptCard({ prompt, showGuide = false }: { prompt: Prompt; show
               onClick={() => setOpen((v) => !v)}
               className="min-h-11 text-sm font-semibold text-accent underline-offset-4 hover:underline"
             >
-              {open ? 'Жыйноо' : 'Толук көрүү'}
+              {open ? tr('Жыйноо', 'Свернуть') : tr('Толук көрүү', 'Показать полностью')}
             </button>
           ) : (
             <span />
           )}
           {showGuide && guide && (
             <Link href={`/guides/${guide.slug}`} className="min-h-11 content-center text-sm font-medium text-ink-muted hover:text-ink">
-              Гайд: {guide.title} →
+              {tr('Гайд', 'Гайд')}: {guide.title} →
             </Link>
           )}
         </footer>

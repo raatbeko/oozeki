@@ -8,23 +8,26 @@ import { Ji } from './pages/Ji'
 import { Sozduk } from './pages/Sozduk'
 import { Konsultaciya } from './pages/Konsultaciya'
 import { useEffect } from 'react'
-import { guideBySlug } from './content/guides'
+import { useContent } from './content/useContent'
+import { useTr } from './i18n'
 import { OrnamentBackground } from './components/OrnamentBackground'
 
 function NotFound() {
-  useTitle('Табылган жок')
+  const tr = useTr()
+  useTitle(tr('Табылган жок', 'Не найдено'))
   return (
     <main className="mx-auto grid max-w-xl place-items-center px-4 py-32 text-center">
       <p className="font-serif text-7xl font-bold text-accent">404</p>
-      <p className="mt-4 text-lg">Мындай бет жок экен.</p>
+      <p className="mt-4 text-lg">{tr('Мындай бет жок экен.', 'Такой страницы нет.')}</p>
       <Link href="/" className="mt-6 inline-flex min-h-12 items-center rounded-full bg-accent px-6 font-semibold text-white">
-        Башкы бетке
+        {tr('Башкы бетке', 'На главную')}
       </Link>
     </main>
   )
 }
 
 function Route({ path }: { path: string }) {
+  const { guideBySlug } = useContent()
   if (path === '/') return <Home />
   if (path === '/start') return <Start />
   if (path === '/guides') return <GuidesList />
@@ -42,6 +45,7 @@ function Route({ path }: { path: string }) {
 
 export default function App() {
   const path = usePath()
+  const tr = useTr()
   // Шилтемеде #якорь болсо — бет чыккандан кийин ошого түшөбүз
   useEffect(() => {
     const id = decodeURIComponent(location.hash.slice(1))
@@ -50,7 +54,7 @@ export default function App() {
   return (
     <>
       <a href="#content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-surface focus:p-2">
-        Негизги бөлүккө өтүү
+        {tr('Негизги бөлүккө өтүү', 'Перейти к содержанию')}
       </a>
       <OrnamentBackground />
       <Header path={path} />

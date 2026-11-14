@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Link, useTitle } from '../router'
-import { abilities, cautions, type Ability } from '../content/abilities'
-import { promptById } from '../content/prompts'
-import { guideBySlug } from '../content/guides'
+import type { Ability } from '../content/abilities'
+import { useContent } from '../content/useContent'
+import { useTr } from '../i18n'
 import { PromptCard } from '../components/Prompt'
 import { PageHead } from '../components/Layout'
 
 export function AbilityCard({ a, compact = false }: { a: Ability; compact?: boolean }) {
   const [open, setOpen] = useState(false)
+  const { promptById, guideBySlug } = useContent()
+  const tr = useTr()
   const p = a.prompt ? promptById(a.prompt) : undefined
   const g = a.guide ? guideBySlug(a.guide) : undefined
   return (
@@ -31,7 +33,7 @@ export function AbilityCard({ a, compact = false }: { a: Ability; compact?: bool
               aria-expanded={open}
               className="inline-flex min-h-10 items-center rounded-full bg-accent-soft px-4 text-[14px] font-semibold text-accent"
             >
-              {open ? 'Промптту жашыруу' : 'Промпт менен сынап көр'}
+              {open ? tr('Промптту жашыруу', 'Скрыть промпт') : tr('Промпт менен сынап көр', 'Попробовать с промптом')}
             </button>
           )}
           {g && (
@@ -39,7 +41,7 @@ export function AbilityCard({ a, compact = false }: { a: Ability; compact?: bool
               href={`/guides/${g.slug}`}
               className="inline-flex min-h-10 items-center rounded-full border border-line px-4 text-[14px] font-medium hover:border-accent/50"
             >
-              Гайд →
+              {tr('Гайд', 'Гайд')} →
             </Link>
           )}
         </div>
@@ -54,13 +56,17 @@ export function AbilityCard({ a, compact = false }: { a: Ability; compact?: bool
 }
 
 export function Ji() {
-  useTitle('ЖИ эмне кыла алат')
+  const tr = useTr()
+  const { abilities, cautions, promptById } = useContent()
+  useTitle(tr('ЖИ эмне кыла алат', 'Что умеет ИИ'))
   return (
     <main className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 md:pt-16">
-      <PageHead kicker="Жасалма интеллект" title="ЖИ эмне кыла алат?">
+      <PageHead kicker={tr('Жасалма интеллект', 'Искусственный интеллект')} title={tr('ЖИ эмне кыла алат?', 'Что умеет ИИ?')}>
         <p>
-          ЖИ — бул жөн эле программа, бирок аны менен адам сыяктуу сүйлөшсө болот. Сен кадимки сөз менен жазасың — ал түшүнөт да,
-          жасап берет. Төмөндө азыр чындап эле иштеген нерселер. Ар бирин даяр промпт менен ошол замат сынап көр.
+          {tr(
+            'ЖИ — бул жөн эле программа, бирок аны менен адам сыяктуу сүйлөшсө болот. Сен кадимки сөз менен жазасың — ал түшүнөт да, жасап берет. Төмөндө азыр чындап эле иштеген нерселер. Ар бирин даяр промпт менен ошол замат сынап көр.',
+            'ИИ — это просто программа, но с ней можно говорить, как с человеком. Пишешь обычными словами — он понимает и делает. Ниже — то, что реально работает уже сейчас. Каждую возможность можно сразу попробовать с готовым промптом.',
+          )}
         </p>
       </PageHead>
 
@@ -72,24 +78,24 @@ export function Ji() {
 
       <section className="mt-20" aria-labelledby="gen">
         <h2 id="gen" className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-          Генерация жана код — айырмасы
+          {tr('Генерация жана код — айырмасы', 'Генерация и код — в чём разница')}
         </h2>
         <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-ink-muted">
-          Менин роликтеримдеги доска жана монтаж генерация эмес. ЖИ код жазып, ар бир кыймылды өзү тартат.
+          {tr('Менин роликтеримдеги доска жана монтаж генерация эмес. ЖИ код жазып, ар бир кыймылды өзү тартат.', 'Доска и монтаж в моих роликах — не генерация. ИИ пишет код и сам рисует каждое движение.')}
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-line bg-surface p-6">
-            <p className="text-[13px] font-semibold tracking-[0.18em] text-ink-muted uppercase">Генерация</p>
-            <p className="mt-2 font-serif text-2xl font-bold">Ар бир жолу башка</p>
+            <p className="text-[13px] font-semibold tracking-[0.18em] text-ink-muted uppercase">{tr('Генерация', 'Генерация')}</p>
+            <p className="mt-2 font-serif text-2xl font-bold">{tr('Ар бир жолу башка', 'Каждый раз по-разному')}</p>
             <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-              Бир эле сурамга ар бир жолу башка сүрөт же видео чыгат. Аны башкаруу кыйын.
+              {tr('Бир эле сурамга ар бир жолу башка сүрөт же видео чыгат. Аны башкаруу кыйын.', 'На один и тот же запрос каждый раз выходит другая картинка или видео. Управлять этим сложно.')}
             </p>
           </div>
           <div className="rounded-2xl border border-accent/40 bg-accent-soft/50 p-6">
             <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Код</p>
-            <p className="mt-2 font-serif text-2xl font-bold">Баары так</p>
+            <p className="mt-2 font-serif text-2xl font-bold">{tr('Баары так', 'Всё точно')}</p>
             <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-              Шрифт, түс, кыймыл — сен эмне десең, ошол. Мультикти да ушинтип жасаса болот, сүрөт тартканды билбесең да.
+              {tr('Шрифт, түс, кыймыл — сен эмне десең, ошол. Мультикти да ушинтип жасаса болот, сүрөт тартканды билбесең да.', 'Шрифт, цвет, движение — как скажешь. Так же можно делать мультики, даже если не умеешь рисовать.')}
             </p>
           </div>
         </div>
@@ -97,7 +103,7 @@ export function Ji() {
 
       <section className="mt-20" aria-labelledby="caution">
         <h2 id="caution" className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-          Кайда этият болуш керек
+          {tr('Кайда этият болуш керек', 'Где нужно быть осторожным')}
         </h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {cautions.map((c) => {
@@ -108,7 +114,7 @@ export function Ji() {
                 <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{c.text}</p>
                 {p && (
                   <Link href={`/prompts#${p.id}`} className="mt-3 inline-flex min-h-10 items-center text-[14px] font-semibold text-accent hover:underline">
-                    Промпт: {p.title} →
+                    {tr('Промпт', 'Промпт')}: {p.title} →
                   </Link>
                 )}
               </div>
@@ -116,8 +122,10 @@ export function Ji() {
           })}
         </div>
         <p className="mt-8 rounded-2xl bg-ink px-6 py-5 font-serif text-xl leading-relaxed text-bg">
-          ЖИ сени алмаштырбайт. Бирок ЖИни колдонгон адам колдонбогон адамдын ордун ээлейт. Коркуш керек болгон нерсе — ЖИни
-          үйрөнбөй калуу.
+          {tr(
+            'ЖИ сени алмаштырбайт. Бирок ЖИни колдонгон адам колдонбогон адамдын ордун ээлейт. Коркуш керек болгон нерсе — ЖИни үйрөнбөй калуу.',
+            'ИИ тебя не заменит. Но человек, который пользуется ИИ, займёт место того, кто не пользуется. Бояться стоит не ИИ, а того, чтобы его не освоить.',
+          )}
         </p>
       </section>
     </main>

@@ -1,10 +1,13 @@
 import { useState } from 'react'
 import { Link, useTitle } from '../router'
-import { glossary } from '../content/glossary'
+import { useContent } from '../content/useContent'
+import { useTr } from '../i18n'
 import { PageHead } from '../components/Layout'
 
 export function Sozduk() {
-  useTitle('Сөздүк')
+  const tr = useTr()
+  const { glossary } = useContent()
+  useTitle(tr('Сөздүк', 'Словарь'))
   const [q, setQ] = useState('')
   const needle = q.trim().toLowerCase()
   const list = needle
@@ -13,8 +16,8 @@ export function Sozduk() {
 
   return (
     <main className="mx-auto max-w-3xl px-4 pt-12 sm:px-6 md:pt-16">
-      <PageHead kicker="Түшүнүксүз сөздөр" title="ЖИ сөздүгү">
-        <p>Промпт, токен, агент, артефакт… Ар бир сөз — жөнөкөй тил менен, бир-эки сүйлөм.</p>
+      <PageHead kicker={tr('Түшүнүксүз сөздөр', 'Непонятные слова')} title={tr('ЖИ сөздүгү', 'Словарь ИИ')}>
+        <p>{tr('Промпт, токен, агент, артефакт… Ар бир сөз — жөнөкөй тил менен, бир-эки сүйлөм.', 'Промпт, токен, агент, артефакт… Каждое слово — простым языком, в одном-двух предложениях.')}</p>
       </PageHead>
 
       <label className="mt-8 flex min-h-12 items-center gap-3 rounded-full border border-line bg-surface px-5 focus-within:border-accent/60">
@@ -22,12 +25,12 @@ export function Sozduk() {
           <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
           <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        <span className="sr-only">Сөз издөө</span>
+        <span className="sr-only">{tr('Сөз издөө', 'Поиск слова')}</span>
         <input
           type="search"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Издөө: промпт, токен, нейросеть…"
+          placeholder={tr('Издөө: промпт, токен, нейросеть…', 'Поиск: промпт, токен, нейросеть…')}
           className="w-full bg-transparent text-[16px] outline-none placeholder:text-ink-muted/70"
         />
       </label>
@@ -45,14 +48,14 @@ export function Sozduk() {
                 <>
                   {' '}
                   <Link href={t.link} className="font-semibold whitespace-nowrap text-accent hover:underline">
-                    Толугу →
+                    {tr('Толугу', 'Подробнее')} →
                   </Link>
                 </>
               )}
             </dd>
           </div>
         ))}
-        {list.length === 0 && <p className="py-10 text-center text-ink-muted">Табылган жок. Башкача жазып көр.</p>}
+        {list.length === 0 && <p className="py-10 text-center text-ink-muted">{tr('Табылган жок. Башкача жазып көр.', 'Ничего не найдено. Попробуй написать иначе.')}</p>}
       </dl>
     </main>
   )

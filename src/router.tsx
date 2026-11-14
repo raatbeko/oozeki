@@ -1,4 +1,5 @@
 import { useEffect, useState, type AnchorHTMLAttributes, type MouseEvent } from 'react'
+import { useLang } from './i18n'
 
 const EVENT = 'app:navigate'
 
@@ -40,7 +41,10 @@ export function Link({ href = '/', onClick, ...rest }: AnchorHTMLAttributes<HTML
 }
 
 export function useTitle(title: string) {
+  const { lang } = useLang()
   useEffect(() => {
-    document.title = title ? `${title} — ИИ кыргызча` : 'ИИ кыргызча — Claude, ChatGPT жана ИИ менен монтаж'
-  }, [title])
+    const brand = lang === 'ru' ? 'ИИ по-кыргызски' : 'ИИ кыргызча'
+    const home = lang === 'ru' ? 'ИИ по-кыргызски — Claude, ChatGPT и монтаж с ИИ' : 'ИИ кыргызча — Claude, ChatGPT жана ИИ менен монтаж'
+    document.title = title ? `${title} — ${brand}` : home
+  }, [title, lang])
 }

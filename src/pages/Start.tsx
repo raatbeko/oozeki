@@ -1,5 +1,6 @@
 import { Link, useTitle } from '../router'
 import { PageHead } from '../components/Layout'
+import { useLang, useTr } from '../i18n'
 
 const path = [
   {
@@ -52,16 +53,36 @@ const faq = [
   },
 ]
 
+const pathRu = [
+  { title: 'Что умеет ИИ', text: 'Тексты, перевод, документы, картинки, сайты, монтаж — что реально работает уже сейчас, и готовые промпты.', href: '/ji' },
+  { title: 'ChatGPT или Claude?', text: 'В чём разница и что нужно именно тебе — поймёшь за 3 минуты.', href: '/guides/chatgpt-vs-claude' },
+  { title: 'Если только начинаешь с Claude — 8 шагов', text: 'Регистрация, Chat и Code, модель, настройки, проекты, стиль, коннекторы, артефакты.', href: '/guides/claude-8-shag' },
+  { title: 'Повседневные промпты', text: 'Пост, перевод, документ, план. Копируй и сразу пользуйся.', href: '/prompts' },
+  { title: 'Монтаж с Claude', text: 'Следующий шаг, если хочешь. Один промпт — всё установится, а дальше Claude монтирует твоё видео.', href: '/guides/claude-montaj' },
+]
+
+const faqRu = [
+  { q: 'Можно пользоваться бесплатно?', a: 'У ChatGPT и Claude есть бесплатные версии — для начала хватит. Для Claude Code и монтажа нужен Claude Pro: 20$ в месяц, примерно 1 700 сом (проверено 14.11.2026).' },
+  { q: 'Нужно быть программистом?', a: 'Нет. Ты просто говоришь словами, ИИ сам пишет и делает. Одно условие: нужно уметь точно сказать, чего ты хочешь.' },
+  { q: 'Понимает ли он кыргызский?', a: 'И ChatGPT, и Claude понимают и пишут по-кыргызски, но иногда ошибаются. Важные тексты перечитывай сам.' },
+  { q: 'Какой нужен компьютер?', a: 'Для чата хватит телефона или любого браузера. Программа Claude Desktop работает на Windows и Mac.' },
+  { q: 'ИИ заберёт мою работу?', a: 'ИИ сам по себе никого не заменит — это просто инструмент. Но человек, который пользуется ИИ, займёт место того, кто не пользуется. Бояться стоит того, чтобы его не освоить.' },
+]
+
 export function Start() {
-  useTitle('Эмнеден баштайм')
+  const tr = useTr()
+  const { lang } = useLang()
+  const steps = lang === 'ru' ? pathRu : path
+  const questions = lang === 'ru' ? faqRu : faq
+  useTitle(tr('Эмнеден баштайм', 'С чего начать'))
   return (
     <main className="mx-auto max-w-3xl px-4 pt-12 sm:px-6 md:pt-16">
-      <PageHead kicker="Жаңы баштасаң" title="Эмнеден баштайм?">
-        <p>Ушул ирет менен өт. Ар бир шаг бир кечте бүтөт.</p>
+      <PageHead kicker={tr('Жаңы баштасаң', 'Если только начинаешь')} title={tr('Эмнеден баштайм?', 'С чего начать?')}>
+        <p>{tr('Ушул ирет менен өт. Ар бир шаг бир кечте бүтөт.', 'Проходи по порядку. Каждый шаг — на один вечер.')}</p>
       </PageHead>
 
       <ol className="relative mt-10 grid gap-3 before:absolute before:top-8 before:bottom-8 before:left-[27px] before:w-px before:bg-line">
-        {path.map((p, i) => (
+        {steps.map((p, i) => (
           <li key={p.title} className="relative">
             <Link
               href={p.href}
@@ -84,10 +105,10 @@ export function Start() {
 
       <section className="mt-20" aria-labelledby="faq">
         <h2 id="faq" className="font-serif text-3xl font-bold tracking-tight">
-          Көп берилген суроолор
+          {tr('Көп берилген суроолор', 'Частые вопросы')}
         </h2>
         <div className="mt-6 grid gap-3">
-          {faq.map((f) => (
+          {questions.map((f) => (
             <details key={f.q} className="group rounded-2xl border border-line bg-surface">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-3 font-serif text-[18px] font-bold">
                 {f.q}

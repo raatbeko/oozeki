@@ -2,6 +2,7 @@ import { Link, useTitle } from '../router'
 import { PageHead } from '../components/Layout'
 import { InstagramIcon, TelegramIcon, WhatsAppIcon } from '../components/Logos'
 import { site } from '../content/site'
+import { useLang, useTr } from '../i18n'
 
 const services = [
   {
@@ -36,25 +37,45 @@ const steps = [
   { title: 'Кийинки кадам', text: 'Эмнеден баштоо керек экенин, кайсы гайд жана промпт жардам берерин айтам.' },
 ]
 
+const servicesRu = [
+  { icon: '🖥️', title: 'Показываю на своём экране', text: 'Вживую показываю, как работают Claude, ChatGPT и Claude Code: куда нажимать, что они умеют и чего не умеют.', link: { href: '/guides/claude-8-shag', label: 'Гайд «8 шагов»' } },
+  { icon: '💬', title: 'Отвечаю на твои вопросы', text: 'Твоя работа, твои вопросы. Вместе на примерах разбираем, где ИИ тебе поможет, а где нет.' },
+  { icon: '🎬', title: 'Показываю, как монтирую', text: 'Показываю и объясняю свой процесс монтажа с ИИ от начала до конца. Потом сможешь повторить сам по гайду.', link: { href: '/guides/claude-montaj', label: 'Гайд по монтажу' } },
+  { icon: '🗺️', title: 'Решаем, с чего начать', text: 'Разбираюсь, что тебе нужно, и подсказываю следующие шаги: какой инструмент, какой гайд, какой промпт.', link: { href: '/start', label: 'С чего начать' } },
+]
+
+const stepsRu = [
+  { title: 'Пишешь', text: 'Что ждёшь от ИИ, что хочешь понять — хватит двух-трёх предложений.' },
+  { title: 'Назначаем время', text: 'Скажу удобное время и стоимость.' },
+  { title: 'Показываю', text: 'Показываю свой экран и объясняю на примерах. Есть время на вопросы.' },
+  { title: 'Следующий шаг', text: 'Подскажу, с чего начать, и какой гайд и промпт помогут.' },
+]
+
 export function Konsultaciya() {
+  const tr = useTr()
+  const { lang } = useLang()
+  const list = lang === 'ru' ? servicesRu : services
+  const flow = lang === 'ru' ? stepsRu : steps
   useTitle('Консультация')
   const dm = `https://ig.me/m/${site.handle}`
   return (
     <main className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 md:pt-16">
-      <PageHead kicker="Жеке жардам" title="Консультация">
+      <PageHead kicker={tr('Жеке жардам', 'Личная помощь')} title="Консультация">
         <p>
-          Бул — көрсөтүп, түшүндүрүү. Claude деген эмне, ал кантип иштейт жана сенин ишиңе эмнеси жарашат — ошону чогуу карап,
-          түшүнүп алабыз.
+          {tr(
+            'Бул — көрсөтүп, түшүндүрүү. Claude деген эмне, ал кантип иштейт жана сенин ишиңе эмнеси жарашат — ошону чогуу карап, түшүнүп алабыз.',
+            'Это показ и объяснение. Что такое Claude, как он работает и чем полезен именно тебе — разбираем вместе.',
+          )}
         </p>
       </PageHead>
 
       <p className="mt-6 max-w-3xl rounded-2xl border-l-4 border-gold bg-bg-soft px-5 py-4 text-[15px] leading-relaxed">
-        <span className="font-semibold">Ачык айтам: </span>
-        бир консультацияда даяр бот, сайт же автоматташтыруу жасалбайт. Максат — ЖИни түшүнүү жана туура багытты табуу.
+        <span className="font-semibold">{tr('Ачык айтам', 'Честно')}: </span>
+        {tr('бир консультацияда даяр бот, сайт же автоматташтыруу жасалбайт. Максат — ЖИни түшүнүү жана туура багытты табуу.', 'за одну консультацию не получится готовый бот, сайт или автоматизация. Цель — понять ИИ и найти правильное направление.')}
       </p>
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {services.map((s) => (
+        {list.map((s) => (
           <article key={s.title} className="flex flex-col rounded-2xl border border-line bg-surface p-6">
             <span className="grid size-12 place-items-center rounded-xl bg-bg-soft text-2xl" aria-hidden="true">
               {s.icon}
@@ -72,10 +93,10 @@ export function Konsultaciya() {
 
       <section className="mt-20" aria-labelledby="how">
         <h2 id="how" className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-          Кантип өтөт
+          {tr('Кантип өтөт', 'Как это проходит')}
         </h2>
         <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s, i) => (
+          {flow.map((s, i) => (
             <li key={s.title} className="rounded-2xl border border-line bg-bg-soft p-5">
               <span className="grid size-10 place-items-center rounded-full bg-accent font-serif text-lg font-bold text-white">{i + 1}</span>
               <p className="mt-4 font-serif text-xl font-bold">{s.title}</p>
@@ -87,10 +108,10 @@ export function Konsultaciya() {
 
       <section className="mt-20 rounded-3xl border border-line bg-surface p-6 text-center sm:p-12" aria-labelledby="write">
         <h2 id="write" className="font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-          Жаз — сүйлөшөбүз
+          {tr('Жаз — сүйлөшөбүз', 'Напиши — поговорим')}
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-[16px] leading-relaxed text-ink-muted">
-          Эмнени түшүнгүң келерин кыскача жаз. Баасын жана убактысын жазышканда айтам.
+          {tr('Эмнени түшүнгүң келерин кыскача жаз. Баасын жана убактысын жазышканда айтам.', 'Коротко напиши, что хочешь понять. Стоимость и время скажу в переписке.')}
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <a
@@ -115,11 +136,11 @@ export function Konsultaciya() {
             rel="noopener"
             className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line bg-surface px-6 font-semibold hover:border-accent/50"
           >
-            <InstagramIcon /> Директ
+            <InstagramIcon /> {tr('Директ', 'Директ')}
           </a>
         </div>
         <p className="mt-5 text-[15px] text-ink-muted">
-          Же түз чал: <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="font-semibold text-ink hover:text-accent">{site.phone}</a>
+          {tr('Же түз чал', 'Или просто позвони')}: <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="font-semibold text-ink hover:text-accent">{site.phone}</a>
         </p>
       </section>
     </main>

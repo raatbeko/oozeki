@@ -4,14 +4,40 @@ import { site } from '../content/site'
 import { InstagramIcon, TelegramIcon, WhatsAppIcon } from './Logos'
 import { Tunduk } from './Tunduk'
 import { useTheme } from '../theme'
+import { useLang, useTr } from '../i18n'
 
-export const nav = [
-  { href: '/start', label: 'Баштоо' },
-  { href: '/ji', label: 'ЖИ эмне кылат' },
-  { href: '/guides', label: 'Гайддар' },
-  { href: '/prompts', label: 'Промпттор' },
-  { href: '/sozduk', label: 'Сөздүк' },
-]
+export function useNav() {
+  const tr = useTr()
+  return [
+    { href: '/start', label: tr('Баштоо', 'Начать') },
+    { href: '/ji', label: tr('ЖИ эмне кылат', 'Что умеет ИИ') },
+    { href: '/guides', label: tr('Гайддар', 'Гайды') },
+    { href: '/prompts', label: tr('Промпттор', 'Промпты') },
+    { href: '/sozduk', label: tr('Сөздүк', 'Словарь') },
+  ]
+}
+
+function LangSwitch() {
+  const { lang, setLang } = useLang()
+  const btn = (l: 'ky' | 'ru', label: string) => (
+    <button
+      type="button"
+      onClick={() => setLang(l)}
+      aria-pressed={lang === l}
+      className={`min-h-8 rounded-full px-2.5 text-[12.5px] font-semibold transition-colors ${
+        lang === l ? 'bg-surface text-ink shadow-sm ring-1 ring-line' : 'text-ink-muted hover:text-ink'
+      }`}
+    >
+      {label}
+    </button>
+  )
+  return (
+    <div className="flex items-center rounded-full border border-line bg-bg-soft p-0.5" role="group" aria-label="Тил / Язык">
+      {btn('ky', 'КЫ')}
+      {btn('ru', 'РУ')}
+    </div>
+  )
+}
 
 const pill = (active: boolean) =>
   `inline-flex min-h-10 shrink-0 items-center rounded-full px-3.5 text-[14px] font-medium transition-colors ${
@@ -20,11 +46,12 @@ const pill = (active: boolean) =>
 
 function ThemeButton() {
   const [theme, setTheme] = useTheme()
+  const tr = useTr()
   const dark = theme === 'dark'
   return (
     <button
       type="button"
-      aria-label={dark ? 'Жарык тема' : 'Караңгы тема'}
+      aria-label={dark ? tr('Жарык тема', 'Светлая тема') : tr('Караңгы тема', 'Тёмная тема')}
       aria-pressed={dark}
       onClick={() => setTheme(dark ? 'light' : 'dark')}
       className="grid size-10 place-items-center rounded-full border border-line bg-bg-soft text-ink-muted transition-colors hover:text-ink"
@@ -49,15 +76,18 @@ function ThemeButton() {
 }
 
 export function Header({ path }: { path: string }) {
+  const tr = useTr()
+  const nav = useNav()
+  const konsult = { href: '/konsultaciya', label: tr('Консультация', 'Консультация') }
   const isActive = (href: string) => path === href || path.startsWith(href + '/')
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
-        <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label="Башкы бет">
+        <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={tr('Башкы бет', 'Главная')}>
           <Tunduk size={30} className="text-accent" />
-          <span className="font-serif text-[22px] font-bold tracking-tight">ИИ кыргызча</span>
+          <span className="font-serif text-[22px] font-bold tracking-tight max-[400px]:hidden">{tr('ИИ кыргызча', 'ИИ по-кыргызски')}</span>
         </Link>
-        <nav aria-label="Негизги меню" className="ml-auto hidden items-center gap-1 rounded-full bg-bg-soft p-1 lg:flex">
+        <nav aria-label={tr('Негизги меню', 'Главное меню')} className="ml-auto hidden items-center gap-1 rounded-full bg-bg-soft p-1 lg:flex">
           {nav.map((n) => (
             <Link key={n.href} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} className={pill(isActive(n.href))}>
               {n.label}
@@ -70,8 +100,9 @@ export function Header({ path }: { path: string }) {
             aria-current={isActive('/konsultaciya') ? 'page' : undefined}
             className="hidden min-h-10 items-center rounded-full bg-accent px-4 text-[14px] font-semibold text-white transition hover:brightness-110 sm:inline-flex"
           >
-            Консультация
+            {konsult.label}
           </Link>
+          <LangSwitch />
           <a
             href={site.instagram}
             target="_blank"
@@ -84,8 +115,8 @@ export function Header({ path }: { path: string }) {
           <ThemeButton />
         </div>
       </div>
-      <nav aria-label="Негизги меню" className="no-scrollbar flex gap-0.5 overflow-x-auto px-2 pb-2 lg:hidden">
-        {[...nav, { href: '/konsultaciya', label: 'Консультация' }].map((n) => (
+      <nav aria-label={tr('Негизги меню', 'Главное меню')} className="no-scrollbar flex gap-0.5 overflow-x-auto px-2 pb-2 lg:hidden">
+        {[...nav, konsult].map((n) => (
           <Link
             key={n.href}
             href={n.href}
@@ -119,31 +150,37 @@ export function SocialButtons() {
 }
 
 export function Footer() {
+  const tr = useTr()
+  const nav = useNav()
   return (
     <footer className="relative mt-28 border-t border-line bg-bg-soft/70">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-[1.4fr_1fr]">
         <div>
           <div className="flex items-center gap-3">
             <Tunduk size={34} className="text-accent" />
-            <p className="font-serif text-3xl font-bold tracking-tight">ИИ кыргызча</p>
+            <p className="font-serif text-3xl font-bold tracking-tight">{tr('ИИ кыргызча', 'ИИ по-кыргызски')}</p>
           </div>
           <p className="mt-4 max-w-md text-[15px] leading-relaxed text-ink-muted">
-            Жасалма интеллект эмне кыла алат жана аны кантип колдонуш керек — кыргызча, жөнөкөй сөз менен. Жаңы гайддар адегенде
-            Instagram'да чыгат.
+            {tr(
+              "Жасалма интеллект эмне кыла алат жана аны кантип колдонуш керек — кыргызча, жөнөкөй сөз менен. Жаңы гайддар адегенде Instagram'да чыгат.",
+              'Что умеет искусственный интеллект и как им пользоваться — простыми словами. Новые гайды сначала выходят в Instagram.',
+            )}
           </p>
           <div className="mt-6">
             <SocialButtons />
           </div>
         </div>
         <div className="grid content-start gap-1 text-[15px]">
-          {[{ href: '/', label: 'Башкы бет' }, ...nav, { href: '/konsultaciya', label: 'Консультация' }].map((n) => (
+          {[{ href: '/', label: tr('Башкы бет', 'Главная') }, ...nav, { href: '/konsultaciya', label: 'Консультация' }].map((n) => (
             <Link key={n.href} href={n.href} className="min-h-10 content-center text-ink-muted hover:text-accent">
               {n.label}
             </Link>
           ))}
           <p className="mt-4 text-[13px] leading-relaxed text-ink-muted/80">
-            Баалар жана интерфейс {site.checked} текшерилди. Claude жана ChatGPT тез жаңыланат — бир аз башкача болушу мүмкүн.
-            Скриншоттор — орусча интерфейстин макети.
+            {tr(
+              `Баалар жана интерфейс ${site.checked} текшерилди. Claude жана ChatGPT тез жаңыланат — бир аз башкача болушу мүмкүн. Скриншоттор — орусча интерфейстин макети.`,
+              `Цены и интерфейс проверены ${site.checked}. Claude и ChatGPT быстро обновляются — что-то может немного отличаться. Скриншоты — макет русского интерфейса.`,
+            )}
           </p>
         </div>
       </div>

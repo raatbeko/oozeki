@@ -49,6 +49,7 @@ html {
 
 body {
   min-height: 100dvh;
+  overflow-x: clip;
   background: linear-gradient(180deg, #faf8f3 0%, #f7f2e8 70%, #f4eddf 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;

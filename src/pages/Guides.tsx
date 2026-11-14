@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useTitle } from '../router'
-import { guides, topics, type Guide as GuideT } from '../content/guides'
-import { promptById } from '../content/prompts'
+import type { Guide as GuideT } from '../content/guides'
+import { useContent } from '../content/useContent'
+import { useTr } from '../i18n'
 import { GuideCard } from '../components/GuideCard'
 import { PromptCard } from '../components/Prompt'
 import { ShotFigure } from '../components/Shot'
@@ -11,11 +12,13 @@ import { PageHead } from '../components/Layout'
 import { SoonSection } from '../components/Soon'
 
 export function GuidesList() {
-  useTitle('Гайддар')
+  const tr = useTr()
+  const { guides } = useContent()
+  useTitle(tr('Гайддар', 'Гайды'))
   return (
     <main className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 md:pt-16">
-      <PageHead kicker="Кадам-кадам" title="Гайддар">
-        <p>Рилстеги гайддардын толук версиясы: ар бир шаг, скриншот жана көчүрүп ала турган промпт.</p>
+      <PageHead kicker={tr('Кадам-кадам', 'Шаг за шагом')} title={tr('Гайддар', 'Гайды')}>
+        <p>{tr('Рилстеги гайддардын толук версиясы: ар бир шаг, скриншот жана көчүрүп ала турган промпт.', 'Полные версии гайдов из рилсов: каждый шаг, скриншоты и промпты, которые можно скопировать.')}</p>
       </PageHead>
       <div className="mt-10 grid gap-5 sm:grid-cols-2">
         {guides.map((g) => (
@@ -23,9 +26,9 @@ export function GuidesList() {
         ))}
       </div>
       <section id="jakynda" className="mt-20 scroll-mt-28" aria-labelledby="soon">
-        <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Даярдалып жатат</p>
+        <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">{tr('Даярдалып жатат', 'В работе')}</p>
         <h2 id="soon" className="mt-2 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
-          Жакында
+          {tr('Жакында', 'Скоро')}
         </h2>
         <SoonSection />
       </section>
@@ -77,6 +80,8 @@ function Compare({ rows }: { rows: [string, string, string][] }) {
 }
 
 export function GuidePage({ guide }: { guide: GuideT }) {
+  const tr = useTr()
+  const { guides, topics, promptById } = useContent()
   useTitle(guide.title)
   const active = useActiveStep(guide.steps.length)
   const t = topics[guide.topic]
@@ -85,9 +90,9 @@ export function GuidePage({ guide }: { guide: GuideT }) {
 
   return (
     <main className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 md:pt-10">
-      <nav aria-label="Жол" className="text-[14px] text-ink-muted">
+      <nav aria-label={tr('Жол', 'Навигация')} className="text-[14px] text-ink-muted">
         <Link href="/guides" className="inline-flex min-h-11 items-center hover:text-accent">
-          ← Гайддар
+          ← {tr('Гайддар', 'Гайды')}
         </Link>
       </nav>
 
@@ -150,7 +155,7 @@ export function GuidePage({ guide }: { guide: GuideT }) {
                   )}
                   {s.tip && (
                     <p className="rounded-xl border-l-4 border-gold bg-bg-soft px-4 py-3 text-[15px] leading-relaxed">
-                      <span className="font-semibold">Кеңеш: </span>
+                      <span className="font-semibold">{tr('Кеңеш', 'Совет')}: </span>
                       {s.tip}
                     </p>
                   )}
@@ -174,7 +179,7 @@ export function GuidePage({ guide }: { guide: GuideT }) {
           {guide.outro && (
             <section className="grid items-center gap-8 rounded-3xl border border-line bg-bg-soft p-6 sm:p-10 md:grid-cols-[1fr_320px]">
               <div>
-                <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Даяр</p>
+                <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">{tr('Даяр', 'Готово')}</p>
                 <p className="mt-2 font-serif text-2xl leading-snug font-bold">{guide.outro.text}</p>
               </div>
               {guide.outro.shot && <ShotFigure shot={guide.outro.shot} />}
@@ -182,7 +187,7 @@ export function GuidePage({ guide }: { guide: GuideT }) {
           )}
 
           <section className="rounded-3xl border border-line bg-surface p-6 sm:p-8">
-            <p className="text-[15px] text-ink-muted">Рилсте кыскача көрсөткөм — Instagram'да сактап кой:</p>
+            <p className="text-[15px] text-ink-muted">{tr("Рилсте кыскача көрсөткөм — Instagram'да сактап кой:", 'Коротко показывал в рилсе — сохрани в Instagram:')}</p>
             <a
               href={site.instagram}
               target="_blank"
@@ -192,7 +197,7 @@ export function GuidePage({ guide }: { guide: GuideT }) {
               @{site.handle} →
             </a>
             <hr className="my-5 border-line" />
-            <p className="text-[12px] font-semibold tracking-[0.18em] text-ink-muted uppercase">Кийинки гайд</p>
+            <p className="text-[12px] font-semibold tracking-[0.18em] text-ink-muted uppercase">{tr('Кийинки гайд', 'Следующий гайд')}</p>
             <Link href={`/guides/${next.slug}`} className="mt-1 block min-h-11 font-serif text-xl font-bold hover:text-accent">
               {next.title} →
             </Link>
