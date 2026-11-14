@@ -21,7 +21,7 @@ export function Prompts() {
   }, [])
 
   return (
-    <main className="mx-auto max-w-4xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 md:pt-16">
       <PageHead kicker={tr('Көчүр да, кой', 'Скопируй и вставь')} title={tr('Промпттор', 'Промпты')}>
         <p>{tr("Рилстерде айткан промпттордун баары ушул жерде. «Көчүрүү» бас, ChatGPT же Claude'га кой. Кашаанын ичин [мындай] өзүңө алмаштыр.", 'Все промпты из рилсов — здесь. Нажми «Копировать» и вставь в ChatGPT или Claude. Текст в скобках [вот такой] замени на свой.')}</p>
       </PageHead>
