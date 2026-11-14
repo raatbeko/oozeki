@@ -19,37 +19,51 @@ export function MusicButton() {
   const [on, setOn] = useState(savedOn)
   const [playing, setPlaying] = useState(false)
 
+  // Үндү Web Audio аркылуу башкарабыз: iPhone'до audio.volume иштебейт, а gain иштейт
+  const graph = useRef<{ ctx: AudioContext; gain: GainNode } | null>(null)
+  const stopTimer = useRef<number | undefined>(undefined)
+
   const get = () => {
     if (!audio.current) {
       const a = new Audio('/music/bg.mp3')
       a.loop = true
       a.preload = 'none'
-      a.volume = 0
       a.addEventListener('play', () => setPlaying(true))
       a.addEventListener('pause', () => setPlaying(false))
       audio.current = a
+      try {
+        const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+        if (Ctx) {
+          const ctx = new Ctx()
+          const gain = ctx.createGain()
+          gain.gain.value = 0
+          ctx.createMediaElementSource(a).connect(gain).connect(ctx.destination)
+          graph.current = { ctx, gain }
+        } else {
+          a.volume = VOLUME
+        }
+      } catch {
+        a.volume = VOLUME
+      }
     }
     return audio.current
   }
 
-  const fadeTo = (a: HTMLAudioElement, target: number, done?: () => void) => {
-    const step = () => {
-      const d = target - a.volume
-      if (Math.abs(d) < 0.01) {
-        a.volume = target
-        done?.()
-        return
-      }
-      a.volume = Math.min(1, Math.max(0, a.volume + Math.sign(d) * 0.01))
-      window.setTimeout(step, 40)
-    }
-    step()
+  const ramp = (to: number, seconds: number) => {
+    const g = graph.current
+    if (!g) return
+    const now = g.ctx.currentTime
+    g.gain.gain.cancelScheduledValues(now)
+    g.gain.gain.setValueAtTime(g.gain.gain.value, now)
+    g.gain.gain.linearRampToValueAtTime(to, now + seconds)
   }
 
   const start = () => {
+    window.clearTimeout(stopTimer.current)
     const a = get()
+    graph.current?.ctx.resume().catch(() => {})
     a.play()
-      .then(() => fadeTo(a, VOLUME))
+      .then(() => ramp(VOLUME, 1.2))
       .catch(() => {
         /* браузер бөгөттөдү — кийинки басууну күтөбүз */
       })
@@ -57,7 +71,15 @@ export function MusicButton() {
 
   const stop = () => {
     const a = audio.current
-    if (a) fadeTo(a, 0, () => a.pause())
+    if (!a) return
+    window.clearTimeout(stopTimer.current)
+    if (graph.current) {
+      ramp(0, 0.25)
+      stopTimer.current = window.setTimeout(() => a.pause(), 280)
+    } else {
+      a.pause()
+    }
+    setPlaying(false)
   }
 
   // Күйүк болсо — биринчи басууда баштайбыз
