@@ -119,8 +119,16 @@ export async function POST(request: Request): Promise<Response> {
         }
       } catch (err) {
         console.error('chat error', err instanceof Anthropic.APIError ? `${err.status} ${err.message}` : err)
+        // Кыска код (кайсы ката экенин түшүнүү үчүн), деталдар жок
+        const code =
+          err instanceof Anthropic.APIError
+            ? `${err.status ?? 'net'}${(err.error as { error?: { type?: string } } | undefined)?.error?.type ? ` ${(err.error as { error: { type: string } }).error.type}` : ''}`
+            : 'x'
         controller.enqueue(
-          encoder.encode(lang === 'ru' ? '\n\n⚠️ Помощник сейчас недоступен. Попробуй позже.' : '\n\n⚠️ Жардамчы азыр иштебей турат. Бир аздан кийин кайра жазып көр.'),
+          encoder.encode(
+            (lang === 'ru' ? '\n\n⚠️ Помощник сейчас недоступен. Попробуй позже.' : '\n\n⚠️ Жардамчы азыр иштебей турат. Бир аздан кийин кайра жазып көр.') +
+              ` (${code})`,
+          ),
         )
       } finally {
         controller.close()
