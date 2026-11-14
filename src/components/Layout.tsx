@@ -85,7 +85,7 @@ export function Header({ path }: { path: string }) {
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex min-h-11 shrink-0 items-center gap-2.5" aria-label={tr('Башкы бет', 'Главная')}>
           <Tunduk size={30} className="text-accent" />
-          <span className="font-serif text-[22px] font-bold tracking-tight max-[400px]:hidden">{tr('ИИ кыргызча', 'ИИ по-кыргызски')}</span>
+          <span className="hidden font-serif text-[22px] font-bold tracking-tight sm:inline">{tr('ИИ кыргызча', 'ИИ по-кыргызски')}</span>
         </Link>
         <nav aria-label={tr('Негизги меню', 'Главное меню')} className="ml-auto hidden items-center gap-1 rounded-full bg-bg-soft p-1 lg:flex">
           {nav.map((n) => (
@@ -94,11 +94,11 @@ export function Header({ path }: { path: string }) {
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2 lg:ml-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 lg:ml-2">
           <Link
             href="/konsultaciya"
             aria-current={isActive('/konsultaciya') ? 'page' : undefined}
-            className="hidden min-h-10 items-center rounded-full bg-accent px-4 text-[14px] font-semibold text-white transition hover:brightness-110 sm:inline-flex"
+            className="inline-flex min-h-10 shrink-0 items-center rounded-full bg-accent px-3 text-[13px] font-semibold text-white transition hover:brightness-110 sm:px-4 sm:text-[14px]"
           >
             {konsult.label}
           </Link>
@@ -116,7 +116,7 @@ export function Header({ path }: { path: string }) {
         </div>
       </div>
       <nav aria-label={tr('Негизги меню', 'Главное меню')} className="no-scrollbar flex gap-0.5 overflow-x-auto px-2 pb-2 lg:hidden">
-        {[...nav, konsult].map((n) => (
+        {nav.map((n) => (
           <Link
             key={n.href}
             href={n.href}
