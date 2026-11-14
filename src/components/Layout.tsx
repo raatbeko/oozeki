@@ -5,6 +5,7 @@ import { InstagramIcon, TelegramIcon, WhatsAppIcon } from './Logos'
 import { Tunduk } from './Tunduk'
 import { useTheme } from '../theme'
 import { useLang, useTr } from '../i18n'
+import { MusicButton } from './Music'
 
 export function useNav() {
   const tr = useTr()
@@ -108,10 +109,11 @@ export function Header({ path }: { path: string }) {
             target="_blank"
             rel="noopener"
             aria-label="Instagram"
-            className="grid size-10 place-items-center rounded-full border border-line bg-bg-soft text-ink-muted transition-colors hover:text-accent"
+            className="hidden size-10 place-items-center rounded-full border border-line bg-bg-soft text-ink-muted transition-colors hover:text-accent sm:grid"
           >
             <InstagramIcon size={17} />
           </a>
+          <MusicButton />
           <ThemeButton />
         </div>
       </div>

@@ -131,3 +131,14 @@ body::before {
   mask-image: radial-gradient(ellipse 46% 34% at 50% 50%, rgb(0 0 0 / 0.18) 0%, rgb(0 0 0 / 0.35) 55%, #000 100%);
   -webkit-mask-image: radial-gradient(ellipse 46% 34% at 50% 50%, rgb(0 0 0 / 0.18) 0%, rgb(0 0 0 / 0.35) 55%, #000 100%);
 }
+
+/* Музыка ойноп жатканда — кичинекей эквалайзер */
+@keyframes oz-bar {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
