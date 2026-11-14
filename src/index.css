@@ -629,3 +629,18 @@ html[data-nav-dir='back']::view-transition-new(page) {
     transform: translateY(-3px);
   }
 }
+
+/* Чаттан же шилтемеден келгенде — керектүү бөлүм бир аз жарыктанат */
+.oz-flash {
+  border-radius: 18px;
+  animation: oz-flash 2.4s ease-out;
+}
+@keyframes oz-flash {
+  0%,
+  35% {
+    box-shadow: 0 0 0 3px var(--color-accent), 0 0 0 10px rgb(215 90 65 / 0.18);
+  }
+  100% {
+    box-shadow: 0 0 0 3px transparent, 0 0 0 10px transparent;
+  }
+}

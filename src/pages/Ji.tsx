@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { BackButton } from '../components/BackButton'
-import { Link, useTitle } from '../router'
+import { Link, useTitle, HASH_EVENT } from '../router'
 import type { Ability } from '../content/abilities'
 import { useContent } from '../content/useContent'
 import { useTr } from '../i18n'
@@ -161,6 +161,15 @@ export function Ji() {
     return abilities.some((x) => x.id === id) ? id : null
   })
   const opened = abilities.find((x) => x.id === openId)
+  // Ошол эле бетте #id шилтемеси басылса (мисалы, чаттан) — попапты ачабыз
+  useEffect(() => {
+    const onHash = (e: Event) => {
+      const id = (e as CustomEvent).detail as string
+      if (abilities.some((x) => x.id === id)) setOpenId(id)
+    }
+    window.addEventListener(HASH_EVENT, onHash)
+    return () => window.removeEventListener(HASH_EVENT, onHash)
+  }, [abilities])
   return (
     <main className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 md:pt-10">
       <BackButton fallback="/" />

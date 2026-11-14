@@ -35,6 +35,27 @@ function withTransition(dir: NavDir, update: () => void) {
   })
 }
 
+/** #якорго түшүү: элемент пайда болгончо күтөбүз, ага түшөбүз, бир аз жарыктандырабыз
+ *  жана 'oz:hash' окуясын жиберебиз (промпт же «ЖИ эмне кылат» карточкасы өзү ачылат). */
+export const HASH_EVENT = 'oz:hash'
+export function focusHash(id: string) {
+  let tries = 0
+  const tick = () => {
+    const el = document.getElementById(id)
+    if (!el) {
+      if (tries++ < 40) window.setTimeout(tick, 50)
+      return
+    }
+    el.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' })
+    el.classList.remove('oz-flash')
+    void el.offsetWidth
+    el.classList.add('oz-flash')
+    window.setTimeout(() => el.classList.remove('oz-flash'), 2600)
+    window.dispatchEvent(new CustomEvent(HASH_EVENT, { detail: id }))
+  }
+  tick()
+}
+
 function commit() {
   window.dispatchEvent(new Event(EVENT))
 }
@@ -49,7 +70,7 @@ export function navigate(to: string, dir?: NavDir) {
     lastPath = toPath
     commit()
     if (hash) {
-      requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior }))
+      focusHash(decodeURIComponent(hash))
     } else {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
     }

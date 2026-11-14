@@ -153,9 +153,8 @@ export function ChatWidget() {
     }
   }
 
-  const closeOnNavigate = () => {
-    if (window.matchMedia('(max-width: 639px)').matches) setOpen(false)
-  }
+  // Шилтеме басылганда чат жыйналат — керектүү бөлүм көрүнүп калсын (жазышуу сакталат)
+  const closeOnNavigate = () => setOpen(false)
 
   return (
     <>

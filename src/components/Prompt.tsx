@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import type { Prompt } from '../content/prompts'
-import { Link } from '../router'
+import { Link, HASH_EVENT } from '../router'
 import { useContent } from '../content/useContent'
 import { useTr } from '../i18n'
 
@@ -158,9 +158,19 @@ export function PromptCard({ prompt, showGuide = false, popup = false }: { promp
     }
   })
 
-  // Шилтеме #id менен келсе — ошол промпт ачык турат
+  // Шилтеме #id менен келсе — ошол промпт ачык турат (ошол эле беттеги шилтемеде да — HASH_EVENT)
   useEffect(() => {
-    if (popup && decodeURIComponent(location.hash.slice(1)) === prompt.id) openPop()
+    if (decodeURIComponent(location.hash.slice(1)) === prompt.id) {
+      if (popup) openPop()
+      else setOpen(true)
+    }
+    const onHash = (e: Event) => {
+      if ((e as CustomEvent).detail !== prompt.id) return
+      if (popup) openPop()
+      else setOpen(true)
+    }
+    window.addEventListener(HASH_EVENT, onHash)
+    return () => window.removeEventListener(HASH_EVENT, onHash)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

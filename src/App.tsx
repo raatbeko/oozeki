@@ -1,4 +1,4 @@
-import { Link, usePath, useTitle } from './router'
+import { Link, usePath, useTitle, focusHash } from './router'
 import { Header, Footer } from './components/Layout'
 import { Home } from './pages/Home'
 import { Start } from './pages/Start'
@@ -50,7 +50,7 @@ export default function App() {
   // Шилтемеде #якорь болсо — бет чыккандан кийин ошого түшөбүз
   useEffect(() => {
     const id = decodeURIComponent(location.hash.slice(1))
-    if (id) window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior }), 60)
+    if (id) focusHash(id)
   }, [path])
   return (
     <>
