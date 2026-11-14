@@ -93,6 +93,7 @@ export async function POST(request: Request): Promise<Response> {
 
   // Ачкыч workspace'ке байланбаган болсо — ANTHROPIC_WORKSPACE_ID (wrkspc_…) аркылуу көрсөтөбүз
   const workspace = process.env.ANTHROPIC_WORKSPACE_ID?.trim()
+  const debug = new URL(request.url).searchParams.has('debug')
   const client = new Anthropic(workspace ? { defaultHeaders: { 'anthropic-workspace-id': workspace } } : {})
   const encoder = new TextEncoder()
 
@@ -124,7 +125,11 @@ export async function POST(request: Request): Promise<Response> {
         // Кыска код (кайсы ката экенин түшүнүү үчүн), деталдар жок
         const code =
           err instanceof Anthropic.APIError
-            ? `${err.status ?? 'net'}${(err.error as { error?: { type?: string } } | undefined)?.error?.type ? ` ${(err.error as { error: { type: string } }).error.type}` : ''}`
+            ? `${err.status ?? 'net'} ${
+                debug
+                  ? String((err.error as { error?: { message?: string } } | undefined)?.error?.message ?? err.message).slice(0, 300)
+                  : ((err.error as { error?: { type?: string } } | undefined)?.error?.type ?? '')
+              }`
             : 'x'
         controller.enqueue(
           encoder.encode(
