@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BackButton } from '../components/BackButton'
 import { Link, useTitle } from '../router'
 import type { Ability } from '../content/abilities'
 import { useContent } from '../content/useContent'
@@ -60,7 +61,8 @@ export function Ji() {
   const { abilities, cautions, promptById } = useContent()
   useTitle(tr('ЖИ эмне кыла алат', 'Что умеет ИИ'))
   return (
-    <main className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 md:pt-10">
+      <BackButton fallback="/" />
       <PageHead kicker={tr('Жасалма интеллект', 'Искусственный интеллект')} title={tr('ЖИ эмне кыла алат?', 'Что умеет ИИ?')}>
         <p>
           {tr(

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { BackButton } from '../components/BackButton'
 import { Link, useTitle } from '../router'
 import type { Guide as GuideT } from '../content/guides'
 import { useContent } from '../content/useContent'
@@ -16,7 +17,8 @@ export function GuidesList() {
   const { guides } = useContent()
   useTitle(tr('Гайддар', 'Гайды'))
   return (
-    <main className="mx-auto max-w-6xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 md:pt-10">
+      <BackButton fallback="/" />
       <PageHead kicker={tr('Кадам-кадам', 'Шаг за шагом')} title={tr('Гайддар', 'Гайды')}>
         <p>{tr('Рилстеги гайддардын толук версиясы: ар бир шаг, скриншот жана көчүрүп ала турган промпт.', 'Полные версии гайдов из рилсов: каждый шаг, скриншоты и промпты, которые можно скопировать.')}</p>
       </PageHead>
@@ -90,11 +92,7 @@ export function GuidePage({ guide }: { guide: GuideT }) {
 
   return (
     <main className="mx-auto max-w-6xl px-4 pt-6 sm:px-6 md:pt-10">
-      <nav aria-label={tr('Жол', 'Навигация')} className="text-[14px] text-ink-muted">
-        <Link href="/guides" className="inline-flex min-h-11 items-center hover:text-accent">
-          ← {tr('Гайддар', 'Гайды')}
-        </Link>
-      </nav>
+      <BackButton fallback="/guides" />
 
       <PageHead kicker={t.label} title={guide.title}>
         <p>{guide.intro}</p>

@@ -1,4 +1,5 @@
 import { Link, useTitle } from '../router'
+import { BackButton } from '../components/BackButton'
 import { PageHead } from '../components/Layout'
 import { useLang, useTr } from '../i18n'
 
@@ -76,7 +77,8 @@ export function Start() {
   const questions = lang === 'ru' ? faqRu : faq
   useTitle(tr('Эмнеден баштайм', 'С чего начать'))
   return (
-    <main className="mx-auto max-w-3xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-3xl px-4 pt-6 sm:px-6 md:pt-10">
+      <BackButton fallback="/" />
       <PageHead kicker={tr('Жаңы баштасаң', 'Если только начинаешь')} title={tr('Эмнеден баштайм?', 'С чего начать?')}>
         <p>{tr('Ушул ирет менен өт. Ар бир шаг бир кечте бүтөт.', 'Проходи по порядку. Каждый шаг — на один вечер.')}</p>
       </PageHead>

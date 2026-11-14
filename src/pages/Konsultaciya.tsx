@@ -1,4 +1,5 @@
 import { Link, useTitle } from '../router'
+import { BackButton } from '../components/BackButton'
 import { PageHead } from '../components/Layout'
 import { InstagramIcon, TelegramIcon, WhatsAppIcon } from '../components/Logos'
 import { site } from '../content/site'
@@ -59,7 +60,8 @@ export function Konsultaciya() {
   useTitle('Консультация')
   const dm = `https://ig.me/m/${site.handle}`
   return (
-    <main className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-5xl px-4 pt-6 sm:px-6 md:pt-10">
+      <BackButton fallback="/" />
       <PageHead kicker={tr('Жеке жардам', 'Личная помощь')} title="Консультация">
         <p>
           {tr(

@@ -5,7 +5,7 @@ const EVENT = 'app:navigate'
 
 export function navigate(to: string) {
   if (to === location.pathname + location.hash) return
-  history.pushState({}, '', to)
+  history.pushState({ oz: 1 }, '', to) // сайттын ичиндеги өтүү — «Артка» ушуну колдонот
   window.dispatchEvent(new Event(EVENT))
   const hash = to.split('#')[1]
   if (hash) {

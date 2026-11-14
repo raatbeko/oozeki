@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BackButton } from '../components/BackButton'
 import { Link, useTitle } from '../router'
 import { useContent } from '../content/useContent'
 import { useTr } from '../i18n'
@@ -15,7 +16,8 @@ export function Sozduk() {
     : glossary
 
   return (
-    <main className="mx-auto max-w-3xl px-4 pt-12 sm:px-6 md:pt-16">
+    <main className="mx-auto max-w-3xl px-4 pt-6 sm:px-6 md:pt-10">
+      <BackButton fallback="/" />
       <PageHead kicker={tr('Түшүнүксүз сөздөр', 'Непонятные слова')} title={tr('ЖИ сөздүгү', 'Словарь ИИ')}>
         <p>{tr('Промпт, токен, агент, артефакт… Ар бир сөз — жөнөкөй тил менен, бир-эки сүйлөм.', 'Промпт, токен, агент, артефакт… Каждое слово — простым языком, в одном-двух предложениях.')}</p>
       </PageHead>
