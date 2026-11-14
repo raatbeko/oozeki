@@ -10,6 +10,7 @@ export const nav = [
   { href: '/ji', label: 'ЖИ эмне кылат' },
   { href: '/guides', label: 'Гайддар' },
   { href: '/prompts', label: 'Промпттор' },
+  { href: '/sozduk', label: 'Сөздүк' },
 ]
 
 const pill = (active: boolean) =>
@@ -56,14 +57,21 @@ export function Header({ path }: { path: string }) {
           <Tunduk size={30} className="text-accent" />
           <span className="font-serif text-[22px] font-bold tracking-tight">ИИ кыргызча</span>
         </Link>
-        <nav aria-label="Негизги меню" className="ml-auto hidden items-center gap-1 rounded-full bg-bg-soft p-1 md:flex">
+        <nav aria-label="Негизги меню" className="ml-auto hidden items-center gap-1 rounded-full bg-bg-soft p-1 lg:flex">
           {nav.map((n) => (
             <Link key={n.href} href={n.href} aria-current={isActive(n.href) ? 'page' : undefined} className={pill(isActive(n.href))}>
               {n.label}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2 md:ml-2">
+        <div className="ml-auto flex items-center gap-2 lg:ml-2">
+          <Link
+            href="/konsultaciya"
+            aria-current={isActive('/konsultaciya') ? 'page' : undefined}
+            className="hidden min-h-10 items-center rounded-full bg-accent px-4 text-[14px] font-semibold text-white transition hover:brightness-110 sm:inline-flex"
+          >
+            Консультация
+          </Link>
           <a
             href={site.instagram}
             target="_blank"
@@ -76,8 +84,8 @@ export function Header({ path }: { path: string }) {
           <ThemeButton />
         </div>
       </div>
-      <nav aria-label="Негизги меню" className="no-scrollbar flex gap-0.5 overflow-x-auto px-2 pb-2 md:hidden">
-        {nav.map((n) => (
+      <nav aria-label="Негизги меню" className="no-scrollbar flex gap-0.5 overflow-x-auto px-2 pb-2 lg:hidden">
+        {[...nav, { href: '/konsultaciya', label: 'Консультация' }].map((n) => (
           <Link
             key={n.href}
             href={n.href}
@@ -130,7 +138,7 @@ export function Footer() {
           </div>
         </div>
         <div className="grid content-start gap-1 text-[15px]">
-          {[{ href: '/', label: 'Башкы бет' }, ...nav].map((n) => (
+          {[{ href: '/', label: 'Башкы бет' }, ...nav, { href: '/konsultaciya', label: 'Консультация' }].map((n) => (
             <Link key={n.href} href={n.href} className="min-h-10 content-center text-ink-muted hover:text-accent">
               {n.label}
             </Link>

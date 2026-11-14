@@ -8,7 +8,7 @@ export function navigate(to: string) {
   window.dispatchEvent(new Event(EVENT))
   const hash = to.split('#')[1]
   if (hash) {
-    requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView())
+    requestAnimationFrame(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior }))
   } else {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
   }

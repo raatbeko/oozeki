@@ -5,6 +5,9 @@ import { Start } from './pages/Start'
 import { GuidesList, GuidePage } from './pages/Guides'
 import { Prompts } from './pages/Prompts'
 import { Ji } from './pages/Ji'
+import { Sozduk } from './pages/Sozduk'
+import { Konsultaciya } from './pages/Konsultaciya'
+import { useEffect } from 'react'
 import { guideBySlug } from './content/guides'
 import { OrnamentBackground } from './components/OrnamentBackground'
 
@@ -27,6 +30,8 @@ function Route({ path }: { path: string }) {
   if (path === '/guides') return <GuidesList />
   if (path === '/prompts') return <Prompts />
   if (path === '/ji') return <Ji />
+  if (path === '/sozduk') return <Sozduk />
+  if (path === '/konsultaciya') return <Konsultaciya />
   const m = path.match(/^\/guides\/([\w-]+)$/)
   if (m) {
     const g = guideBySlug(m[1])
@@ -37,6 +42,11 @@ function Route({ path }: { path: string }) {
 
 export default function App() {
   const path = usePath()
+  // Шилтемеде #якорь болсо — бет чыккандан кийин ошого түшөбүз
+  useEffect(() => {
+    const id = decodeURIComponent(location.hash.slice(1))
+    if (id) window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior }), 60)
+  }, [path])
   return (
     <>
       <a href="#content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-surface focus:p-2">

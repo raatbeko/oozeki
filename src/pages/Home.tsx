@@ -8,6 +8,7 @@ import { ClaudeLogo, ChatGPTLogo } from '../components/Logos'
 import { SocialButtons } from '../components/Layout'
 import { Tunduk } from '../components/Tunduk'
 import { AbilityCard } from './Ji'
+import { SoonSection } from '../components/Soon'
 
 function SectionHead({ kicker, title, href, more }: { kicker: string; title: string; href?: string; more?: string }) {
   return (
@@ -83,6 +84,11 @@ export function Home() {
           </div>
         </section>
 
+        <section className="pt-20 md:pt-28" aria-label="Жакында">
+          <SectionHead kicker="Даярдалып жатат" title="Жакында" href="/guides#jakynda" more="Баары" />
+          <SoonSection limit={3} />
+        </section>
+
         <section className="pt-20 md:pt-28" aria-label="Промпттор">
           <SectionHead kicker="Көчүр да, кой" title="Даяр промпттор" href="/prompts" more="Бардык промпттор" />
           <div className="mt-8 grid items-start gap-5 lg:grid-cols-2">
@@ -104,7 +110,12 @@ export function Home() {
                 жөнөкөй сөз менен көрсөтөм. Рилстерде кыскача, бул жерде толугу менен.
               </p>
             </div>
-            <SocialButtons />
+            <div className="grid gap-3">
+              <SocialButtons />
+              <Link href="/konsultaciya" className="inline-flex min-h-11 items-center text-[15px] font-semibold text-accent hover:underline">
+                Жеке консультация →
+              </Link>
+            </div>
           </div>
         </section>
       </main>

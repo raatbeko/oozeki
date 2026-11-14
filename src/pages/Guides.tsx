@@ -8,6 +8,7 @@ import { ShotFigure } from '../components/Shot'
 import { site } from '../content/site'
 import { ChatGPTLogo, ClaudeLogo } from '../components/Logos'
 import { PageHead } from '../components/Layout'
+import { SoonSection } from '../components/Soon'
 
 export function GuidesList() {
   useTitle('Гайддар')
@@ -21,6 +22,13 @@ export function GuidesList() {
           <GuideCard key={g.slug} guide={g} />
         ))}
       </div>
+      <section id="jakynda" className="mt-20 scroll-mt-28" aria-labelledby="soon">
+        <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Даярдалып жатат</p>
+        <h2 id="soon" className="mt-2 font-serif text-3xl font-bold tracking-tight sm:text-4xl">
+          Жакында
+        </h2>
+        <SoonSection />
+      </section>
     </main>
   )
 }

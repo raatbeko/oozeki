@@ -13,7 +13,7 @@ export function Prompts() {
   // /prompts#id менен келсе — ошол промптко түшүрөбүз
   useEffect(() => {
     const id = location.hash.slice(1)
-    if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView())
+    if (id) requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({ behavior: 'instant' as ScrollBehavior }))
   }, [])
 
   return (
