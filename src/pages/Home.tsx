@@ -108,8 +108,8 @@ export function Home() {
               <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">Автор</p>
               <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight">Салам, мен Раатбек</h2>
               <p className="mt-3 max-w-2xl text-[16px] leading-relaxed text-ink-muted">
-                4 жыл программист болуп иштегем. Азыр ЖИ менен иштейм, видеолорумду да ЖИ менен монтаждайм — жана муну кыргызча,
-                жөнөкөй сөз менен көрсөтөм. Рилстерде кыскача, бул жерде толугу менен.
+                Мен программистмин. Жасалма интеллектке кызыгам жана аны күн сайын жашоомдо колдоном. Максатым — муну кыргыз элине
+                жеткирүү: кыргызча, жөнөкөй тил менен. Рилстерде кыскача, бул жерде толугу менен.
               </p>
             </div>
             <div className="grid gap-3">
