@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { Link } from '../router'
 import { site } from '../content/site'
-import { InstagramIcon, TelegramIcon } from './Logos'
+import { InstagramIcon, TelegramIcon, WhatsAppIcon } from './Logos'
 import { Tunduk } from './Tunduk'
 import { useTheme } from '../theme'
 
@@ -102,20 +102,18 @@ export function Header({ path }: { path: string }) {
 
 export function SocialButtons() {
   const base = 'inline-flex min-h-12 items-center gap-2.5 rounded-full px-5 font-semibold transition-colors'
+  const ghost = `${base} border border-line bg-surface hover:border-accent/50`
   return (
     <div className="flex flex-wrap gap-3">
       <a href={site.instagram} target="_blank" rel="noopener" className={`${base} bg-accent text-white hover:brightness-110`}>
         <InstagramIcon /> @{site.handle}
       </a>
-      {site.telegram ? (
-        <a href={site.telegram} target="_blank" rel="noopener" className={`${base} border border-line bg-surface hover:border-accent/50`}>
-          <TelegramIcon /> Telegram
-        </a>
-      ) : (
-        <span className={`${base} cursor-default border border-dashed border-line text-ink-muted`} title="Шилтеме жакында">
-          <TelegramIcon /> Telegram — жакында
-        </span>
-      )}
+      <a href={site.telegram} target="_blank" rel="noopener" className={ghost}>
+        <TelegramIcon /> Telegram
+      </a>
+      <a href={site.whatsapp} target="_blank" rel="noopener" className={ghost}>
+        <WhatsAppIcon /> WhatsApp
+      </a>
     </div>
   )
 }

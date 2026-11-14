@@ -1,39 +1,39 @@
 import { Link, useTitle } from '../router'
 import { PageHead } from '../components/Layout'
-import { InstagramIcon, TelegramIcon } from '../components/Logos'
+import { InstagramIcon, TelegramIcon, WhatsAppIcon } from '../components/Logos'
 import { site } from '../content/site'
 
 const services = [
   {
-    icon: '🎬',
-    title: 'ИИ менен монтажды орнотуп берем',
-    text: 'Сенин компьютериңде Claude Code, Remotion, FFmpeg жана Whisper\'ди орнотобуз, стилиңди жазабыз. Биринчи видеоңду чогуу монтаждайбыз.',
-    link: { href: '/guides/claude-montaj', label: 'Гайд менен өзүң да кылсаң болот' },
-  },
-  {
-    icon: '🧭',
-    title: 'Claude\'ду сенин ишиңе ылайыктайм',
-    text: 'Проект, инструкция, стиль, коннекторлор — сенин ишиңе жараша. Кайсы жерде ЖИ чындап убакыт үнөмдөй турганын табабыз.',
+    icon: '🖥️',
+    title: 'Экранымда көрсөтөм',
+    text: 'Claude, ChatGPT жана Claude Code кантип иштээрин жандуу көрсөтөм: кайда эмне басылат, эмне кыла алат, эмне кыла албайт.',
     link: { href: '/guides/claude-8-shag', label: '8 шаг гайды' },
   },
   {
-    icon: '📊',
-    title: 'Бизнес үчүн «ИИ-отдел»',
-    text: 'Маркетплейс же дүкөн үчүн: күнүмдүк отчёт, товардын калдыгы, реклама, Telegram\'га билдирүү. Адегенде эмне керек экенин тактайбыз, анан гана курабыз.',
-    link: { href: '/prompts#biznes-wb', label: 'Промптту көрүү' },
+    icon: '💬',
+    title: 'Суроолоруңа жооп берем',
+    text: 'Сенин ишиң, сенин суроолоруң. ЖИ сага кайда жардам бере алат, кайда жок — мисалдар менен чогуу карайбыз.',
   },
   {
-    icon: '💬',
-    title: 'Дүкөнгө WhatsApp-бот',
-    text: 'Кардарлардын суроосуна жооп берет, бааны сенин таблицаңдан алат. Билбеген нерсени ойлоп таппайт — сага өткөрүп берет.',
+    icon: '🎬',
+    title: 'Монтажымды кантип кылам — көрсөтөм',
+    text: 'ИИ менен монтаж процессимди башынан аягына көрсөтүп, түшүндүрөм. Кийин гайд менен өзүң кайталасаң болот.',
+    link: { href: '/guides/claude-montaj', label: 'Монтаж гайды' },
+  },
+  {
+    icon: '🗺️',
+    title: 'Эмнеден баштоону тактайбыз',
+    text: 'Сен эмне каалаганыңды түшүнүп, кийинки кадамдарды айтам: кайсы курал, кайсы гайд, кайсы промпт.',
+    link: { href: '/start', label: 'Баштоо' },
   },
 ]
 
 const steps = [
-  { title: 'Жазасың', text: 'Эмне кылгың келет, азыр эмнеге көп убакыт кетет — эки-үч сүйлөм жетет.' },
-  { title: 'Тактайбыз', text: 'Чогуу эмне кылаарыбызды, канча убакыт кетерин жана баасын айтам.' },
-  { title: 'Кылабыз', text: 'Сенин компьютериңде, сенин маалыматың менен. Ар бир кадамды түшүндүрөм.' },
-  { title: 'Текшеребиз', text: 'Иштеп калганын көрөбүз. Андан кийин өзүң колдоно аласың.' },
+  { title: 'Жазасың', text: 'ЖИден эмне күтөсүң, эмнени түшүнгүң келет — эки-үч сүйлөм жетет.' },
+  { title: 'Убакыт белгилейбиз', text: 'Ыңгайлуу убакытты жана баасын айтам.' },
+  { title: 'Көрсөтөм', text: 'Экранымды көрсөтүп, мисалдар менен түшүндүрөм. Суроо бериш үчүн убакыт бар.' },
+  { title: 'Кийинки кадам', text: 'Эмнеден баштоо керек экенин, кайсы гайд жана промпт жардам берерин айтам.' },
 ]
 
 export function Konsultaciya() {
@@ -43,10 +43,15 @@ export function Konsultaciya() {
     <main className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 md:pt-16">
       <PageHead kicker="Жеке жардам" title="Консультация">
         <p>
-          Гайддар жетпесе — чогуу кылабыз. ЖИни мен «кеңседеги жаңы кызматкер» катары карайм: ага туура тапшырма берип, керектүү папка
-          жана куралдарды берсең, ал сен үчүн иштейт. Ошону сенин ишиңе курабыз.
+          Бул — көрсөтүп, түшүндүрүү. Claude деген эмне, ал кантип иштейт жана сенин ишиңе эмнеси жарашат — ошону чогуу карап,
+          түшүнүп алабыз.
         </p>
       </PageHead>
+
+      <p className="mt-6 max-w-3xl rounded-2xl border-l-4 border-gold bg-bg-soft px-5 py-4 text-[15px] leading-relaxed">
+        <span className="font-semibold">Ачык айтам: </span>
+        бир консультацияда даяр бот, сайт же автоматташтыруу жасалбайт. Максат — ЖИни түшүнүү жана туура багытты табуу.
+      </p>
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         {services.map((s) => (
@@ -85,28 +90,37 @@ export function Konsultaciya() {
           Жаз — сүйлөшөбүз
         </h2>
         <p className="mx-auto mt-3 max-w-xl text-[16px] leading-relaxed text-ink-muted">
-          Эмне керек экенин кыскача жаз. Баасын жана убактысын жазышканда айтам.
+          Эмнени түшүнгүң келерин кыскача жаз. Баасын жана убактысын жазышканда айтам.
         </p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <a
-            href={dm}
+            href={site.whatsapp}
             target="_blank"
             rel="noopener"
             className="inline-flex min-h-12 items-center gap-2.5 rounded-full bg-accent px-6 font-semibold text-white transition hover:brightness-110"
           >
-            <InstagramIcon /> Директке жазуу
+            <WhatsAppIcon /> WhatsApp
           </a>
-          {site.telegram && (
-            <a
-              href={site.telegram}
-              target="_blank"
-              rel="noopener"
-              className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line bg-surface px-6 font-semibold hover:border-accent/50"
-            >
-              <TelegramIcon /> Telegram
-            </a>
-          )}
+          <a
+            href={site.telegram}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line bg-surface px-6 font-semibold hover:border-accent/50"
+          >
+            <TelegramIcon /> Telegram
+          </a>
+          <a
+            href={dm}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-line bg-surface px-6 font-semibold hover:border-accent/50"
+          >
+            <InstagramIcon /> Директ
+          </a>
         </div>
+        <p className="mt-5 text-[15px] text-ink-muted">
+          Же түз чал: <a href={`tel:${site.phone.replace(/\s/g, '')}`} className="font-semibold text-ink hover:text-accent">{site.phone}</a>
+        </p>
       </section>
     </main>
   )

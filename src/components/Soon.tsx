@@ -1,20 +1,19 @@
 import { soon } from '../content/soon'
 import { topics } from '../content/guides'
 import { site } from '../content/site'
-import { InstagramIcon, TelegramIcon } from './Logos'
+import { InstagramIcon } from './Logos'
 
-/** «Кабарла» — Telegram болсо ошого, жок болсо Instagram'га */
+/** «Кабарла» — Instagram'га: жаңы гайддар адегенде рилс болуп чыгат */
 export function NotifyButton({ className = '' }: { className?: string }) {
-  const tg = Boolean(site.telegram)
   return (
     <a
-      href={tg ? site.telegram : site.instagram}
+      href={site.instagram}
       target="_blank"
       rel="noopener"
       className={`inline-flex min-h-12 items-center gap-2.5 rounded-full bg-accent px-6 font-semibold text-white transition hover:brightness-110 ${className}`}
     >
-      {tg ? <TelegramIcon /> : <InstagramIcon />}
-      {tg ? "Чыкканда кабарла — Telegram" : "Чыкканда көрүү үчүн катталып кой"}
+      <InstagramIcon />
+      Instagram'га катталып кой
     </a>
   )
 }

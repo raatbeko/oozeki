@@ -1,4 +1,4 @@
-import { claudePath, openaiPath, instagramPath, telegramPath } from '../icons'
+import { claudePath, openaiPath, instagramPath, telegramPath, whatsappPath } from '../icons'
 
 interface Props {
   size?: number
@@ -55,5 +55,13 @@ export function MontajLogo({ size = 40, className = '' }: Props) {
         <path d="M16.5 3v18" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
     </span>
+  )
+}
+
+export function WhatsAppIcon({ size = 20 }: { size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">
+      <path d={whatsappPath} fill="currentColor" />
+    </svg>
   )
 }

@@ -7,6 +7,7 @@ import { PromptCard } from '../components/Prompt'
 import { ClaudeLogo, ChatGPTLogo } from '../components/Logos'
 import { SocialButtons } from '../components/Layout'
 import { Tunduk } from '../components/Tunduk'
+import { HoloTunduk } from '../components/HoloTunduk'
 import { AbilityCard } from './Ji'
 import { SoonSection } from '../components/Soon'
 
@@ -33,14 +34,15 @@ export function Home() {
   return (
     <>
       <section className="relative mx-auto max-w-4xl px-4 pt-14 pb-10 text-center sm:px-6 md:pt-24">
+        <HoloTunduk className="absolute top-[-15px] left-1/2 -z-10 h-[80vw] w-[88vw] -translate-x-1/2 md:top-[-120px] md:h-[min(820px,105vw)] md:w-[min(1100px,140vw)]" />
         <Tunduk size={56} className="mx-auto text-accent" />
         <p className="mt-6 text-[13px] font-semibold tracking-[0.2em] text-ink-muted uppercase">кыргызча, жөнөкөй сөз менен</p>
         <h1 className="mt-3 font-serif text-[clamp(2.6rem,8vw,5rem)] leading-[1.02] font-bold tracking-tight text-balance">
           Жасалма интеллект — <span className="text-accent italic">кыргызча</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-[18px] leading-relaxed text-ink-muted">
-          ЖИ эмне кыла алат, Claude менен ChatGPT'тин айырмасы, үйдөн эле видео монтаж. Гайддар кадам-кадам, даяр промпттор жана
-          скриншоттор — рилстерде көрсөткөндүн баары бир жерде.
+          Жасалма интеллектти кантип колдонууну жөнөкөй тил менен түшүндүрөм. Кадам-кадам гайддар жана даяр промпттор — баары
+          бекер.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link

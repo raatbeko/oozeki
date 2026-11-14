@@ -108,3 +108,25 @@ body::before {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Голограмма: жука горизонталдык сызыктар жана четтерге карай өчүү */
+.holo-lines {
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 4px);
+  mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 40%, transparent 100%);
+}
+:root:not([data-theme='dark']) .holo-lines {
+  background: repeating-linear-gradient(0deg, rgb(35 32 27 / 0.03) 0 1px, transparent 1px 4px);
+}
+
+/* Голограмманын астындагы жылуу жарык */
+.holo-glow {
+  background: radial-gradient(closest-side, rgb(215 90 65 / 0.16), transparent 70%);
+  filter: blur(10px);
+}
+
+/* Тексттин артында голограмма өчүңкү — окууга тоскоол болбосун */
+.holo-canvas {
+  mask-image: radial-gradient(ellipse 46% 34% at 50% 50%, rgb(0 0 0 / 0.18) 0%, rgb(0 0 0 / 0.35) 55%, #000 100%);
+  -webkit-mask-image: radial-gradient(ellipse 46% 34% at 50% 50%, rgb(0 0 0 / 0.18) 0%, rgb(0 0 0 / 0.35) 55%, #000 100%);
+}

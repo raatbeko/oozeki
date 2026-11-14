@@ -15,16 +15,13 @@ export function GuideCard({ guide }: { guide: Guide }) {
           alt=""
           loading="lazy"
           decoding="async"
-          className="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+          className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
         />
-        <span
-          className="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[12px] font-semibold text-white"
-          style={{ background: t.color }}
-        >
-          {t.label}
-        </span>
       </div>
       <div className="flex flex-1 flex-col p-5">
+        <p className="mb-1.5 text-[12px] font-semibold tracking-[0.14em] uppercase" style={{ color: t.color }}>
+          {t.label}
+        </p>
         <h3 className="font-serif text-[22px] leading-snug font-bold text-balance">{guide.title}</h3>
         <p className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-muted">{guide.short}</p>
         <p className="mt-4 flex items-center justify-between text-[13px] font-medium">

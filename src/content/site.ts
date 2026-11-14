@@ -4,7 +4,8 @@ export const site = {
   author: 'Раатбек',
   handle: 'theratbeko',
   instagram: 'https://www.instagram.com/theratbeko/',
-  // TODO: автордон Telegram шилтемесин алып, ушул жерге кой. Бош болсо — баскыч «жакында» деп турат.
-  telegram: '',
+  phone: '+996 707 900 536',
+  telegram: 'https://t.me/+996707900536',
+  whatsapp: 'https://wa.me/996707900536',
   checked: '14.11.2026',
 }
