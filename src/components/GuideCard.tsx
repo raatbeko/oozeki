@@ -11,7 +11,9 @@ export function GuideCard({ guide }: { guide: Guide }) {
   const { topics } = useContent()
   const tr = useTr()
   const t = topics[guide.topic]
-  const meta = `${guide.steps.length} ${tr('шаг', 'шагов')} · ${guide.time}`
+  const n = guide.steps.length
+  const ruSteps = n % 10 === 1 && n % 100 !== 11 ? 'шаг' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 'шага' : 'шагов'
+  const meta = `${n} ${tr('шаг', ruSteps)} · ${guide.time}`
   return (
     <Link
       href={`/guides/${guide.slug}`}
