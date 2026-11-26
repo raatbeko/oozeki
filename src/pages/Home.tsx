@@ -68,6 +68,32 @@ export function Home() {
       </section>
 
       <main className="relative mx-auto max-w-6xl px-4 sm:px-6">
+        <section className="pt-6 md:pt-10" aria-label="Reels Template">
+          <Link
+            href="/reels-template"
+            className="group grid items-center gap-6 rounded-3xl border border-line bg-surface p-6 transition-colors hover:border-accent/50 sm:p-8 md:grid-cols-[1fr_auto]"
+          >
+            <div>
+              <p className="text-[13px] font-semibold tracking-[0.18em] text-accent uppercase">{tr('Бекер проект', 'Бесплатный проект')}</p>
+              <h2 className="mt-2 font-serif text-3xl font-bold tracking-tight">Reels Template</h2>
+              <p className="mt-3 max-w-xl text-[16px] leading-relaxed text-ink-muted">
+                {tr(
+                  'Claude Code видеоңду сен тандаган стилде монтаждап берет. 49 шаблон, ар биринин демосу бар.',
+                  'Claude Code монтирует твоё видео в выбранном стиле. 49 шаблонов, у каждого есть демо.',
+                )}
+              </p>
+              <span className="mt-4 inline-flex min-h-11 items-center text-[15px] font-semibold text-accent group-hover:underline">
+                {tr('Көрүү жана жүктөө', 'Смотреть и скачать')} →
+              </span>
+            </div>
+            <div className="flex gap-2" aria-hidden="true">
+              {['warm-yellow', 'neon-halftone', 'cinema-serif'].map((id) => (
+                <img key={id} src={`/reels-template/${id}.webp`} alt="" loading="lazy" decoding="async" className="aspect-[9/16] w-[86px] rounded-xl border border-line object-cover sm:w-[104px]" />
+              ))}
+            </div>
+          </Link>
+        </section>
+
         <section className="pt-12 md:pt-20" aria-label={tr('ЖИ эмне кыла алат', 'Что умеет ИИ')}>
           <SectionHead kicker={tr('Мүмкүнчүлүктөр', 'Возможности')} title={tr('ЖИ азыр эмне кыла алат', 'Что ИИ умеет уже сейчас')} href="/ji" more={tr('Баары', 'Все')} />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

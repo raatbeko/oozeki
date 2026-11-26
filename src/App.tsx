@@ -7,6 +7,7 @@ import { Prompts } from './pages/Prompts'
 import { Ji } from './pages/Ji'
 import { Sozduk } from './pages/Sozduk'
 import { Konsultaciya } from './pages/Konsultaciya'
+import { ReelsTemplate } from './pages/ReelsTemplate'
 import { useEffect } from 'react'
 import { useContent } from './content/useContent'
 import { useTr } from './i18n'
@@ -36,6 +37,7 @@ function Route({ path }: { path: string }) {
   if (path === '/ji') return <Ji />
   if (path === '/sozduk') return <Sozduk />
   if (path === '/konsultaciya') return <Konsultaciya />
+  if (path === '/reels-template') return <ReelsTemplate />
   const m = path.match(/^\/guides\/([\w-]+)$/)
   if (m) {
     const g = guideBySlug(m[1])
